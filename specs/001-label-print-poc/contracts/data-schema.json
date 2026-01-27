@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nanmaolabel.local/schemas/data.json",
+  "title": "NanmaoLabel Data Store",
+  "description": "南茂標籤列印 POC 資料儲存格式 (data.json)",
+  "type": "object",
+  "required": ["lastModified", "records"],
+  "properties": {
+    "lastModified": {
+      "type": "string",
+      "format": "date-time",
+      "description": "最後修改時間 (ISO 8601 格式，含時區) [ref: IC-017]",
+      "examples": ["2026-01-27T14:30:52+08:00"]
+    },
+    "records": {
+      "type": "array",
+      "description": "交易資料紀錄陣列",
+      "items": {
+        "$ref": "#/$defs/DataRecord"
+      }
+    }
+  },
+  "$defs": {
+    "DataRecord": {
+      "type": "object",
+      "description": "單筆交易資料紀錄",
+      "required": [
+        "ogb19",
+        "nvr_cust",
+        "nvr_cust_item_no",
+        "nvr_cust_pn",
+        "ogd09",
+        "obe25",
+        "pono",
+        "ima902"
+      ],
+      "properties": {
+        "ogb19": {
+          "type": "string",
+          "description": "單據編號 (主鍵識別)",
+          "minLength": 1,
+          "examples": ["G25A111577"]
+        },
+        "nvr_cust": {
+          "type": "string",
+          "description": "客戶名稱",
+          "minLength": 1,
+          "examples": ["XinshengIntelligent"]
+        },
+        "nvr_cust_item_no": {
+          "type": "string",
+          "description": "客戶料號",
+          "minLength": 1,
+          "examples": ["XPA72EA0I-008"]
+        },
+        "nvr_cust_pn": {
+          "type": "string",
+          "description": "客戶 P/N (Code 128 條碼來源)",
+          "minLength": 1,
+          "examples": ["E110-X0"]
+        },
+        "ogd09": {
+          "type": "string",
+          "description": "數量 (Raw Value，僅允許數字，不含千分位) [ref: IC-019]",
+          "pattern": "^[0-9]+$",
+          "examples": ["6733"]
+        },
+        "obe25": {
+          "type": "string",
+          "description": "日期 (格式 yyyy-MM-dd) [ref: IC-023]",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+          "examples": ["2025-11-14"]
+        },
+        "pono": {
+          "type": "string",
+          "description": "製令單號 (QR Code 組合欄位)",
+          "minLength": 1,
+          "examples": ["511-251020041"]
+        },
+        "ima902": {
+          "type": "string",
+          "description": "裝置編號 (QR Code 組合欄位)",
+          "minLength": 1,
+          "examples": ["FC7800280H-00000-00005"]
+        },
+        "nvr_remark10": {
+          "type": "string",
+          "description": "備註 (可為空)",
+          "default": "",
+          "examples": ["00U35NVVR"]
+        },
+        "erpmat": {
+          "type": "string",
+          "description": "ERP 料號 (QW075551-2 條碼來源)",
+          "default": "",
+          "examples": ["4D010018"]
+        },
+        "cscustpo": {
+          "type": "string",
+          "description": "客戶採購單號 (QW075551-2 用)",
+          "default": "",
+          "examples": ["P600-X1725A3002627"]
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
