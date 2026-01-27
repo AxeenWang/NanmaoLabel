@@ -1,50 +1,202 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+同步影響報告 (Sync Impact Report)
+===================================
+版本變更: 1.0.0 → 1.1.0
+修改原則: 無
+新增章節:
+  - 補充條文（5 項強制規範）
+移除章節: 無
+模板更新狀態:
+  - .specify/templates/plan-template.md: ✅ 相容（Constitution Check 區塊可套用補充條文）
+  - .specify/templates/spec-template.md: ✅ 相容（需求追溯性與補充條文 A-4 一致）
+  - .specify/templates/tasks-template.md: ✅ 相容（任務結構與補充條文 A-5 相容）
+待處理事項: 無
+-->
 
-## Core Principles
+# NanmaoLabel 專案憲章
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+## 核心原則
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### I. 程式碼品質
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+程式碼品質是專案可維護性與長期健康的基石。
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+**強制規範**：
+- 程式碼必須（MUST）遵循 .editorconfig 定義的格式規範
+- 每個公開方法必須（MUST）有明確的輸入驗證與錯誤處理
+- 類別與方法必須（MUST）遵循單一職責原則，一個類別只做一件事
+- 命名必須（MUST）清晰表達意圖，禁止縮寫（除非為業界慣例如 ID、URL）
+- 重複程式碼達三次以上必須（MUST）抽取為共用方法
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+**禁止事項**：
+- 禁止提交含有編譯警告的程式碼
+- 禁止硬編碼魔術數字或字串（使用常數或設定檔）
+- 禁止空的 catch 區塊（必須記錄或重新拋出）
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+**理由**：清晰、一致的程式碼降低維護成本，減少因誤解產生的錯誤。
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+### II. 測試標準
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+測試是確保功能正確性與防止回歸的防線。
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+**強制規範**：
+- 核心業務邏輯必須（MUST）有對應的單元測試
+- 測試必須（MUST）可獨立執行，不依賴外部服務或特定執行順序
+- 測試命名必須（MUST）清楚描述測試情境：`方法名_情境_預期結果`
+- 修復 Bug 時必須（MUST）先撰寫重現該 Bug 的測試案例
 
-## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
+**建議事項**：
+- 整合測試應（SHOULD）涵蓋主要使用者流程
+- 測試覆蓋率應（SHOULD）達到 80% 以上（針對核心模組）
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+**理由**：完善的測試讓重構與功能擴展更有信心，降低發布風險。
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+### III. 使用者體驗一致性
+
+一致的使用者體驗降低學習成本，提升使用滿意度。
+
+**強制規範**：
+- UI 元件樣式必須（MUST）使用共用資源字典（ResourceDictionary）定義
+- 所有使用者可見的錯誤訊息必須（MUST）為繁體中文，語氣友善
+- 鍵盤快捷鍵必須（MUST）遵循 Windows 標準慣例（Ctrl+S 儲存、Ctrl+Z 復原等）
+- 載入時間超過 500ms 的操作必須（MUST）顯示進度指示器
+
+**禁止事項**：
+- 禁止在 UI 執行緒執行耗時操作
+- 禁止未經使用者確認即執行破壞性操作（刪除、覆寫）
+
+**理由**：一致且可預測的介面讓使用者專注於工作本身，而非學習工具。
+
+### IV. 效能要求
+
+效能直接影響使用者體驗與工作效率。
+
+**強制規範**：
+- 應用程式啟動至可操作狀態必須（MUST）在 3 秒內完成
+- 標註操作回應時間必須（MUST）在 100ms 以內
+- 記憶體使用量必須（MUST）保持穩定，無記憶體洩漏
+- 大量資料處理必須（MUST）採用分頁或虛擬化技術
+
+**建議事項**：
+- 圖片載入應（SHOULD）採用延遲載入與快取機制
+- 長時間操作應（SHOULD）支援取消功能
+
+**理由**：流暢的操作體驗是標註工具的核心競爭力。
+
+## 補充條文
+
+本章節為核心原則之強制性補充，具有同等約束力。
+
+### A-1. 文件依據原則
+
+所有產出必須（MUST）僅依據指定文件內容。
+
+**強制規範**：
+- 設計、規劃、實作必須（MUST）以專案內既有文件為唯一依據
+- 禁止引入外部經驗、個人假設或未來推測
+- 若指定文件未涵蓋某項需求，必須（MUST）明確標註「文件未定義」並暫停該項工作
+
+**驗證方式**：每項產出可指向具體的文件章節作為依據來源。
+
+### A-2. 禁止預設設計原則
+
+禁止基於擴充性、彈性或可能需求進行設計或規劃。
+
+**強制規範**：
+- 禁止以「未來可能需要」為由增加介面、抽象層或參數
+- 禁止預留未被需求文件明確定義的擴充點
+- 每項設計決策必須（MUST）對應至當前已確認的需求
+
+**驗證方式**：審查時若發現無對應需求的程式碼，必須移除或提出需求補充。
+
+### A-3. 可執行可驗證原則
+
+所有內容必須（MUST）為可執行、可驗證的描述。
+
+**強制規範**：
+- 禁止使用抽象或願景式語言（如「提升效率」、「增強體驗」）
+- 每項需求、設計、任務必須（MUST）包含具體的驗收條件
+- 驗收條件必須（MUST）可透過測試、檢查或量測確認通過與否
+
+**驗證方式**：無法定義明確驗收條件的描述不得進入實作階段。
+
+### A-4. 需求追溯原則
+
+每一項工作或結論必須（MUST）可追溯至明確的需求章節。
+
+**強制規範**：
+- 任務描述必須（MUST）標註對應的需求編號（如 FR-001、US-1）
+- 程式碼變更必須（MUST）在 Commit Message 中引用相關需求
+- 設計文件必須（MUST）建立需求與實作的對應矩陣
+
+**驗證方式**：無法追溯至需求的工作項目不得執行。
+
+### A-5. 格式遵循原則
+
+輸出格式必須（MUST）符合指定結構。
+
+**強制規範**：
+- 規格書必須（MUST）遵循 `.specify/templates/spec-template.md` 格式
+- 實作計畫必須（MUST）遵循 `.specify/templates/plan-template.md` 格式
+- 任務清單必須（MUST）遵循 `.specify/templates/tasks-template.md` 格式
+- 禁止自行變更模板結構或新增未定義的區塊
+
+**驗證方式**：產出文件與模板結構比對，不符者須修正後方可提交。
+
+## 開發約束
+
+本章節定義技術堆疊與環境限制。
+
+**技術堆疊**：
+- 目標框架：.NET / WPF
+- 開發環境：Visual Studio 2026 on Windows
+- 原始碼託管：WSL (Ubuntu)，透過 PowerShell 穿透編譯
+
+**檔案格式規範**（詳見 `.dao/raw_format.md`）：
+- `.cs` 檔案：UTF-8 with BOM + CRLF
+- `.sh` 檔案：UTF-8 + LF
+- 其他文字檔案：UTF-8 + CRLF
+
+**相依性管理**：
+- 新增 NuGet 套件前必須（MUST）評估：必要性、替代方案、授權相容性
+- 優先選用維護活躍、文件完善的套件
+
+## 品質關卡
+
+本章節定義程式碼合併前必須通過的檢查。
+
+**合併前檢查清單**：
+1. 編譯成功且無警告
+2. 所有既有測試通過
+3. 新增功能有對應測試（若為核心邏輯）
+4. 程式碼已通過自我審查（無偵錯程式碼、無註解掉的程式碼）
+5. 遵循本憲章所有強制規範
+6. 所有變更可追溯至需求文件（補充條文 A-4）
+
+**程式碼審查重點**：
+- 邏輯正確性
+- 錯誤處理完整性
+- 效能影響評估
+- 可讀性與可維護性
+- 需求追溯性驗證
+
+## 治理
+
+本憲章為專案開發的最高指導原則，所有開發決策必須與其一致。
+
+**修訂程序**：
+1. 提出修訂建議並說明理由
+2. 評估對現有程式碼與流程的影響
+3. 取得團隊共識後更新憲章
+4. 更新版本號並記錄變更日期
+
+**版本控制**：
+- MAJOR：原則移除或根本性重新定義
+- MINOR：新增原則或章節
+- PATCH：文字修訂、澄清、錯字修正
+
+**合規審查**：
+- 每次程式碼審查必須（MUST）確認符合憲章原則
+- 違反強制規範的程式碼不得合併
+
+**Version**: 1.1.0 | **Ratified**: 2026-01-27 | **Last Amended**: 2026-01-27
