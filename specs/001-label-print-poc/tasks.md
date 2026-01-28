@@ -73,8 +73,8 @@ NanmaoLabel/
 
 ### Data Layer [ref: raw_spec 2.2, 3.1 F-01~F-02]
 
-- [ ] T012 Create interface `NanmaoLabelPOC/Services/IDataStore.cs` with Load(), Save(records), GetAll() [ref: raw_spec 7.2]
-- [ ] T013 Create `NanmaoLabelPOC/Services/DataStore.cs` implementing IDataStore:
+- [x] T012 Create interface `NanmaoLabelPOC/Services/IDataStore.cs` with Load(), Save(records), GetAll() [ref: raw_spec 7.2]
+- [x] T013 Create `NanmaoLabelPOC/Services/DataStore.cs` implementing IDataStore:
   - Path: `.\data\data.json` [ref: raw_spec 2.3]
   - JSON structure: { version: "1.0", lastModified: ISO 8601, records: [] } [ref: raw_spec 附錄 B.1]
   - Auto-create directory if not exists [ref: raw_spec 2.3]
@@ -82,8 +82,8 @@ NanmaoLabel/
   - Generate UUID for new records [ref: raw_spec 附錄 B.2]
   - Single Source of Truth [ref: raw_spec 13.25]
 
-- [ ] T014 Create interface `NanmaoLabelPOC/Services/IExcelImporter.cs` with Import(filePath) [ref: raw_spec 7.2]
-- [ ] T015 Create `NanmaoLabelPOC/Services/ExcelImporter.cs` implementing IExcelImporter:
+- [x] T014 Create interface `NanmaoLabelPOC/Services/IExcelImporter.cs` with Import(filePath) [ref: raw_spec 7.2]
+- [x] T015 Create `NanmaoLabelPOC/Services/ExcelImporter.cs` implementing IExcelImporter:
   - Read all cells as String (preserve leading zeros) [ref: raw_spec 3.1 備註]
   - Case-insensitive field matching [ref: raw_spec 3.3, 13.11]
   - Field name validation: alphanumeric only (A-Z, a-z, 0-9), reject underscore/space/special chars [ref: raw_spec 13.11]
