@@ -231,13 +231,18 @@ public partial class LabelPrintViewModel : ObservableObject
 
     /// <summary>
     /// 載入資料命令
+    /// [ref: 憲章 IV] T076: 操作回應 ≤ 100ms
     /// </summary>
     [RelayCommand]
     private void LoadData()
     {
         try
         {
-            var records = _dataStore.Load();
+            // T076: 監控資料載入操作時間 [ref: 憲章 IV]
+            var records = PerformanceMonitor.MeasureOperation(
+                () => _dataStore.Load(),
+                "資料載入");
+
             Records.Clear();
             foreach (var record in records)
             {
@@ -433,10 +438,14 @@ public partial class LabelPrintViewModel : ObservableObject
     /// <summary>
     /// 選取資料項目（單擊）
     /// [ref: raw_spec 13.6]
+    /// [ref: 憲章 IV] T076: 操作回應 ≤ 100ms
     /// </summary>
     public void SelectRecord(DataRecord? record)
     {
-        SelectedRecord = record;
+        // T076: 監控選取操作時間 [ref: 憲章 IV]
+        PerformanceMonitor.MeasureOperation(
+            () => SelectedRecord = record,
+            "選取資料");
     }
 
     /// <summary>

@@ -374,8 +374,8 @@ NanmaoLabel/
 
 ### Performance [ref: 憲章 IV]
 
-- [ ] T075 Verify startup time ≤ 3 seconds [ref: 憲章 IV]
-- [ ] T076 Verify operation response ≤ 100ms [ref: 憲章 IV]
+- [x] T075 Verify startup time ≤ 3 seconds [ref: 憲章 IV]
+- [x] T076 Verify operation response ≤ 100ms [ref: 憲章 IV]
 
 ### Final Validation [ref: raw_spec 10, 13.7]
 

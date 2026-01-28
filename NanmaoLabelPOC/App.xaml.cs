@@ -12,17 +12,22 @@ namespace NanmaoLabelPOC;
 /// [ref: raw_spec 13.5, 8.2]
 ///
 /// 初始化順序：
-/// 1. 設定 QuestPDF License
-/// 2. 設定 ExcelDataReader 編碼
-/// 3. 建立服務實例 (Poor Man's DI)
-/// 4. 建立 MainViewModel
-/// 5. 建立 MainWindow 並注入 ViewModel
-/// 6. 顯示視窗 (Loaded 事件會自動觸發資料載入)
+/// 1. 啟動效能監控 [ref: 憲章 IV] T075
+/// 2. 設定 QuestPDF License
+/// 3. 設定 ExcelDataReader 編碼
+/// 4. 建立服務實例 (Poor Man's DI)
+/// 5. 建立 MainViewModel
+/// 6. 建立 MainWindow 並注入 ViewModel
+/// 7. 顯示視窗 (Loaded 事件會自動觸發資料載入)
+/// 8. 結束啟動計時並驗證 [ref: 憲章 IV] T075
 /// </summary>
 public partial class App : Application
 {
     protected override void OnStartup(StartupEventArgs e)
     {
+        // T075: 啟動效能監控 [ref: 憲章 IV]
+        PerformanceMonitor.StartApplication();
+
         base.OnStartup(e);
 
         // 設定 QuestPDF Community License [ref: raw_spec 7.1]
@@ -50,5 +55,13 @@ public partial class App : Application
         var mainWindow = new MainWindow();
         mainWindow.SetViewModel(mainViewModel);
         mainWindow.Show();
+
+        // T075: 記錄啟動完成時間 [ref: 憲章 IV]
+        // 注意：完整的啟動時間包括 MainWindow_Loaded 中的資料載入
+        // 這裡先記錄視窗顯示的時間，實際驗證在 MainWindow_Loaded 完成後
+        mainWindow.Loaded += (_, _) =>
+        {
+            PerformanceMonitor.EndStartup();
+        };
     }
 }
