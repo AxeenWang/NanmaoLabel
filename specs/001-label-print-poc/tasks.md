@@ -223,9 +223,9 @@ NanmaoLabel/
 
 **Independent Test**: 切換下拉選單 → 預覽區即時更新 [ref: raw_spec TC-05]
 
-- [ ] T030 [US2] Extend LabelPrintViewModel with AvailableTemplates collection (QW075551-1, QW075551-2) in `NanmaoLabelPOC/ViewModels/LabelPrintViewModel.cs`
-- [ ] T031 [US2] Bind template dropdown to AvailableTemplates in `NanmaoLabelPOC/Views/LabelPrintView.xaml`
-- [ ] T032 [US2] Implement immediate preview update on template change (PropertyChanged)
+- [x] T030 [US2] Extend LabelPrintViewModel with AvailableTemplates collection (QW075551-1, QW075551-2) in `NanmaoLabelPOC/ViewModels/LabelPrintViewModel.cs`
+- [x] T031 [US2] Bind template dropdown to AvailableTemplates in `NanmaoLabelPOC/Views/LabelPrintView.xaml`
+- [x] T032 [US2] Implement immediate preview update on template change (PropertyChanged)
 
 **Checkpoint**: US2 完成 - 兩種格式皆可正確顯示 [ref: raw_spec A-05]
 
