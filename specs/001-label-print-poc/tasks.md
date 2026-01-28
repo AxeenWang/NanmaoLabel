@@ -171,8 +171,8 @@ NanmaoLabel/
 
 ### PDF Export [ref: raw_spec 3.1 F-08]
 
-- [ ] T024 [US1] Create interface `NanmaoLabelPOC/Services/IPdfExporter.cs` with ExportSingle(template, record, outputPath) [ref: raw_spec 7.2]
-- [ ] T025 [US1] Create `NanmaoLabelPOC/Services/PdfExporter.cs` implementing IPdfExporter:
+- [x] T024 [US1] Create interface `NanmaoLabelPOC/Services/IPdfExporter.cs` with ExportSingle(template, record, outputPath) [ref: raw_spec 7.2]
+- [x] T025 [US1] Create `NanmaoLabelPOC/Services/PdfExporter.cs` implementing IPdfExporter:
   - Page size: 100mm × 60mm [ref: raw_spec 5.1]
   - Font embedding: Microsoft JhengHei (Regular + Bold) [ref: raw_spec 5.3, 13.2]
   - Use UnitConverter.MmToPt for coordinates [ref: raw_spec 13.1]
