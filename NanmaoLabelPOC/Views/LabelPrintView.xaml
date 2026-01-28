@@ -1,0 +1,278 @@
+<UserControl x:Class="NanmaoLabelPOC.Views.LabelPrintView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:NanmaoLabelPOC.ViewModels"
+             mc:Ignorable="d"
+             d:DesignHeight="600" d:DesignWidth="1200"
+             Background="#F5F5F5">
+
+    <!--
+    標籤列印分頁
+    [ref: raw_spec 8.4]
+
+    佈局：
+    - 左側 45%：預覽區 + 格式選擇
+    - 右側 55%：資料清單 + 操作按鈕
+    -->
+
+    <Grid Margin="16">
+        <Grid.ColumnDefinitions>
+            <!-- 左側：預覽區 45* [ref: raw_spec 8.4] -->
+            <ColumnDefinition Width="45*"/>
+            <!-- 右側：資料清單 55* [ref: raw_spec 8.4] -->
+            <ColumnDefinition Width="55*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- 左側區域 -->
+        <Grid Grid.Column="0" Margin="0,0,8,0">
+            <Grid.RowDefinitions>
+                <!-- 預覽區 1* -->
+                <RowDefinition Height="*"/>
+                <!-- 格式選擇 70px [ref: raw_spec 8.4] -->
+                <RowDefinition Height="70"/>
+            </Grid.RowDefinitions>
+
+            <!-- 標籤預覽區 [ref: raw_spec 8.4] -->
+            <Border Grid.Row="0"
+                    Background="#F5F5F5"
+                    BorderBrush="#E0E0E0"
+                    BorderThickness="1"
+                    CornerRadius="4">
+                <Grid>
+                    <!-- 預覽內容（Canvas 用於渲染指令）-->
+                    <Viewbox Stretch="Uniform"
+                             Margin="16"
+                             Visibility="{Binding HasSelectedRecord, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <!-- 標籤背景：100mm x 60mm 比例 [ref: raw_spec 8.4] -->
+                        <Border Width="400" Height="240"
+                                Background="White"
+                                BorderBrush="#CCCCCC"
+                                BorderThickness="1">
+                            <Border.Effect>
+                                <DropShadowEffect ShadowDepth="2" Opacity="0.3" BlurRadius="8"/>
+                            </Border.Effect>
+                            <!-- 預覽 Canvas：渲染標籤內容 -->
+                            <Canvas x:Name="PreviewCanvas"
+                                    Width="400" Height="240"
+                                    ClipToBounds="True"/>
+                        </Border>
+                    </Viewbox>
+
+                    <!-- 空白狀態提示 [ref: raw_spec 8.4] -->
+                    <StackPanel HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Visibility="{Binding HasSelectedRecord, Converter={StaticResource InverseBoolToVisibilityConverter}}">
+                        <TextBlock Text="📋"
+                                   FontSize="48"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,0,0,16"/>
+                        <TextBlock Text="請先匯入資料"
+                                   FontSize="16"
+                                   Foreground="#888888"
+                                   HorizontalAlignment="Center"/>
+                        <TextBlock Text="或選取資料項目"
+                                   FontSize="16"
+                                   Foreground="#888888"
+                                   HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- 格式選擇區 -->
+            <Grid Grid.Row="1" Margin="0,16,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0"
+                           Text="標籤格式"
+                           VerticalAlignment="Center"
+                           FontSize="14"
+                           FontFamily="Microsoft JhengHei"
+                           Margin="0,0,12,0"/>
+
+                <!-- 格式下拉選單 [ref: raw_spec 8.4] -->
+                <ComboBox Grid.Column="1"
+                          ItemsSource="{Binding AvailableTemplates}"
+                          SelectedItem="{Binding SelectedTemplate}"
+                          DisplayMemberPath="DisplayName"
+                          Height="40"
+                          FontSize="14"
+                          FontFamily="Microsoft JhengHei"/>
+            </Grid>
+        </Grid>
+
+        <!-- 右側區域 -->
+        <Grid Grid.Column="1" Margin="8,0,0,0">
+            <Grid.RowDefinitions>
+                <!-- 資料清單 1* -->
+                <RowDefinition Height="*"/>
+                <!-- 分頁指示器 Auto -->
+                <RowDefinition Height="Auto"/>
+                <!-- 操作按鈕 70px [ref: raw_spec 8.4] -->
+                <RowDefinition Height="70"/>
+            </Grid.RowDefinitions>
+
+            <!-- 資料清單 ListView [ref: raw_spec 8.4] -->
+            <Border Grid.Row="0"
+                    Background="White"
+                    BorderBrush="#E0E0E0"
+                    BorderThickness="1"
+                    CornerRadius="4">
+                <Grid>
+                    <!-- 有資料時顯示 ListView -->
+                    <ListView x:Name="RecordListView"
+                              ItemsSource="{Binding Records}"
+                              SelectedItem="{Binding SelectedRecord, Mode=TwoWay}"
+                              SelectionMode="Single"
+                              BorderThickness="0"
+                              Background="Transparent"
+                              Visibility="{Binding HasRecords, Converter={StaticResource BoolToVisibilityConverter}}"
+                              MouseDoubleClick="RecordListView_MouseDoubleClick">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <!-- 項目高度 50px [ref: raw_spec 8.4] -->
+                                <Grid Height="50" Margin="8,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- 單據編號 [ref: raw_spec 8.4] -->
+                                    <StackPanel Grid.Column="0"
+                                                Orientation="Horizontal"
+                                                VerticalAlignment="Center">
+                                        <TextBlock Text="📦 " FontSize="14"/>
+                                        <TextBlock Text="{Binding Ogb19}"
+                                                   FontSize="14"
+                                                   FontWeight="Bold"
+                                                   FontFamily="Microsoft JhengHei"/>
+                                    </StackPanel>
+
+                                    <!-- 分隔線 + 客戶名稱 -->
+                                    <StackPanel Grid.Column="1"
+                                                Orientation="Horizontal"
+                                                VerticalAlignment="Center"
+                                                Margin="16,0">
+                                        <TextBlock Text="│ "
+                                                   Foreground="#CCCCCC"
+                                                   FontSize="14"/>
+                                        <TextBlock Text="{Binding NvrCust}"
+                                                   FontSize="14"
+                                                   FontFamily="Microsoft JhengHei"
+                                                   TextTrimming="CharacterEllipsis"
+                                                   MaxWidth="200"/>
+                                    </StackPanel>
+
+                                    <!-- 數量 -->
+                                    <StackPanel Grid.Column="2"
+                                                Orientation="Horizontal"
+                                                VerticalAlignment="Center">
+                                        <TextBlock Text="│ "
+                                                   Foreground="#CCCCCC"
+                                                   FontSize="14"/>
+                                        <TextBlock Text="{Binding Ogd09, StringFormat=N0}"
+                                                   FontSize="14"
+                                                   FontFamily="Microsoft JhengHei"/>
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                <Setter Property="Padding" Value="8,0"/>
+                                <Style.Triggers>
+                                    <!-- 選取樣式 [ref: raw_spec 8.4] -->
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background" Value="#0078D4"/>
+                                        <Setter Property="Foreground" Value="White"/>
+                                    </Trigger>
+                                    <!-- Hover 樣式 [ref: raw_spec 8.4] -->
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#F0F0F0"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                    </ListView>
+
+                    <!-- 無資料時顯示空白狀態 [ref: raw_spec 8.4] -->
+                    <StackPanel HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Visibility="{Binding HasRecords, Converter={StaticResource InverseBoolToVisibilityConverter}}">
+                        <TextBlock Text="📂"
+                                   FontSize="48"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,0,0,16"/>
+                        <TextBlock Text="尚無資料"
+                                   FontSize="18"
+                                   Foreground="#888888"
+                                   HorizontalAlignment="Center"
+                                   FontFamily="Microsoft JhengHei"/>
+                        <TextBlock Text="請至「資料管理」分頁匯入 Excel"
+                                   FontSize="14"
+                                   Foreground="#AAAAAA"
+                                   HorizontalAlignment="Center"
+                                   FontFamily="Microsoft JhengHei"
+                                   Margin="0,8,0,0"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- 分頁指示器（Phase 9 實作）-->
+            <StackPanel Grid.Row="1"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        Margin="0,8">
+                <!-- 待 T070-T072 實作分頁功能 -->
+            </StackPanel>
+
+            <!-- 操作按鈕區 [ref: raw_spec 8.4] -->
+            <Grid Grid.Row="2" Margin="0,8,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- 輸出 PDF 按鈕 [ref: raw_spec 8.4] -->
+                <Button Grid.Column="0"
+                        Command="{Binding ExportPdfCommand}"
+                        Height="50"
+                        Margin="0,0,8,0"
+                        FontSize="14"
+                        FontFamily="Microsoft JhengHei"
+                        Background="#0078D4"
+                        Foreground="White"
+                        BorderThickness="0"
+                        Cursor="Hand">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="📄 " FontSize="16"/>
+                        <TextBlock Text="輸出 PDF" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+
+                <!-- 批次輸出全部按鈕 [ref: raw_spec 8.4]（Phase 6 T041 實作完整功能）-->
+                <Button Grid.Column="1"
+                        IsEnabled="{Binding HasRecords}"
+                        Height="50"
+                        Margin="8,0,0,0"
+                        FontSize="14"
+                        FontFamily="Microsoft JhengHei"
+                        Background="#107C10"
+                        Foreground="White"
+                        BorderThickness="0"
+                        Cursor="Hand">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="📑 " FontSize="16"/>
+                        <TextBlock Text="批次輸出全部" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

@@ -183,7 +183,7 @@ NanmaoLabel/
 
 ### ViewModel [ref: raw_spec 8.4]
 
-- [ ] T026 [US1] Create `NanmaoLabelPOC/ViewModels/LabelPrintViewModel.cs`:
+- [x] T026 [US1] Create `NanmaoLabelPOC/ViewModels/LabelPrintViewModel.cs`:
   - Properties: Records, SelectedRecord, SelectedTemplate, PreviewContent
   - Commands: LoadDataCommand, ExportPdfCommand
   - Use CommunityToolkit.Mvvm [ref: raw_spec 7.1]
@@ -192,7 +192,7 @@ NanmaoLabel/
 
 ### View [ref: raw_spec 8.4]
 
-- [ ] T027 [US1] Create `NanmaoLabelPOC/Views/LabelPrintView.xaml`:
+- [x] T027 [US1] Create `NanmaoLabelPOC/Views/LabelPrintView.xaml`:
   - Left: Preview area (Canvas, ratio 100:60, background #F5F5F5) [ref: raw_spec 8.4]
   - Right: ListView (item height 50px, fields: 📦 ogb19 │ nvr_cust │ ogd09) [ref: raw_spec 8.4]
   - Bottom-left: Template dropdown [ref: raw_spec 8.4]
@@ -200,11 +200,11 @@ NanmaoLabel/
   - MouseDoubleClick with e.Handled=true + debounce [ref: raw_spec 8.8]
   - Grid layout: 45*:55* columns [ref: raw_spec 8.4]
 
-- [ ] T028 [US1] Implement status bar message `✅ PDF 已輸出：{完整檔案路徑}` [ref: raw_spec 8.8, 13.6]
+- [x] T028 [US1] Implement status bar message `✅ PDF 已輸出：{完整檔案路徑}` [ref: raw_spec 8.8, 13.6]
 
 ### Unit Tests (US1) [ref: raw_spec 7.2, 憲章 II]
 
-- [ ] T029 [P] [US1] Create `NanmaoLabelPOC.Tests/Services/LabelRendererTests.cs`:
+- [x] T029 [P] [US1] Create `NanmaoLabelPOC.Tests/Services/LabelRendererTests.cs`:
   - Test variable substitution [ref: raw_spec TC-02]
   - Test constant value handling [ref: raw_spec TC-03]
   - Test Raw Value vs Display Value separation [ref: raw_spec 13.13]
