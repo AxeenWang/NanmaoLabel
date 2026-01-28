@@ -128,9 +128,9 @@
                     BorderThickness="1"
                     CornerRadius="4">
                 <Grid>
-                    <!-- 有資料時顯示 ListView -->
+                    <!-- 有資料時顯示 ListView [ref: raw_spec 8.4] T070 -->
                     <ListView x:Name="RecordListView"
-                              ItemsSource="{Binding Records}"
+                              ItemsSource="{Binding PagedRecords}"
                               SelectedItem="{Binding SelectedRecord, Mode=TwoWay}"
                               SelectionMode="Single"
                               BorderThickness="0"
@@ -231,12 +231,50 @@
                 </Grid>
             </Border>
 
-            <!-- 分頁指示器（Phase 9 實作）-->
+            <!-- 分頁指示器 [ref: raw_spec 8.4] T070-T072 -->
             <StackPanel Grid.Row="1"
                         Orientation="Horizontal"
                         HorizontalAlignment="Center"
-                        Margin="0,8">
-                <!-- 待 T070-T072 實作分頁功能 -->
+                        Margin="0,8"
+                        Visibility="{Binding HasRecords, Converter={StaticResource BoolToVisibilityConverter}}">
+                <!-- 上一頁按鈕 ◀ [ref: raw_spec 8.4, 8.6] T071, T072 -->
+                <Button Command="{Binding PreviousPageCommand}"
+                        Width="50" Height="50"
+                        MinWidth="44" MinHeight="44"
+                        FontSize="18"
+                        FontWeight="Bold"
+                        FontFamily="Microsoft JhengHei"
+                        Background="White"
+                        BorderBrush="#E0E0E0"
+                        BorderThickness="1"
+                        Margin="0,0,8,0"
+                        Cursor="Hand"
+                        Content="◀"
+                        ToolTip="上一頁"/>
+
+                <!-- 頁碼指示器 [ref: raw_spec 8.4] T071 -->
+                <TextBlock Text="{Binding PageIndicatorText}"
+                           VerticalAlignment="Center"
+                           FontSize="14"
+                           FontWeight="Bold"
+                           FontFamily="Microsoft JhengHei"
+                           Foreground="#333333"
+                           Margin="8,0"/>
+
+                <!-- 下一頁按鈕 ▶ [ref: raw_spec 8.4, 8.6] T071, T072 -->
+                <Button Command="{Binding NextPageCommand}"
+                        Width="50" Height="50"
+                        MinWidth="44" MinHeight="44"
+                        FontSize="18"
+                        FontWeight="Bold"
+                        FontFamily="Microsoft JhengHei"
+                        Background="White"
+                        BorderBrush="#E0E0E0"
+                        BorderThickness="1"
+                        Margin="8,0,0,0"
+                        Cursor="Hand"
+                        Content="▶"
+                        ToolTip="下一頁"/>
             </StackPanel>
 
             <!-- 操作按鈕區 [ref: raw_spec 8.4, 8.6] -->

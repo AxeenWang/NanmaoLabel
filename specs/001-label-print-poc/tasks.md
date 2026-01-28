@@ -363,9 +363,9 @@ NanmaoLabel/
 
 ### Pagination [ref: raw_spec 8.4]
 
-- [ ] T070 [P] Implement ListView pagination (item height 50px, auto-calculate per-page count) [ref: raw_spec 8.4]
-- [ ] T071 [P] Implement pagination controls ◀ ▶ with page indicator [ref: raw_spec 8.4]
-- [ ] T072 [P] Enable/disable ◀ ▶ based on current page [ref: raw_spec 8.10]
+- [x] T070 [P] Implement ListView pagination (item height 50px, auto-calculate per-page count) [ref: raw_spec 8.4]
+- [x] T071 [P] Implement pagination controls ◀ ▶ with page indicator [ref: raw_spec 8.4]
+- [x] T072 [P] Enable/disable ◀ ▶ based on current page [ref: raw_spec 8.10]
 
 ### Error Handling [ref: raw_spec 8.9, 13.21]
 

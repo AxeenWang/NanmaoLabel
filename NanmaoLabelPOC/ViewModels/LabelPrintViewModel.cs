@@ -104,6 +104,60 @@ public partial class LabelPrintViewModel : ObservableObject
     /// </summary>
     public bool HasRecords => Records.Count > 0;
 
+    #region Pagination Properties [ref: raw_spec 8.4] T070-T072
+
+    /// <summary>
+    /// 每頁筆數（依視窗高度自動計算）
+    /// [ref: raw_spec 8.4] 項目高度 50px
+    /// T070: ListView 分頁
+    /// </summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(TotalPages))]
+    [NotifyPropertyChangedFor(nameof(PagedRecords))]
+    [NotifyPropertyChangedFor(nameof(PageIndicatorText))]
+    [NotifyCanExecuteChangedFor(nameof(PreviousPageCommand))]
+    [NotifyCanExecuteChangedFor(nameof(NextPageCommand))]
+    private int _pageSize = 6;
+
+    /// <summary>
+    /// 當前頁碼（從 1 開始）
+    /// [ref: raw_spec 8.4]
+    /// T070: ListView 分頁
+    /// </summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(PagedRecords))]
+    [NotifyPropertyChangedFor(nameof(PageIndicatorText))]
+    [NotifyCanExecuteChangedFor(nameof(PreviousPageCommand))]
+    [NotifyCanExecuteChangedFor(nameof(NextPageCommand))]
+    private int _currentPage = 1;
+
+    /// <summary>
+    /// 總頁數
+    /// [ref: raw_spec 8.4]
+    /// T071: 分頁指示器
+    /// </summary>
+    public int TotalPages => PageSize > 0
+        ? Math.Max(1, (int)Math.Ceiling((double)Records.Count / PageSize))
+        : 1;
+
+    /// <summary>
+    /// 當前頁面的資料清單
+    /// [ref: raw_spec 8.4]
+    /// T070: ListView 分頁
+    /// </summary>
+    public IEnumerable<DataRecord> PagedRecords => Records
+        .Skip((CurrentPage - 1) * PageSize)
+        .Take(PageSize);
+
+    /// <summary>
+    /// 頁碼指示器文字
+    /// [ref: raw_spec 8.4] 「◀ 1 / 2 ▶」
+    /// T071: 分頁控制
+    /// </summary>
+    public string PageIndicatorText => $"{CurrentPage} / {TotalPages}";
+
+    #endregion
+
     /// <summary>
     /// 最後批次輸出的檔案路徑（供對話框使用）
     /// </summary>
@@ -193,6 +247,15 @@ public partial class LabelPrintViewModel : ObservableObject
             OnPropertyChanged(nameof(HasRecords));
             OnPropertyChanged(nameof(RecordCountText));
             BatchExportCommand.NotifyCanExecuteChanged();
+
+            // 重置分頁到第一頁 [ref: raw_spec 8.4] T070
+            CurrentPage = 1;
+            OnPropertyChanged(nameof(TotalPages));
+            OnPropertyChanged(nameof(PagedRecords));
+            OnPropertyChanged(nameof(PageIndicatorText));
+            PreviousPageCommand.NotifyCanExecuteChanged();
+            NextPageCommand.NotifyCanExecuteChanged();
+
             StatusMessage = $"已載入 {Records.Count} 筆資料";
         }
         catch (Exception ex)
@@ -293,6 +356,54 @@ public partial class LabelPrintViewModel : ObservableObject
     }
 
     private bool CanBatchExport() => HasRecords && SelectedTemplate != null;
+
+    #region Pagination Commands [ref: raw_spec 8.4] T070-T072
+
+    /// <summary>
+    /// 上一頁命令
+    /// [ref: raw_spec 8.4, 8.10]
+    /// T071: 分頁控制 ◀
+    /// T072: 根據當前頁面啟用/停用
+    /// </summary>
+    [RelayCommand(CanExecute = nameof(CanGoToPreviousPage))]
+    private void PreviousPage()
+    {
+        if (CurrentPage > 1)
+        {
+            CurrentPage--;
+        }
+    }
+
+    /// <summary>
+    /// 是否可以前往上一頁
+    /// [ref: raw_spec 8.10]
+    /// T072: ◀ 按鈕在第一頁時停用
+    /// </summary>
+    private bool CanGoToPreviousPage() => CurrentPage > 1;
+
+    /// <summary>
+    /// 下一頁命令
+    /// [ref: raw_spec 8.4, 8.10]
+    /// T071: 分頁控制 ▶
+    /// T072: 根據當前頁面啟用/停用
+    /// </summary>
+    [RelayCommand(CanExecute = nameof(CanGoToNextPage))]
+    private void NextPage()
+    {
+        if (CurrentPage < TotalPages)
+        {
+            CurrentPage++;
+        }
+    }
+
+    /// <summary>
+    /// 是否可以前往下一頁
+    /// [ref: raw_spec 8.10]
+    /// T072: ▶ 按鈕在最後一頁時停用
+    /// </summary>
+    private bool CanGoToNextPage() => CurrentPage < TotalPages;
+
+    #endregion
 
     /// <summary>
     /// 雙擊輸出 PDF（含防抖）

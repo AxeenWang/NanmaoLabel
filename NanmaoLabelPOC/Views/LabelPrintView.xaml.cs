@@ -13,10 +13,62 @@ namespace NanmaoLabelPOC.Views;
 /// </summary>
 public partial class LabelPrintView : UserControl
 {
+    /// <summary>
+    /// ListView 項目高度（含間距）
+    /// [ref: raw_spec 8.4, 8.6] 項目高度 50px
+    /// T070: ListView 分頁
+    /// </summary>
+    private const double ItemHeight = 54;
+
     public LabelPrintView()
     {
         InitializeComponent();
         DataContextChanged += OnDataContextChanged;
+        SizeChanged += OnSizeChanged;
+        Loaded += OnLoaded;
+    }
+
+    /// <summary>
+    /// 視窗載入時計算每頁筆數
+    /// [ref: raw_spec 8.4]
+    /// T070: 自動計算每頁筆數
+    /// </summary>
+    private void OnLoaded(object sender, RoutedEventArgs e)
+    {
+        CalculatePageSize();
+    }
+
+    /// <summary>
+    /// 視窗大小變化時重新計算每頁筆數
+    /// [ref: raw_spec 8.4]
+    /// T070: 依視窗高度自動計算
+    /// </summary>
+    private void OnSizeChanged(object sender, SizeChangedEventArgs e)
+    {
+        CalculatePageSize();
+    }
+
+    /// <summary>
+    /// 計算每頁可顯示的筆數
+    /// [ref: raw_spec 8.4]
+    /// T070: 項目高度 50px，自動計算每頁筆數
+    /// </summary>
+    private void CalculatePageSize()
+    {
+        if (DataContext is not LabelPrintViewModel viewModel)
+            return;
+
+        // 取得 ListView 可用高度
+        var listViewHeight = RecordListView.ActualHeight;
+        if (listViewHeight <= 0)
+        {
+            // 估算可用高度（控件尚未完成佈局）
+            listViewHeight = ActualHeight - 200;
+        }
+
+        // 計算每頁可顯示筆數（至少 1 筆）
+        var pageSize = Math.Max(1, (int)Math.Floor(listViewHeight / ItemHeight));
+        viewModel.PageSize = pageSize;
     }
 
     /// <summary>
