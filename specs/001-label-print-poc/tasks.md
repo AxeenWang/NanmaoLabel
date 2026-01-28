@@ -122,13 +122,13 @@ NanmaoLabel/
 
 ### Unit Tests (Foundational) [ref: raw_spec 7.2, 憲章 II]
 
-- [ ] T019 [P] Create `NanmaoLabelPOC.Tests/Services/DataStoreTests.cs`:
+- [x] T019 [P] Create `NanmaoLabelPOC.Tests/Services/DataStoreTests.cs`:
   - Test Load/Save JSON with version field [ref: raw_spec 附錄 B.1]
   - Test lastModified update (ISO 8601)
   - Test UUID generation for new records [ref: raw_spec 附錄 B.2]
   - Test auto-create directory
 
-- [ ] T020 [P] Create `NanmaoLabelPOC.Tests/Services/ExcelImporterTests.cs`:
+- [x] T020 [P] Create `NanmaoLabelPOC.Tests/Services/ExcelImporterTests.cs`:
   - Test case-insensitive field matching
   - Test field name validation (reject underscore, space, special chars) [ref: raw_spec 13.11]
   - Test Trim behavior
@@ -136,7 +136,7 @@ NanmaoLabel/
   - Test quantity validation (reject thousand separators) [ref: raw_spec 13.14]
   - Test semicolon warning [ref: raw_spec 13.4]
 
-- [ ] T021 [P] Create `NanmaoLabelPOC.Tests/Services/BarcodeGeneratorTests.cs`:
+- [x] T021 [P] Create `NanmaoLabelPOC.Tests/Services/BarcodeGeneratorTests.cs`:
   - Test Code 128 generation with Quiet Zone [ref: raw_spec 6.1]
   - Test QR Code generation with Level M, UTF-8 [ref: raw_spec 6.2]
   - Test barcode content uses Raw Value only [ref: raw_spec 13.13]
