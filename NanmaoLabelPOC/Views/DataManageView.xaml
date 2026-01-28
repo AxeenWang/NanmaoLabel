@@ -55,8 +55,10 @@
                     </StackPanel>
                 </Button>
 
-                <!-- 新增按鈕 [ref: raw_spec 8.5] (Phase 8 T052 完整實作) -->
-                <Button Height="45"
+                <!-- 新增按鈕 [ref: raw_spec 8.5, F-10] T052 -->
+                <Button x:Name="AddButton"
+                        Command="{Binding AddRecordCommand}"
+                        Height="45"
                         MinWidth="110"
                         Margin="4"
                         FontSize="14"
@@ -64,17 +66,16 @@
                         Background="#107C10"
                         Foreground="White"
                         BorderThickness="0"
-                        Cursor="Hand"
-                        IsEnabled="False"
-                        ToolTip="Phase 8 實作">
+                        Cursor="Hand">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="➕ " FontSize="16"/>
                         <TextBlock Text="新增" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
 
-                <!-- 刪除按鈕 [ref: raw_spec 8.5] (Phase 8 T053 完整實作) -->
-                <Button Height="45"
+                <!-- 刪除按鈕 [ref: raw_spec 8.5, F-12] T053 -->
+                <Button x:Name="DeleteButton"
+                        Height="45"
                         MinWidth="110"
                         Margin="4"
                         FontSize="14"
@@ -83,17 +84,16 @@
                         Foreground="White"
                         BorderThickness="0"
                         Cursor="Hand"
-                        IsEnabled="False"
-                        ToolTip="Phase 8 實作">
+                        IsEnabled="{Binding HasSelectedRecord}"
+                        Click="DeleteButton_Click">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="🗑️ " FontSize="16"/>
                         <TextBlock Text="刪除" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
 
-                <!-- 儲存按鈕 [ref: raw_spec 8.5] -->
+                <!-- 儲存按鈕 [ref: raw_spec 8.5, F-13] T054/T058/T059/T060 -->
                 <Button x:Name="SaveButton"
-                        Command="{Binding SaveCommand}"
                         Height="45"
                         MinWidth="110"
                         Margin="4"
@@ -102,7 +102,9 @@
                         Background="#FFB900"
                         Foreground="Black"
                         BorderThickness="0"
-                        Cursor="Hand">
+                        Cursor="Hand"
+                        IsEnabled="{Binding IsDirty}"
+                        Click="SaveButton_Click">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="💾 " FontSize="16"/>
                         <TextBlock Text="儲存" VerticalAlignment="Center"/>
@@ -182,7 +184,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <!-- 左側欄位 -->
+                <!-- 左側欄位 [T055: 雙向綁定] -->
                 <StackPanel Grid.Column="0">
                     <Grid Margin="0,4">
                         <Grid.ColumnDefinitions>
@@ -190,7 +192,7 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="單據編號:" VerticalAlignment="Center" FontWeight="Bold"/>
-                        <TextBox Grid.Column="1" Text="{Binding SelectedRecord.Ogb19, Mode=TwoWay}" IsReadOnly="True" Height="30"/>
+                        <TextBox Grid.Column="1" Text="{Binding SelectedRecord.Ogb19, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="30" TextChanged="EditField_TextChanged"/>
                     </Grid>
                     <Grid Margin="0,4">
                         <Grid.ColumnDefinitions>
@@ -198,7 +200,7 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="客戶名稱:" VerticalAlignment="Center" FontWeight="Bold"/>
-                        <TextBox Grid.Column="1" Text="{Binding SelectedRecord.NvrCust, Mode=TwoWay}" IsReadOnly="True" Height="30"/>
+                        <TextBox Grid.Column="1" Text="{Binding SelectedRecord.NvrCust, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="30" TextChanged="EditField_TextChanged"/>
                     </Grid>
                     <Grid Margin="0,4">
                         <Grid.ColumnDefinitions>
@@ -206,7 +208,7 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="客戶料號:" VerticalAlignment="Center" FontWeight="Bold"/>
-                        <TextBox Grid.Column="1" Text="{Binding SelectedRecord.NvrCustItemNo, Mode=TwoWay}" IsReadOnly="True" Height="30"/>
+                        <TextBox Grid.Column="1" Text="{Binding SelectedRecord.NvrCustItemNo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="30" TextChanged="EditField_TextChanged"/>
                     </Grid>
                     <Grid Margin="0,4">
                         <Grid.ColumnDefinitions>
@@ -214,7 +216,7 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="客戶 P/N:" VerticalAlignment="Center" FontWeight="Bold"/>
-                        <TextBox Grid.Column="1" Text="{Binding SelectedRecord.NvrCustPn, Mode=TwoWay}" IsReadOnly="True" Height="30"/>
+                        <TextBox Grid.Column="1" Text="{Binding SelectedRecord.NvrCustPn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="30" TextChanged="EditField_TextChanged"/>
                     </Grid>
                     <Grid Margin="0,4">
                         <Grid.ColumnDefinitions>
@@ -222,7 +224,7 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="日期:" VerticalAlignment="Center" FontWeight="Bold"/>
-                        <TextBox Grid.Column="1" Text="{Binding SelectedRecord.Obe25, Mode=TwoWay}" IsReadOnly="True" Height="30"/>
+                        <TextBox Grid.Column="1" Text="{Binding SelectedRecord.Obe25, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="30" TextChanged="EditField_TextChanged"/>
                     </Grid>
                     <Grid Margin="0,4">
                         <Grid.ColumnDefinitions>
@@ -230,11 +232,11 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="數量:" VerticalAlignment="Center" FontWeight="Bold"/>
-                        <TextBox Grid.Column="1" Text="{Binding SelectedRecord.Ogd09, Mode=TwoWay}" IsReadOnly="True" Height="30"/>
+                        <TextBox x:Name="QuantityTextBox" Grid.Column="1" Text="{Binding SelectedRecord.Ogd09, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="30" TextChanged="QuantityField_TextChanged"/>
                     </Grid>
                 </StackPanel>
 
-                <!-- 右側欄位 -->
+                <!-- 右側欄位 [T055: 雙向綁定] -->
                 <StackPanel Grid.Column="2">
                     <Grid Margin="0,4">
                         <Grid.ColumnDefinitions>
@@ -242,7 +244,7 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="製令單號:" VerticalAlignment="Center" FontWeight="Bold"/>
-                        <TextBox Grid.Column="1" Text="{Binding SelectedRecord.Pono, Mode=TwoWay}" IsReadOnly="True" Height="30"/>
+                        <TextBox Grid.Column="1" Text="{Binding SelectedRecord.Pono, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="30" TextChanged="EditField_TextChanged"/>
                     </Grid>
                     <Grid Margin="0,4">
                         <Grid.ColumnDefinitions>
@@ -250,7 +252,7 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="裝置編號:" VerticalAlignment="Center" FontWeight="Bold"/>
-                        <TextBox Grid.Column="1" Text="{Binding SelectedRecord.Ima902, Mode=TwoWay}" IsReadOnly="True" Height="30"/>
+                        <TextBox Grid.Column="1" Text="{Binding SelectedRecord.Ima902, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="30" TextChanged="EditField_TextChanged"/>
                     </Grid>
                     <Grid Margin="0,4">
                         <Grid.ColumnDefinitions>
@@ -258,7 +260,7 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="備註:" VerticalAlignment="Center" FontWeight="Bold"/>
-                        <TextBox Grid.Column="1" Text="{Binding SelectedRecord.NvrRemark10, Mode=TwoWay}" IsReadOnly="True" Height="30"/>
+                        <TextBox Grid.Column="1" Text="{Binding SelectedRecord.NvrRemark10, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="30" TextChanged="EditField_TextChanged"/>
                     </Grid>
                     <Grid Margin="0,4">
                         <Grid.ColumnDefinitions>
@@ -266,7 +268,7 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="ERP 料號:" VerticalAlignment="Center" FontWeight="Bold"/>
-                        <TextBox Grid.Column="1" Text="{Binding SelectedRecord.Erpmat, Mode=TwoWay}" IsReadOnly="True" Height="30"/>
+                        <TextBox Grid.Column="1" Text="{Binding SelectedRecord.Erpmat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="30" TextChanged="EditField_TextChanged"/>
                     </Grid>
                     <Grid Margin="0,4">
                         <Grid.ColumnDefinitions>
@@ -274,7 +276,7 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="客戶採購單:" VerticalAlignment="Center" FontWeight="Bold"/>
-                        <TextBox Grid.Column="1" Text="{Binding SelectedRecord.Cscustpo, Mode=TwoWay}" IsReadOnly="True" Height="30"/>
+                        <TextBox Grid.Column="1" Text="{Binding SelectedRecord.Cscustpo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="30" TextChanged="EditField_TextChanged"/>
                     </Grid>
                 </StackPanel>
             </Grid>

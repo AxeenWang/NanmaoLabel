@@ -317,15 +317,15 @@ NanmaoLabel/
 
 **Independent Test**: 新增資料 → 編輯 → 儲存 → 切換分頁 → 輸出標籤 [ref: raw_spec TC-18]
 
-- [ ] T052 [US5] Add AddRecordCommand to DataManageViewModel (add blank row) [ref: raw_spec 8.8]
-- [ ] T053 [US5] Add DeleteRecordCommand with confirmation dialog "確定要刪除選取的資料嗎？此操作無法復原。" [ref: raw_spec 8.9]
-- [ ] T054 [US5] Implement IsDirty tracking (enable/disable [儲存] button) [ref: raw_spec 8.10]
-- [ ] T055 [US5] Implement two-way binding between DataGrid and field edit area [ref: raw_spec 8.5]
-- [ ] T056 [US5] Implement unsaved changes prompt on tab switch "資料尚未儲存，是否要儲存變更？" [ref: raw_spec 8.9]
-- [ ] T057 [US5] Display status bar "⚠️ 已修改（未儲存）　共 N 筆資料" [ref: raw_spec 8.10]
-- [ ] T058 [US5] Display status bar "✅ 儲存成功" after save [ref: raw_spec 8.10]
-- [ ] T059 [US5] Implement quantity field validation (digits only, reject non-numeric) [ref: raw_spec 13.14]
-- [ ] T060 [US5] Implement required field validation with error dialog [ref: raw_spec 3.3, 8.9]
+- [x] T052 [US5] Add AddRecordCommand to DataManageViewModel (add blank row) [ref: raw_spec 8.8]
+- [x] T053 [US5] Add DeleteRecordCommand with confirmation dialog "確定要刪除選取的資料嗎？此操作無法復原。" [ref: raw_spec 8.9]
+- [x] T054 [US5] Implement IsDirty tracking (enable/disable [儲存] button) [ref: raw_spec 8.10]
+- [x] T055 [US5] Implement two-way binding between DataGrid and field edit area [ref: raw_spec 8.5]
+- [x] T056 [US5] Implement unsaved changes prompt on tab switch "資料尚未儲存，是否要儲存變更？" [ref: raw_spec 8.9]
+- [x] T057 [US5] Display status bar "⚠️ 已修改（未儲存）　共 N 筆資料" [ref: raw_spec 8.10]
+- [x] T058 [US5] Display status bar "✅ 儲存成功" after save [ref: raw_spec 8.10]
+- [x] T059 [US5] Implement quantity field validation (digits only, reject non-numeric) [ref: raw_spec 13.14]
+- [x] T060 [US5] Implement required field validation with error dialog [ref: raw_spec 3.3, 8.9]
 
 **Checkpoint**: US5 完成 - CRUD 操作可驗證 [ref: raw_spec A-14~A-18]
 

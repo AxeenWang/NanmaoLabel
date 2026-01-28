@@ -191,20 +191,69 @@ public partial class MainWindow : Window
 
     #region 分頁切換 [ref: raw_spec 8.2]
 
+    /// <summary>
+    /// 記錄當前分頁（用於切換時判斷來源）
+    /// </summary>
+    private bool _isOnDataManagePage;
+
     private void Tab_Checked(object sender, RoutedEventArgs e)
     {
-        if (LabelPrintPage == null || DataManagePage == null)
+        if (LabelPrintPage == null || DataManagePage == null || _viewModel == null)
             return;
 
         if (TabLabelPrint.IsChecked == true)
         {
+            // T056: 從資料管理切換到標籤列印時，檢查未儲存變更 [ref: raw_spec 8.9]
+            if (_isOnDataManagePage && _viewModel.DataManageViewModel.IsDirty)
+            {
+                var result = MessageBox.Show(
+                    "資料尚未儲存，是否要儲存變更？",
+                    "確認",
+                    MessageBoxButton.YesNoCancel,
+                    MessageBoxImage.Question);
+
+                if (result == MessageBoxResult.Cancel)
+                {
+                    // 取消切換，恢復選取資料管理分頁
+                    TabDataManage.IsChecked = true;
+                    return;
+                }
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    // 儲存變更
+                    try
+                    {
+                        _viewModel.DataManageViewModel.SaveCommand.Execute(null);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(
+                            $"儲存失敗：{ex.Message}",
+                            "錯誤",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Error);
+                        TabDataManage.IsChecked = true;
+                        return;
+                    }
+                }
+            }
+
             LabelPrintPage.Visibility = Visibility.Visible;
             DataManagePage.Visibility = Visibility.Collapsed;
+            _isOnDataManagePage = false;
+
+            // 切換到標籤列印時刷新資料
+            _viewModel.RefreshData();
         }
         else if (TabDataManage.IsChecked == true)
         {
             LabelPrintPage.Visibility = Visibility.Collapsed;
             DataManagePage.Visibility = Visibility.Visible;
+            _isOnDataManagePage = true;
+
+            // 切換到資料管理時載入資料
+            _viewModel.DataManageViewModel.LoadDataCommand.Execute(null);
         }
     }
 
