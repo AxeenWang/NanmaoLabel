@@ -95,8 +95,8 @@ NanmaoLabel/
 
 ### Barcode Generation [ref: raw_spec 6.1, 6.2]
 
-- [ ] T016 Create interface `NanmaoLabelPOC/Services/IBarcodeGenerator.cs` with GenerateCode128(content), GenerateQRCode(content) [ref: raw_spec 7.2]
-- [ ] T017 Create `NanmaoLabelPOC/Services/BarcodeGenerator.cs` implementing IBarcodeGenerator:
+- [x] T016 Create interface `NanmaoLabelPOC/Services/IBarcodeGenerator.cs` with GenerateCode128(content), GenerateQRCode(content) [ref: raw_spec 7.2]
+- [x] T017 Create `NanmaoLabelPOC/Services/BarcodeGenerator.cs` implementing IBarcodeGenerator:
   - **Code 128** [ref: raw_spec 6.1]:
     - Height: 10mm (118px @300DPI)
     - Quiet Zone: Margin=10 (10× minimum unit width)
