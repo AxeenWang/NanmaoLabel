@@ -29,6 +29,9 @@ public partial class MainWindow : Window
 
         // 設定 LabelPrintView 的 DataContext
         LabelPrintPage.DataContext = viewModel.LabelPrintViewModel;
+
+        // 設定 DataManageView 的 DataContext [ref: raw_spec 8.5]
+        DataManagePage.DataContext = viewModel.DataManageViewModel;
     }
 
     /// <summary>

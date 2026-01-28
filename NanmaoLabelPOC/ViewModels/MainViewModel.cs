@@ -20,25 +20,34 @@ public partial class MainViewModel : ObservableObject
     private readonly ILabelRenderer _labelRenderer;
     private readonly IPdfExporter _pdfExporter;
     private readonly IBarcodeGenerator _barcodeGenerator;
+    private readonly IExcelImporter _excelImporter;
 
     /// <summary>
     /// 標籤列印分頁 ViewModel
     /// </summary>
     public LabelPrintViewModel LabelPrintViewModel { get; }
 
+    /// <summary>
+    /// 資料管理分頁 ViewModel [ref: raw_spec 8.5]
+    /// </summary>
+    public DataManageViewModel DataManageViewModel { get; }
+
     public MainViewModel(
         IDataStore dataStore,
         ILabelRenderer labelRenderer,
         IPdfExporter pdfExporter,
-        IBarcodeGenerator barcodeGenerator)
+        IBarcodeGenerator barcodeGenerator,
+        IExcelImporter excelImporter)
     {
         _dataStore = dataStore ?? throw new ArgumentNullException(nameof(dataStore));
         _labelRenderer = labelRenderer ?? throw new ArgumentNullException(nameof(labelRenderer));
         _pdfExporter = pdfExporter ?? throw new ArgumentNullException(nameof(pdfExporter));
         _barcodeGenerator = barcodeGenerator ?? throw new ArgumentNullException(nameof(barcodeGenerator));
+        _excelImporter = excelImporter ?? throw new ArgumentNullException(nameof(excelImporter));
 
         // 初始化子 ViewModel
         LabelPrintViewModel = new LabelPrintViewModel(dataStore, labelRenderer, pdfExporter);
+        DataManageViewModel = new DataManageViewModel(dataStore, excelImporter);
     }
 
     #region Properties

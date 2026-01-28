@@ -312,29 +312,9 @@
             <views:LabelPrintView x:Name="LabelPrintPage"
                                   Visibility="Visible"/>
 
-            <!-- 資料管理分頁 (Phase 7 T045 實作) -->
-            <Grid x:Name="DataManagePage"
-                  Visibility="Collapsed"
-                  Background="#F5F5F5">
-                <StackPanel HorizontalAlignment="Center"
-                            VerticalAlignment="Center">
-                    <TextBlock Text="⚙️"
-                               FontSize="48"
-                               HorizontalAlignment="Center"
-                               Margin="0,0,0,16"/>
-                    <TextBlock Text="資料管理功能"
-                               FontSize="18"
-                               Foreground="#888888"
-                               FontFamily="Microsoft JhengHei"
-                               HorizontalAlignment="Center"/>
-                    <TextBlock Text="將於 Phase 7 實作"
-                               FontSize="14"
-                               Foreground="#AAAAAA"
-                               FontFamily="Microsoft JhengHei"
-                               HorizontalAlignment="Center"
-                               Margin="0,8,0,0"/>
-                </StackPanel>
-            </Grid>
+            <!-- 資料管理分頁 [ref: raw_spec 8.5] -->
+            <views:DataManageView x:Name="DataManagePage"
+                                  Visibility="Collapsed"/>
         </Grid>
 
         <!-- 狀態列 [ref: raw_spec 8.2] -->

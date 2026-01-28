@@ -36,13 +36,15 @@ public partial class App : Application
         IBarcodeGenerator barcodeGenerator = new BarcodeGenerator();
         ILabelRenderer labelRenderer = new LabelRenderer();
         IPdfExporter pdfExporter = new PdfExporter(labelRenderer, barcodeGenerator);
+        IExcelImporter excelImporter = new ExcelImporter();
 
         // 建立 MainViewModel [ref: raw_spec 8.2]
         var mainViewModel = new MainViewModel(
             dataStore,
             labelRenderer,
             pdfExporter,
-            barcodeGenerator);
+            barcodeGenerator,
+            excelImporter);
 
         // 建立並顯示 MainWindow [ref: raw_spec 8.3]
         var mainWindow = new MainWindow();

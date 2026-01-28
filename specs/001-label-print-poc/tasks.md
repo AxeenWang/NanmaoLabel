@@ -286,25 +286,25 @@ NanmaoLabel/
 
 **Independent Test**: 匯入 Excel → data.json 正確產生 [ref: raw_spec TC-13]
 
-- [ ] T044 [US4] Create `NanmaoLabelPOC/ViewModels/DataManageViewModel.cs`:
+- [x] T044 [US4] Create `NanmaoLabelPOC/ViewModels/DataManageViewModel.cs`:
   - Properties: Records, SelectedRecord, IsDirty
   - Commands: ImportCommand, SaveCommand
   - Data binding for field edit area [ref: raw_spec 8.5]
 
-- [ ] T045 [US4] Create `NanmaoLabelPOC/Views/DataManageView.xaml`:
+- [x] T045 [US4] Create `NanmaoLabelPOC/Views/DataManageView.xaml`:
   - Toolbar: [📥 匯入] [➕ 新增] [🗑️ 刪除] [💾 儲存] (height 60px) [ref: raw_spec 8.5]
   - DataGrid (inline editing) [ref: raw_spec 8.5]
   - Field edit area (two columns) [ref: raw_spec 8.5]
   - Grid layout: row heights 60:60*:40* [ref: raw_spec 8.5]
 
-- [ ] T046 [US4] Implement import with OpenFileDialog (filter: *.xlsx) [ref: raw_spec 8.10]
-- [ ] T047 [US4] Implement overwrite confirmation dialog "匯入將覆蓋現有資料，是否繼續？" [ref: raw_spec 8.9]
-- [ ] T048 [US4] Display status bar "✅ 匯入成功，共 N 筆資料" [ref: raw_spec 8.10]
-- [ ] T049 [US4] Implement Excel format error handling [ref: raw_spec 8.9]:
+- [x] T046 [US4] Implement import with OpenFileDialog (filter: *.xlsx) [ref: raw_spec 8.10]
+- [x] T047 [US4] Implement overwrite confirmation dialog "匯入將覆蓋現有資料，是否繼續？" [ref: raw_spec 8.9]
+- [x] T048 [US4] Display status bar "✅ 匯入成功，共 N 筆資料" [ref: raw_spec 8.10]
+- [x] T049 [US4] Implement Excel format error handling [ref: raw_spec 8.9]:
   - "檔案格式不正確，請確認為 .xlsx 格式"
   - "缺少必要欄位：{欄位名稱}"
-- [ ] T050 [US4] Implement semicolon warning for QR Code fields [ref: raw_spec 3.3, 13.4]
-- [ ] T051 [US4] Implement thousand separator rejection for quantity [ref: raw_spec 13.14]
+- [x] T050 [US4] Implement semicolon warning for QR Code fields [ref: raw_spec 3.3, 13.4]
+- [x] T051 [US4] Implement thousand separator rejection for quantity [ref: raw_spec 13.14]
 
 **Checkpoint**: US4 完成 - Excel 匯入可驗證 [ref: raw_spec A-13]
 
