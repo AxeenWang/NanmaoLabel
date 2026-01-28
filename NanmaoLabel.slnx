@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="NanmaoLabelPOC/NanmaoLabelPOC.csproj" />
+  <Project Path="NanmaoLabelPOC.Tests/NanmaoLabelPOC.Tests.csproj" />
+</Solution>

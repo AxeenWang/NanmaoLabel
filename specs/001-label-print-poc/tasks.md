@@ -21,7 +21,7 @@
 
 ```text
 NanmaoLabel/
-├── NanmaoLabel.sln
+├── NanmaoLabel.slnx
 ├── NanmaoLabelPOC/                    # 主程式 (WPF)
 │   ├── Views/
 │   ├── ViewModels/
@@ -42,7 +42,7 @@ NanmaoLabel/
 **Purpose**: Project initialization and basic structure [ref: raw_spec 7.2]
 **Milestone**: M1 (專案骨架)
 
-- [x] T001 Create solution file `NanmaoLabel.sln` or new style `NanmaoLabel.slnx` at repository root
+- [x] T001 Create solution file `NanmaoLabel.slnx` or new style `NanmaoLabel.slnxx` at repository root
 - [x] T002 [P] Create WPF project `NanmaoLabelPOC/NanmaoLabelPOC.csproj` targeting .NET 8 LTS with WindowStyle="None" [ref: raw_spec 7, 8.3]
 - [x] T003 [P] Create test project `NanmaoLabelPOC.Tests/NanmaoLabelPOC.Tests.csproj` with xUnit [ref: raw_spec 7.2, 憲章 II]
 - [x] T004 [P] Add NuGet packages: CommunityToolkit.Mvvm (8.x), ExcelDataReader (3.x), ExcelDataReader.DataSet (3.x), ZXing.Net (0.16.x), QuestPDF (2024.x) [ref: raw_spec 7.1]
@@ -154,8 +154,8 @@ NanmaoLabel/
 
 ### Label Rendering [ref: raw_spec 2.5, 4.2]
 
-- [ ] T022 [US1] Create interface `NanmaoLabelPOC/Services/ILabelRenderer.cs` with Render(template, record) returning render commands [ref: raw_spec 7.2]
-- [ ] T023 [US1] Create `NanmaoLabelPOC/Services/LabelRenderer.cs` implementing ILabelRenderer:
+- [x] T022 [US1] Create interface `NanmaoLabelPOC/Services/ILabelRenderer.cs` with Render(template, record) returning render commands [ref: raw_spec 7.2]
+- [x] T023 [US1] Create `NanmaoLabelPOC/Services/LabelRenderer.cs` implementing ILabelRenderer:
   - Variable substitution from DataRecord [ref: raw_spec 4.2]
   - Constant value handling (e.g., "17008") [ref: raw_spec 4.2]
   - **Raw Value for Barcode/QRCode** [ref: raw_spec 13.13]:

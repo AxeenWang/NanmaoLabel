@@ -450,7 +450,7 @@ POC 階段標籤格式直接內建於程式碼中，以下說明欄位對應規�
 
 ```
 NanmaoLabel/
-├── NanmaoLabel.sln
+├── NanmaoLabel.slnx
 ├── NanmaoLabelPOC/                    # 主程式 (WPF)
 │   ├── Views/                         # XAML 畫面
 │   │   ├── MainWindow.xaml            # 主視窗（分頁容器）

@@ -10,7 +10,7 @@ Auto-generated from all feature plans. Last updated: 2026-01-27
 
 ```text
 NanmaoLabel/
-├── NanmaoLabel.sln
+├── NanmaoLabel.slnx
 ├── NanmaoLabelPOC/                    # 主程式 (WPF)
 │   ├── Views/                         # XAML 畫面
 │   ├── ViewModels/                    # MVVM ViewModel

@@ -75,7 +75,7 @@ specs/001-label-print-poc/
 
 ```text
 NanmaoLabel/
-├── NanmaoLabel.sln
+├── NanmaoLabel.slnx
 ├── NanmaoLabelPOC/                    # 主程式 (WPF)
 │   ├── Views/                         # XAML 畫面
 │   │   ├── MainWindow.xaml            # 主視窗（分頁容器）
