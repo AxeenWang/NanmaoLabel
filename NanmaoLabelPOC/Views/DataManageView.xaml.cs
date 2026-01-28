@@ -200,17 +200,19 @@ public partial class DataManageView : UserControl
             if (result.Warnings.Count > 0)
             {
                 var warningText = BuildWarningText(result.Warnings);
+                // T074: 對話框標題使用「警告」[ref: raw_spec 8.10]
                 MessageBox.Show(
                     $"{successMessage}\n\n{warningText}",
-                    "匯入成功（含警告）",
+                    "警告",
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning);
             }
             else
             {
+                // T074: 對話框標題使用「提示」[ref: raw_spec 8.10]
                 MessageBox.Show(
                     successMessage,
-                    "匯入成功",
+                    "提示",
                     MessageBoxButton.OK,
                     MessageBoxImage.Information);
             }

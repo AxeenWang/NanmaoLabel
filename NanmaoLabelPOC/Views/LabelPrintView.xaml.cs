@@ -164,9 +164,10 @@ public partial class LabelPrintView : UserControl
             return;
 
         // 顯示自訂對話框 [ref: raw_spec 3.3]
+        // T074: 對話框標題使用「提示」[ref: raw_spec 8.10]
         var result = MessageBox.Show(
             $"批次輸出完成！\n\n輸出檔案：{outputPath}\n\n是否開啟資料夾？",
-            "批次輸出完成",
+            "提示",
             MessageBoxButton.YesNo,
             MessageBoxImage.Information);
 

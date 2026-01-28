@@ -369,8 +369,8 @@ NanmaoLabel/
 
 ### Error Handling [ref: raw_spec 8.9, 13.21]
 
-- [ ] T073 [P] Implement all error messages in Traditional Chinese [ref: raw_spec 13.21]
-- [ ] T074 [P] Implement error dialog titles: 錯誤, 警告, 確認, 提示 [ref: raw_spec 8.10]
+- [x] T073 [P] Implement all error messages in Traditional Chinese [ref: raw_spec 13.21]
+- [x] T074 [P] Implement error dialog titles: 錯誤, 警告, 確認, 提示 [ref: raw_spec 8.10]
 
 ### Performance [ref: 憲章 IV]
 
