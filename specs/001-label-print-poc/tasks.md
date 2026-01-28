@@ -266,14 +266,14 @@ NanmaoLabel/
 
 **Independent Test**: 點擊「批次輸出全部」→ 產出多頁 PDF [ref: raw_spec TC-12]
 
-- [ ] T038 [US3] Extend IPdfExporter with ExportBatch(template, records, outputPath) in `NanmaoLabelPOC/Services/IPdfExporter.cs`
-- [ ] T039 [US3] Implement batch export in `NanmaoLabelPOC/Services/PdfExporter.cs`:
+- [x] T038 [US3] Extend IPdfExporter with ExportBatch(template, records, outputPath) in `NanmaoLabelPOC/Services/IPdfExporter.cs`
+- [x] T039 [US3] Implement batch export in `NanmaoLabelPOC/Services/PdfExporter.cs`:
   - One label per page [ref: raw_spec 3.3 批次輸出規格]
   - Filename: `Labels_Batch_{yyyyMMdd_HHmmss}.pdf` [ref: raw_spec 13.6]
-- [ ] T040 [US3] Add BatchExportCommand to LabelPrintViewModel in `NanmaoLabelPOC/ViewModels/LabelPrintViewModel.cs`
-- [ ] T041 [US3] Add [📑 批次輸出全部] button to LabelPrintView.xaml [ref: raw_spec 8.4]
-- [ ] T042 [US3] Implement completion dialog with "開啟資料夾" / "確定" options [ref: raw_spec 3.3, 8.8]
-- [ ] T043 [US3] Disable [批次輸出全部] button when record count = 0 [ref: raw_spec 8.10]
+- [x] T040 [US3] Add BatchExportCommand to LabelPrintViewModel in `NanmaoLabelPOC/ViewModels/LabelPrintViewModel.cs`
+- [x] T041 [US3] Add [📑 批次輸出全部] button to LabelPrintView.xaml [ref: raw_spec 8.4]
+- [x] T042 [US3] Implement completion dialog with "開啟資料夾" / "確定" options [ref: raw_spec 3.3, 8.8]
+- [x] T043 [US3] Disable [批次輸出全部] button when record count = 0 [ref: raw_spec 8.10]
 
 **Checkpoint**: US3 完成 - 批次輸出可驗證 [ref: raw_spec A-12]
 

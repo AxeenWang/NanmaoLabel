@@ -256,9 +256,10 @@
                     </StackPanel>
                 </Button>
 
-                <!-- 批次輸出全部按鈕 [ref: raw_spec 8.4]（Phase 6 T041 實作完整功能）-->
-                <Button Grid.Column="1"
-                        IsEnabled="{Binding HasRecords}"
+                <!-- 批次輸出全部按鈕 [ref: raw_spec 8.4, TC-12] -->
+                <Button x:Name="BatchExportButton"
+                        Grid.Column="1"
+                        Command="{Binding BatchExportCommand}"
                         Height="50"
                         Margin="8,0,0,0"
                         FontSize="14"
@@ -266,7 +267,8 @@
                         Background="#107C10"
                         Foreground="White"
                         BorderThickness="0"
-                        Cursor="Hand">
+                        Cursor="Hand"
+                        Click="BatchExportButton_Click">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="📑 " FontSize="16"/>
                         <TextBlock Text="批次輸出全部" VerticalAlignment="Center"/>

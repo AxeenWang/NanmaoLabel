@@ -104,6 +104,12 @@ public partial class LabelPrintViewModel : ObservableObject
     public bool HasRecords => Records.Count > 0;
 
     /// <summary>
+    /// 最後批次輸出的檔案路徑（供對話框使用）
+    /// </summary>
+    [ObservableProperty]
+    private string? _lastBatchExportPath;
+
+    /// <summary>
     /// 預覽渲染指令
     /// [ref: raw_spec 2.5]
     /// </summary>
@@ -150,6 +156,7 @@ public partial class LabelPrintViewModel : ObservableObject
 
             OnPropertyChanged(nameof(HasRecords));
             OnPropertyChanged(nameof(RecordCountText));
+            BatchExportCommand.NotifyCanExecuteChanged();
             StatusMessage = $"已載入 {Records.Count} 筆資料";
         }
         catch (Exception ex)
@@ -181,6 +188,32 @@ public partial class LabelPrintViewModel : ObservableObject
     }
 
     private bool CanExportPdf() => SelectedRecord != null && SelectedTemplate != null;
+
+    /// <summary>
+    /// 批次輸出全部命令
+    /// [ref: raw_spec 3.3, TC-12]
+    /// </summary>
+    [RelayCommand(CanExecute = nameof(CanBatchExport))]
+    private void BatchExport()
+    {
+        if (!HasRecords || SelectedTemplate == null)
+            return;
+
+        try
+        {
+            var outputPath = _pdfExporter.ExportBatch(SelectedTemplate, Records);
+            LastBatchExportPath = outputPath;
+            // 狀態列訊息
+            StatusMessage = $"批次輸出完成：{outputPath}";
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = $"批次輸出失敗：{ex.Message}";
+            LastBatchExportPath = null;
+        }
+    }
+
+    private bool CanBatchExport() => HasRecords && SelectedTemplate != null;
 
     /// <summary>
     /// 雙擊輸出 PDF（含防抖）

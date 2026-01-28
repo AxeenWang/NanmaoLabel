@@ -296,4 +296,98 @@ public class PdfExporter : IPdfExporter
             .Image(qrBytes)
             .FitArea();
     }
+
+    /// <inheritdoc />
+    public string ExportBatch(LabelTemplate template, IEnumerable<DataRecord> records, string? outputPath = null)
+    {
+        ArgumentNullException.ThrowIfNull(template);
+        ArgumentNullException.ThrowIfNull(records);
+
+        var recordList = records.ToList();
+        if (recordList.Count == 0)
+        {
+            throw new ArgumentException("批次輸出至少需要一筆資料", nameof(records));
+        }
+
+        // 決定輸出路徑
+        var finalPath = outputPath ?? GetDefaultBatchOutputPath();
+
+        // 確保輸出目錄存在 [ref: raw_spec 2.3]
+        var directory = Path.GetDirectoryName(finalPath);
+        if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
+        {
+            Directory.CreateDirectory(directory);
+        }
+
+        // 產生多頁 PDF
+        var document = CreateBatchDocument(template, recordList);
+        document.GeneratePdf(finalPath);
+
+        return finalPath;
+    }
+
+    /// <inheritdoc />
+    public string GenerateBatchFileName()
+    {
+        // 格式: Labels_Batch_{yyyyMMdd_HHmmss}.pdf [ref: raw_spec 13.6]
+        var timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+        return $"Labels_Batch_{timestamp}.pdf";
+    }
+
+    /// <summary>
+    /// 取得批次輸出預設路徑
+    /// </summary>
+    private string GetDefaultBatchOutputPath()
+    {
+        // 確保輸出目錄存在 [ref: raw_spec 2.3]
+        if (!Directory.Exists(OutputDirectory))
+        {
+            Directory.CreateDirectory(OutputDirectory);
+        }
+
+        var fileName = GenerateBatchFileName();
+        return Path.Combine(OutputDirectory, fileName);
+    }
+
+    /// <summary>
+    /// 建立批次 PDF 文件（多頁）
+    /// [ref: raw_spec 3.3 批次輸出規格]
+    /// </summary>
+    private IDocument CreateBatchDocument(LabelTemplate template, IReadOnlyList<DataRecord> records)
+    {
+        return Document.Create(container =>
+        {
+            // 每筆資料一頁 [ref: raw_spec 3.3]
+            foreach (var record in records)
+            {
+                var commands = _labelRenderer.Render(template, record);
+
+                container.Page(page =>
+                {
+                    // 頁面尺寸: 100mm × 60mm [ref: raw_spec 5.1]
+                    page.Size((float)template.WidthMm, (float)template.HeightMm, Unit.Millimetre);
+                    page.Margin(0);
+
+                    // 使用 Layers 來定位元素
+                    page.Content().Layers(layers =>
+                    {
+                        // 底層：白色背景
+                        layers.Layer().Background(Colors.White);
+
+                        // 渲染每個指令
+                        foreach (var command in commands)
+                        {
+                            if (command.Skip)
+                                continue;
+
+                            layers.Layer().Element(element =>
+                            {
+                                RenderCommand(element, command, template);
+                            });
+                        }
+                    });
+                });
+            }
+        });
+    }
 }
