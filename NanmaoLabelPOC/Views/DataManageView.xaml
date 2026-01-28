@@ -1,0 +1,301 @@
+<UserControl x:Class="NanmaoLabelPOC.Views.DataManageView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:DesignHeight="600" d:DesignWidth="1200"
+             Background="#F5F5F5">
+
+    <!--
+    資料管理分頁
+    [ref: raw_spec 8.5]
+
+    佈局：
+    - Row 0: 工具列 (60px)
+    - Row 1: DataGrid (60*)
+    - Row 2: 欄位編輯區 (40*)
+    -->
+
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <!-- 工具列 60px [ref: raw_spec 8.5] -->
+            <RowDefinition Height="60"/>
+            <!-- DataGrid 60* [ref: raw_spec 8.5] -->
+            <RowDefinition Height="60*"/>
+            <!-- 欄位編輯區 40* [ref: raw_spec 8.5] -->
+            <RowDefinition Height="40*"/>
+        </Grid.RowDefinitions>
+
+        <!-- 工具列 [ref: raw_spec 8.5, 8.6] -->
+        <!-- T061: 工具列按鈕 min 80×36, recommended 110×45 -->
+        <Border Grid.Row="0"
+                Background="White"
+                BorderBrush="#E0E0E0"
+                BorderThickness="1"
+                CornerRadius="4"
+                Margin="0,0,0,8">
+            <StackPanel Orientation="Horizontal"
+                        VerticalAlignment="Center"
+                        Margin="8,0">
+                <!-- 匯入按鈕 [ref: raw_spec 8.5, 8.6] -->
+                <!-- T061: 工具列按鈕 min 80×36, recommended 110×45, 按鈕間距 8px -->
+                <Button x:Name="ImportButton"
+                        MinWidth="110" MinHeight="45"
+                        Height="45"
+                        Margin="4"
+                        Padding="12,0"
+                        FontSize="14"
+                        FontWeight="Bold"
+                        FontFamily="Microsoft JhengHei"
+                        Background="#0078D4"
+                        Foreground="White"
+                        BorderThickness="0"
+                        Cursor="Hand"
+                        Click="ImportButton_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="📥 " FontSize="18" VerticalAlignment="Center"/>
+                        <TextBlock Text="匯入" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+
+                <!-- 新增按鈕 [ref: raw_spec 8.5, 8.6, F-10] T052 -->
+                <!-- T061: 工具列按鈕 min 80×36, recommended 110×45, 按鈕間距 8px -->
+                <Button x:Name="AddButton"
+                        Command="{Binding AddRecordCommand}"
+                        MinWidth="110" MinHeight="45"
+                        Height="45"
+                        Margin="4"
+                        Padding="12,0"
+                        FontSize="14"
+                        FontWeight="Bold"
+                        FontFamily="Microsoft JhengHei"
+                        Background="#107C10"
+                        Foreground="White"
+                        BorderThickness="0"
+                        Cursor="Hand">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="➕ " FontSize="18" VerticalAlignment="Center"/>
+                        <TextBlock Text="新增" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+
+                <!-- 刪除按鈕 [ref: raw_spec 8.5, 8.6, F-12] T053 -->
+                <!-- T061: 工具列按鈕 min 80×36, recommended 110×45, 按鈕間距 8px -->
+                <Button x:Name="DeleteButton"
+                        MinWidth="110" MinHeight="45"
+                        Height="45"
+                        Margin="4"
+                        Padding="12,0"
+                        FontSize="14"
+                        FontWeight="Bold"
+                        FontFamily="Microsoft JhengHei"
+                        Background="#D13438"
+                        Foreground="White"
+                        BorderThickness="0"
+                        Cursor="Hand"
+                        IsEnabled="{Binding HasSelectedRecord}"
+                        Click="DeleteButton_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="🗑️ " FontSize="18" VerticalAlignment="Center"/>
+                        <TextBlock Text="刪除" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+
+                <!-- 儲存按鈕 [ref: raw_spec 8.5, 8.6, F-13] T054/T058/T059/T060 -->
+                <!-- T061: 工具列按鈕 min 80×36, recommended 110×45, 按鈕間距 8px -->
+                <Button x:Name="SaveButton"
+                        MinWidth="110" MinHeight="45"
+                        Height="45"
+                        Margin="4"
+                        Padding="12,0"
+                        FontSize="14"
+                        FontWeight="Bold"
+                        FontFamily="Microsoft JhengHei"
+                        Background="#FFB900"
+                        Foreground="Black"
+                        BorderThickness="0"
+                        Cursor="Hand"
+                        IsEnabled="{Binding IsDirty}"
+                        Click="SaveButton_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="💾 " FontSize="18" VerticalAlignment="Center"/>
+                        <TextBlock Text="儲存" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Border>
+
+        <!-- DataGrid [ref: raw_spec 8.5] -->
+        <Border Grid.Row="1"
+                Background="White"
+                BorderBrush="#E0E0E0"
+                BorderThickness="1"
+                CornerRadius="4"
+                Margin="0,0,0,8">
+            <!-- T061: DataGrid 行高 min 40px, 按鈕間距 4px -->
+            <DataGrid x:Name="RecordDataGrid"
+                      ItemsSource="{Binding Records}"
+                      SelectedItem="{Binding SelectedRecord, Mode=TwoWay}"
+                      AutoGenerateColumns="False"
+                      CanUserAddRows="False"
+                      CanUserDeleteRows="False"
+                      SelectionMode="Single"
+                      SelectionUnit="FullRow"
+                      GridLinesVisibility="Horizontal"
+                      HeadersVisibility="Column"
+                      Background="White"
+                      BorderThickness="0"
+                      FontFamily="Microsoft JhengHei"
+                      FontSize="13"
+                      RowHeight="40"
+                      MinRowHeight="40"
+                      IsReadOnly="True">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="單據編號" Binding="{Binding Ogb19}" Width="120"/>
+                    <DataGridTextColumn Header="客戶名稱" Binding="{Binding NvrCust}" Width="150"/>
+                    <DataGridTextColumn Header="客戶料號" Binding="{Binding NvrCustItemNo}" Width="130"/>
+                    <DataGridTextColumn Header="日期" Binding="{Binding Obe25}" Width="100"/>
+                    <DataGridTextColumn Header="數量" Binding="{Binding Ogd09}" Width="80"/>
+                    <DataGridTextColumn Header="製令單號" Binding="{Binding Pono}" Width="130"/>
+                    <DataGridTextColumn Header="裝置編號" Binding="{Binding Ima902}" Width="130"/>
+                </DataGrid.Columns>
+                <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="Background" Value="#F0F0F0"/>
+                        <Setter Property="Padding" Value="8,4"/>
+                        <Setter Property="FontWeight" Value="Bold"/>
+                        <Setter Property="BorderThickness" Value="0,0,1,1"/>
+                        <Setter Property="BorderBrush" Value="#E0E0E0"/>
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
+                <DataGrid.RowStyle>
+                    <Style TargetType="DataGridRow">
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="#0078D4"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#F0F0F0"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.RowStyle>
+            </DataGrid>
+        </Border>
+
+        <!-- 欄位編輯區 [ref: raw_spec 8.5, 8.6] -->
+        <!-- T061: 輸入欄位 min 30px, recommended 36px -->
+        <Border Grid.Row="2"
+                Background="White"
+                BorderBrush="#E0E0E0"
+                BorderThickness="1"
+                CornerRadius="4">
+            <Grid Margin="16"
+                  Visibility="{Binding HasSelectedRecord, Converter={StaticResource BoolToVisibilityConverter}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="16"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- 左側欄位 [T055: 雙向綁定] -->
+                <StackPanel Grid.Column="0">
+                    <Grid Margin="0,4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="單據編號:" VerticalAlignment="Center" FontWeight="Bold" FontSize="13" FontFamily="Microsoft JhengHei"/>
+                        <TextBox Grid.Column="1" Text="{Binding SelectedRecord.Ogb19, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinHeight="36" Height="36" FontSize="13" FontFamily="Microsoft JhengHei" Padding="8,4" VerticalContentAlignment="Center" TextChanged="EditField_TextChanged"/>
+                    </Grid>
+                    <Grid Margin="0,4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="客戶名稱:" VerticalAlignment="Center" FontWeight="Bold" FontSize="13" FontFamily="Microsoft JhengHei"/>
+                        <TextBox Grid.Column="1" Text="{Binding SelectedRecord.NvrCust, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinHeight="36" Height="36" FontSize="13" FontFamily="Microsoft JhengHei" Padding="8,4" VerticalContentAlignment="Center" TextChanged="EditField_TextChanged"/>
+                    </Grid>
+                    <Grid Margin="0,4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="客戶料號:" VerticalAlignment="Center" FontWeight="Bold" FontSize="13" FontFamily="Microsoft JhengHei"/>
+                        <TextBox Grid.Column="1" Text="{Binding SelectedRecord.NvrCustItemNo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinHeight="36" Height="36" FontSize="13" FontFamily="Microsoft JhengHei" Padding="8,4" VerticalContentAlignment="Center" TextChanged="EditField_TextChanged"/>
+                    </Grid>
+                    <Grid Margin="0,4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="客戶 P/N:" VerticalAlignment="Center" FontWeight="Bold" FontSize="13" FontFamily="Microsoft JhengHei"/>
+                        <TextBox Grid.Column="1" Text="{Binding SelectedRecord.NvrCustPn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinHeight="36" Height="36" FontSize="13" FontFamily="Microsoft JhengHei" Padding="8,4" VerticalContentAlignment="Center" TextChanged="EditField_TextChanged"/>
+                    </Grid>
+                    <Grid Margin="0,4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="日期:" VerticalAlignment="Center" FontWeight="Bold" FontSize="13" FontFamily="Microsoft JhengHei"/>
+                        <TextBox Grid.Column="1" Text="{Binding SelectedRecord.Obe25, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinHeight="36" Height="36" FontSize="13" FontFamily="Microsoft JhengHei" Padding="8,4" VerticalContentAlignment="Center" TextChanged="EditField_TextChanged"/>
+                    </Grid>
+                    <Grid Margin="0,4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="數量:" VerticalAlignment="Center" FontWeight="Bold" FontSize="13" FontFamily="Microsoft JhengHei"/>
+                        <TextBox x:Name="QuantityTextBox" Grid.Column="1" Text="{Binding SelectedRecord.Ogd09, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinHeight="36" Height="36" FontSize="13" FontFamily="Microsoft JhengHei" Padding="8,4" VerticalContentAlignment="Center" TextChanged="QuantityField_TextChanged"/>
+                    </Grid>
+                </StackPanel>
+
+                <!-- 右側欄位 [T055: 雙向綁定] -->
+                <StackPanel Grid.Column="2">
+                    <Grid Margin="0,4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="製令單號:" VerticalAlignment="Center" FontWeight="Bold" FontSize="13" FontFamily="Microsoft JhengHei"/>
+                        <TextBox Grid.Column="1" Text="{Binding SelectedRecord.Pono, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinHeight="36" Height="36" FontSize="13" FontFamily="Microsoft JhengHei" Padding="8,4" VerticalContentAlignment="Center" TextChanged="EditField_TextChanged"/>
+                    </Grid>
+                    <Grid Margin="0,4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="裝置編號:" VerticalAlignment="Center" FontWeight="Bold" FontSize="13" FontFamily="Microsoft JhengHei"/>
+                        <TextBox Grid.Column="1" Text="{Binding SelectedRecord.Ima902, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinHeight="36" Height="36" FontSize="13" FontFamily="Microsoft JhengHei" Padding="8,4" VerticalContentAlignment="Center" TextChanged="EditField_TextChanged"/>
+                    </Grid>
+                    <Grid Margin="0,4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="備註:" VerticalAlignment="Center" FontWeight="Bold" FontSize="13" FontFamily="Microsoft JhengHei"/>
+                        <TextBox Grid.Column="1" Text="{Binding SelectedRecord.NvrRemark10, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinHeight="36" Height="36" FontSize="13" FontFamily="Microsoft JhengHei" Padding="8,4" VerticalContentAlignment="Center" TextChanged="EditField_TextChanged"/>
+                    </Grid>
+                    <Grid Margin="0,4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="ERP 料號:" VerticalAlignment="Center" FontWeight="Bold" FontSize="13" FontFamily="Microsoft JhengHei"/>
+                        <TextBox Grid.Column="1" Text="{Binding SelectedRecord.Erpmat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinHeight="36" Height="36" FontSize="13" FontFamily="Microsoft JhengHei" Padding="8,4" VerticalContentAlignment="Center" TextChanged="EditField_TextChanged"/>
+                    </Grid>
+                    <Grid Margin="0,4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="客戶採購單:" VerticalAlignment="Center" FontWeight="Bold" FontSize="13" FontFamily="Microsoft JhengHei"/>
+                        <TextBox Grid.Column="1" Text="{Binding SelectedRecord.Cscustpo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinHeight="36" Height="36" FontSize="13" FontFamily="Microsoft JhengHei" Padding="8,4" VerticalContentAlignment="Center" TextChanged="EditField_TextChanged"/>
+                    </Grid>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

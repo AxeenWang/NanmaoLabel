@@ -1,0 +1,463 @@
+using NanmaoLabelPOC.Models;
+
+namespace NanmaoLabelPOC.Templates;
+
+/// <summary>
+/// 內建標籤格式定義
+/// [ref: raw_spec 5.1, 5.2, 5.3]
+///
+/// POC 階段內建兩種標籤格式：
+/// - QW075551-1: 出貨標籤（17 欄位）
+/// - QW075551-2: 出貨標籤（14 欄位）
+///
+/// 所有座標單位為 mm [ref: raw_spec 13.1]
+/// </summary>
+public static class BuiltInTemplates
+{
+    /// <summary>
+    /// 取得所有內建標籤格式
+    /// </summary>
+    public static IReadOnlyList<LabelTemplate> GetAll()
+    {
+        return new List<LabelTemplate>
+        {
+            CreateQW075551_1(),
+            CreateQW075551_2()
+        }.AsReadOnly();
+    }
+
+    /// <summary>
+    /// 根據代碼取得標籤格式
+    /// </summary>
+    /// <param name="code">標籤代碼</param>
+    /// <returns>標籤格式，若不存在則回傳 null</returns>
+    public static LabelTemplate? GetByCode(string code)
+    {
+        return code switch
+        {
+            "QW075551-1" => CreateQW075551_1(),
+            "QW075551-2" => CreateQW075551_2(),
+            _ => null
+        };
+    }
+
+    /// <summary>
+    /// 建立 QW075551-1 出貨標籤格式
+    /// [ref: raw_spec 5.1, data-model.md 5. QW075551-1]
+    ///
+    /// 欄位數: 17
+    /// 尺寸: 100mm × 60mm
+    /// QR Code pattern: {pono};{ima902};{ogd09};{nvr_remark10}
+    /// </summary>
+    private static LabelTemplate CreateQW075551_1()
+    {
+        return new LabelTemplate
+        {
+            Code = "QW075551-1",
+            Name = "出貨標籤",
+            WidthMm = 100,
+            HeightMm = 60,
+            Fields = new List<LabelField>
+            {
+                // Item 1: 標題 [ref: raw_spec 5.1]
+                new()
+                {
+                    Name = "Title",
+                    FieldType = FieldType.Text,
+                    DataSource = "出貨標籤 Shipping Label",
+                    IsConstant = true,
+                    X = 5, Y = 2, Width = 90, Height = 6,
+                    FontSize = 14, IsBold = true,
+                    Alignment = TextAlignment.Center
+                },
+
+                // Item 2: 標籤 "Customer 客戶名稱"
+                new()
+                {
+                    Name = "CustomerLabel",
+                    FieldType = FieldType.Text,
+                    DataSource = "Customer 客戶名稱",
+                    IsConstant = true,
+                    X = 5, Y = 10, Width = 30, Height = 4,
+                    FontSize = 9, IsBold = false,
+                    Alignment = TextAlignment.Left
+                },
+
+                // Item 3: CSCUSTOMER (客戶名稱) <- nvr_cust
+                new()
+                {
+                    Name = "CSCUSTOMER",
+                    FieldType = FieldType.Text,
+                    DataSource = "nvr_cust",
+                    IsConstant = false,
+                    X = 36, Y = 10, Width = 59, Height = 5,
+                    FontSize = 11, IsBold = true,
+                    Alignment = TextAlignment.Left
+                },
+
+                // Item 4: 標籤 "Date"
+                new()
+                {
+                    Name = "DateLabel",
+                    FieldType = FieldType.Text,
+                    DataSource = "Date",
+                    IsConstant = true,
+                    X = 5, Y = 17, Width = 10, Height = 4,
+                    FontSize = 9, IsBold = false,
+                    Alignment = TextAlignment.Left
+                },
+
+                // Item 5: FINDPRTDC (日期) <- obe25
+                new()
+                {
+                    Name = "FINDPRTDC",
+                    FieldType = FieldType.Text,
+                    DataSource = "obe25",
+                    IsConstant = false,
+                    X = 16, Y = 17, Width = 25, Height = 5,
+                    FontSize = 11, IsBold = false,
+                    Alignment = TextAlignment.Left
+                },
+
+                // Item 6: 標籤 "Q'ty"
+                new()
+                {
+                    Name = "QtyLabel",
+                    FieldType = FieldType.Text,
+                    DataSource = "Q'ty",
+                    IsConstant = true,
+                    X = 55, Y = 17, Width = 10, Height = 4,
+                    FontSize = 9, IsBold = false,
+                    Alignment = TextAlignment.Left
+                },
+
+                // Item 7: CSQTY (數量) <- ogd09 (Display Value 加千分位)
+                new()
+                {
+                    Name = "CSQTY",
+                    FieldType = FieldType.Text,
+                    DataSource = "ogd09",
+                    IsConstant = false,
+                    UseDisplayValue = true,  // 使用千分位格式化 [ref: raw_spec 13.13]
+                    X = 66, Y = 17, Width = 29, Height = 5,
+                    FontSize = 11, IsBold = true,
+                    Alignment = TextAlignment.Left
+                },
+
+                // Item 8: 標籤 "Product NO. 產品型號"
+                new()
+                {
+                    Name = "ProductNoLabel",
+                    FieldType = FieldType.Text,
+                    DataSource = "Product NO. 產品型號",
+                    IsConstant = true,
+                    X = 5, Y = 24, Width = 40, Height = 4,
+                    FontSize = 9, IsBold = false,
+                    Alignment = TextAlignment.Left
+                },
+
+                // Item 9: CSCUSTITEMNO (客戶料號) <- nvr_cust_item_no
+                new()
+                {
+                    Name = "CSCUSTITEMNO",
+                    FieldType = FieldType.Text,
+                    DataSource = "nvr_cust_item_no",
+                    IsConstant = false,
+                    X = 5, Y = 29, Width = 90, Height = 5,
+                    FontSize = 11, IsBold = false,
+                    Alignment = TextAlignment.Left
+                },
+
+                // Item 10: CSCUSTPN (客戶 P/N) <- nvr_cust_pn (Barcode, Raw Value)
+                new()
+                {
+                    Name = "CSCUSTPN",
+                    FieldType = FieldType.Barcode,
+                    DataSource = "nvr_cust_pn",
+                    IsConstant = false,
+                    UseDisplayValue = false,  // Barcode 必須使用 Raw Value [ref: raw_spec 13.13]
+                    X = 5, Y = 35, Width = 60, Height = 10,
+                    Alignment = TextAlignment.Left
+                },
+
+                // Item 11: 標籤 "MO:"
+                new()
+                {
+                    Name = "MoLabel",
+                    FieldType = FieldType.Text,
+                    DataSource = "MO:",
+                    IsConstant = true,
+                    X = 5, Y = 47, Width = 10, Height = 4,
+                    FontSize = 9, IsBold = false,
+                    Alignment = TextAlignment.Left
+                },
+
+                // Item 12: CSMO (製令單號) <- pono
+                new()
+                {
+                    Name = "CSMO",
+                    FieldType = FieldType.Text,
+                    DataSource = "pono",
+                    IsConstant = false,
+                    X = 16, Y = 47, Width = 40, Height = 4,
+                    FontSize = 10, IsBold = false,
+                    Alignment = TextAlignment.Left
+                },
+
+                // Item 13: 標籤 "Device:"
+                new()
+                {
+                    Name = "DeviceLabel",
+                    FieldType = FieldType.Text,
+                    DataSource = "Device:",
+                    IsConstant = true,
+                    X = 5, Y = 51, Width = 15, Height = 4,
+                    FontSize = 9, IsBold = false,
+                    Alignment = TextAlignment.Left
+                },
+
+                // Item 14: OUTDEVICENO (裝置編號) <- ima902
+                new()
+                {
+                    Name = "OUTDEVICENO",
+                    FieldType = FieldType.Text,
+                    DataSource = "ima902",
+                    IsConstant = false,
+                    X = 21, Y = 51, Width = 35, Height = 4,
+                    FontSize = 10, IsBold = false,
+                    Alignment = TextAlignment.Left
+                },
+
+                // Item 15: 標籤 "Remark:"
+                new()
+                {
+                    Name = "RemarkLabel",
+                    FieldType = FieldType.Text,
+                    DataSource = "Remark:",
+                    IsConstant = true,
+                    X = 5, Y = 55, Width = 15, Height = 4,
+                    FontSize = 9, IsBold = false,
+                    Alignment = TextAlignment.Left
+                },
+
+                // Item 16: CSREMARK (備註) <- nvr_remark10
+                new()
+                {
+                    Name = "CSREMARK",
+                    FieldType = FieldType.Text,
+                    DataSource = "nvr_remark10",
+                    IsConstant = false,
+                    X = 21, Y = 55, Width = 35, Height = 4,
+                    FontSize = 10, IsBold = false,
+                    Alignment = TextAlignment.Left
+                },
+
+                // Item 17: QRCODE (組合欄位) <- {pono};{ima902};{ogd09};{nvr_remark10}
+                // [ref: raw_spec 13.4, 13.15] - 空值保留位置 (A;;C)
+                new()
+                {
+                    Name = "QRCODE",
+                    FieldType = FieldType.QRCode,
+                    DataSource = string.Empty,  // QR Code 使用 CombinePattern
+                    IsConstant = false,
+                    UseDisplayValue = false,  // QR Code 必須使用 Raw Value [ref: raw_spec 13.13]
+                    CombinePattern = "{pono};{ima902};{ogd09};{nvr_remark10}",
+                    X = 75, Y = 40, Width = 20, Height = 20,
+                    Alignment = TextAlignment.Left
+                }
+            }
+        };
+    }
+
+    /// <summary>
+    /// 建立 QW075551-2 出貨標籤格式
+    /// [ref: raw_spec 5.2, data-model.md 6. QW075551-2]
+    ///
+    /// 欄位數: 14
+    /// 尺寸: 100mm × 60mm
+    /// QR Code pattern: {cscustpo};{erpmat};{ogd09}
+    /// </summary>
+    private static LabelTemplate CreateQW075551_2()
+    {
+        return new LabelTemplate
+        {
+            Code = "QW075551-2",
+            Name = "出貨標籤",
+            WidthMm = 100,
+            HeightMm = 60,
+            Fields = new List<LabelField>
+            {
+                // Item 1: 標題 [ref: raw_spec 5.2]
+                new()
+                {
+                    Name = "Title",
+                    FieldType = FieldType.Text,
+                    DataSource = "出貨標籤 Shipping Label",
+                    IsConstant = true,
+                    X = 5, Y = 2, Width = 90, Height = 6,
+                    FontSize = 14, IsBold = true,
+                    Alignment = TextAlignment.Center
+                },
+
+                // Item 2: 標籤 "Customer PO:"
+                new()
+                {
+                    Name = "CustomerPoLabel",
+                    FieldType = FieldType.Text,
+                    DataSource = "Customer PO:",
+                    IsConstant = true,
+                    X = 5, Y = 10, Width = 30, Height = 4,
+                    FontSize = 9, IsBold = false,
+                    Alignment = TextAlignment.Left
+                },
+
+                // Item 3: CSCUSTPO (客戶採購單號) <- cscustpo
+                new()
+                {
+                    Name = "CSCUSTPO",
+                    FieldType = FieldType.Text,
+                    DataSource = "cscustpo",
+                    IsConstant = false,
+                    X = 36, Y = 10, Width = 59, Height = 5,
+                    FontSize = 11, IsBold = true,
+                    Alignment = TextAlignment.Left
+                },
+
+                // Item 4: 標籤 "CS Number:"
+                new()
+                {
+                    Name = "CsNumberLabel",
+                    FieldType = FieldType.Text,
+                    DataSource = "CS Number:",
+                    IsConstant = true,
+                    X = 5, Y = 17, Width = 25, Height = 4,
+                    FontSize = 9, IsBold = false,
+                    Alignment = TextAlignment.Left
+                },
+
+                // Item 5: CSNUMBER (常數值 "17008")
+                new()
+                {
+                    Name = "CSNUMBER",
+                    FieldType = FieldType.Text,
+                    DataSource = "17008",
+                    IsConstant = true,  // 固定值 [ref: raw_spec 5.2]
+                    X = 31, Y = 17, Width = 15, Height = 5,
+                    FontSize = 11, IsBold = false,
+                    Alignment = TextAlignment.Left
+                },
+
+                // Item 6: 標籤 "Q'ty"
+                new()
+                {
+                    Name = "QtyLabel",
+                    FieldType = FieldType.Text,
+                    DataSource = "Q'ty",
+                    IsConstant = true,
+                    X = 55, Y = 17, Width = 10, Height = 4,
+                    FontSize = 9, IsBold = false,
+                    Alignment = TextAlignment.Left
+                },
+
+                // Item 7: CSQTY (數量) <- ogd09 (Display Value 加千分位)
+                new()
+                {
+                    Name = "CSQTY",
+                    FieldType = FieldType.Text,
+                    DataSource = "ogd09",
+                    IsConstant = false,
+                    UseDisplayValue = true,  // 使用千分位格式化 [ref: raw_spec 13.13]
+                    X = 66, Y = 17, Width = 29, Height = 5,
+                    FontSize = 11, IsBold = true,
+                    Alignment = TextAlignment.Left
+                },
+
+                // Item 8: 標籤 "ERP Part NO."
+                new()
+                {
+                    Name = "ErpPartNoLabel",
+                    FieldType = FieldType.Text,
+                    DataSource = "ERP Part NO.",
+                    IsConstant = true,
+                    X = 5, Y = 24, Width = 30, Height = 4,
+                    FontSize = 9, IsBold = false,
+                    Alignment = TextAlignment.Left
+                },
+
+                // Item 9: ERPPARTNO (ERP 料號) <- erpmat (Barcode, Raw Value)
+                new()
+                {
+                    Name = "ERPPARTNO",
+                    FieldType = FieldType.Barcode,
+                    DataSource = "erpmat",
+                    IsConstant = false,
+                    UseDisplayValue = false,  // Barcode 必須使用 Raw Value [ref: raw_spec 13.13]
+                    X = 5, Y = 29, Width = 60, Height = 10,
+                    Alignment = TextAlignment.Left
+                },
+
+                // Item 10: 標籤 "Customer Item:"
+                new()
+                {
+                    Name = "CustomerItemLabel",
+                    FieldType = FieldType.Text,
+                    DataSource = "Customer Item:",
+                    IsConstant = true,
+                    X = 5, Y = 42, Width = 30, Height = 4,
+                    FontSize = 9, IsBold = false,
+                    Alignment = TextAlignment.Left
+                },
+
+                // Item 11: CSCUSTITEMNO (客戶料號) <- nvr_cust_item_no
+                new()
+                {
+                    Name = "CSCUSTITEMNO",
+                    FieldType = FieldType.Text,
+                    DataSource = "nvr_cust_item_no",
+                    IsConstant = false,
+                    X = 36, Y = 42, Width = 30, Height = 4,
+                    FontSize = 10, IsBold = false,
+                    Alignment = TextAlignment.Left
+                },
+
+                // Item 12: 標籤 "Remark:"
+                new()
+                {
+                    Name = "RemarkLabel",
+                    FieldType = FieldType.Text,
+                    DataSource = "Remark:",
+                    IsConstant = true,
+                    X = 5, Y = 48, Width = 15, Height = 4,
+                    FontSize = 9, IsBold = false,
+                    Alignment = TextAlignment.Left
+                },
+
+                // Item 13: CSREMARK (備註) <- nvr_remark10
+                new()
+                {
+                    Name = "CSREMARK",
+                    FieldType = FieldType.Text,
+                    DataSource = "nvr_remark10",
+                    IsConstant = false,
+                    X = 21, Y = 48, Width = 45, Height = 4,
+                    FontSize = 10, IsBold = false,
+                    Alignment = TextAlignment.Left
+                },
+
+                // Item 14: QRCODE (組合欄位) <- {cscustpo};{erpmat};{ogd09}
+                // [ref: raw_spec 13.4, 13.15] - 空值保留位置 (A;;C)
+                new()
+                {
+                    Name = "QRCODE",
+                    FieldType = FieldType.QRCode,
+                    DataSource = string.Empty,  // QR Code 使用 CombinePattern
+                    IsConstant = false,
+                    UseDisplayValue = false,  // QR Code 必須使用 Raw Value [ref: raw_spec 13.13]
+                    CombinePattern = "{cscustpo};{erpmat};{ogd09}",
+                    X = 75, Y = 40, Width = 20, Height = 20,
+                    Alignment = TextAlignment.Left
+                }
+            }
+        };
+    }
+}

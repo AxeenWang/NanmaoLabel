@@ -1,0 +1,386 @@
+<!--
+    主視窗
+    [ref: raw_spec 8.1, 8.2, 8.3, 8.6]
+
+    T061: Kiosk 設計原則 - 大按鈕、大字體、高對比
+    T062: 16:9 自適應佈局 (min 1024×576)
+    T063: 全螢幕模式 (F11 切換、ESC 退出)
+    T064: 標題列拖曳移動與雙擊最大化
+-->
+<Window x:Class="NanmaoLabelPOC.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:views="clr-namespace:NanmaoLabelPOC.Views"
+        mc:Ignorable="d"
+        Title="南茂標籤列印系統"
+        WindowStyle="None"
+        ResizeMode="CanResize"
+        MinWidth="1024"
+        MinHeight="576"
+        Width="1280"
+        Height="720"
+        Background="#F5F5F5"
+        KeyDown="Window_KeyDown">
+
+    <!--
+    主視窗佈局
+    [ref: raw_spec 8.2, 8.3, 8.6]
+
+    T062: 16:9 自適應佈局 (min 1024×576)
+
+    佈局：
+    - Row 0: 自訂標題列 (40px)
+    - Row 1: 分頁標籤列 (50px)
+    - Row 2: 主內容區 (1*)
+    - Row 3: 狀態列 (30px)
+    -->
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <!-- 自訂標題列 40px [ref: raw_spec 8.3] -->
+            <RowDefinition Height="40"/>
+            <!-- 分頁標籤列 50px [ref: raw_spec 8.2] -->
+            <RowDefinition Height="50"/>
+            <!-- 主內容區 1* -->
+            <RowDefinition Height="*"/>
+            <!-- 狀態列 30px [ref: raw_spec 8.2] -->
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+
+        <!-- 自訂標題列 [ref: raw_spec 8.3] -->
+        <!-- T064: 標題列拖曳移動與雙擊最大化 -->
+        <Grid Grid.Row="0" Background="#1E3A5F"
+              MouseLeftButtonDown="TitleBar_MouseLeftButtonDown"
+              MouseLeftButtonUp="TitleBar_MouseLeftButtonUp">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- 標題 -->
+            <StackPanel Grid.Column="0"
+                        Orientation="Horizontal"
+                        VerticalAlignment="Center"
+                        Margin="12,0,0,0">
+                <TextBlock Text="🏭"
+                           FontSize="20"
+                           VerticalAlignment="Center"
+                           Margin="0,0,8,0"/>
+                <TextBlock Text="南茂標籤列印系統"
+                           Foreground="White"
+                           FontSize="18"
+                           FontWeight="Bold"
+                           FontFamily="Microsoft JhengHei"
+                           VerticalAlignment="Center"/>
+            </StackPanel>
+
+            <!-- 標題列按鈕 [ref: raw_spec 8.3, 8.6] -->
+            <!-- T061: 最小點擊區域 44×44px -->
+            <!-- T063: 全螢幕切換 F11、ESC -->
+            <StackPanel Grid.Column="1"
+                        Orientation="Horizontal">
+
+                <!-- 一般模式按鈕 -->
+                <StackPanel Orientation="Horizontal"
+                            Visibility="{Binding IsFullScreen, Converter={StaticResource InverseBoolToVisibilityConverter}}">
+
+                    <!-- 全螢幕按鈕 [ref: raw_spec 8.3] 100×40 -->
+                    <!-- T063: F11 切換全螢幕 -->
+                    <Button Content="全螢幕 F11"
+                            Width="100" Height="40"
+                            MinWidth="100" MinHeight="40"
+                            Background="Transparent"
+                            Foreground="White"
+                            BorderThickness="0"
+                            FontFamily="Microsoft JhengHei"
+                            FontSize="13"
+                            Click="FullScreen_Click"
+                            Cursor="Hand">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Background="{TemplateBinding Background}"
+                                                    Padding="8,0">
+                                                <ContentPresenter HorizontalAlignment="Center"
+                                                                  VerticalAlignment="Center"/>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#2E4A6F"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+
+                    <!-- 最小化按鈕 [ref: raw_spec 8.3] 46×40 -->
+                    <!-- T061: min 44×44px 點擊區域 -->
+                    <Button Content="─"
+                            Width="46" Height="40"
+                            MinWidth="46" MinHeight="40"
+                            Background="Transparent"
+                            Foreground="White"
+                            BorderThickness="0"
+                            FontSize="14"
+                            Click="Minimize_Click"
+                            Cursor="Hand">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Background="{TemplateBinding Background}">
+                                                <ContentPresenter HorizontalAlignment="Center"
+                                                                  VerticalAlignment="Center"/>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#2E4A6F"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+
+                    <!-- 最大化/還原按鈕 [ref: raw_spec 8.3] 46×40 -->
+                    <!-- T061: min 44×44px 點擊區域 -->
+                    <Button x:Name="MaximizeButton"
+                            Content="□"
+                            Width="46" Height="40"
+                            MinWidth="46" MinHeight="40"
+                            Background="Transparent"
+                            Foreground="White"
+                            BorderThickness="0"
+                            FontSize="14"
+                            Click="Maximize_Click"
+                            Cursor="Hand">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Background="{TemplateBinding Background}">
+                                                <ContentPresenter HorizontalAlignment="Center"
+                                                                  VerticalAlignment="Center"/>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#2E4A6F"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+
+                    <!-- 關閉按鈕 [ref: raw_spec 8.3] 46×40 -->
+                    <!-- T061: min 44×44px 點擊區域 -->
+                    <Button Content="✕"
+                            Width="46" Height="40"
+                            MinWidth="46" MinHeight="40"
+                            Background="Transparent"
+                            Foreground="White"
+                            BorderThickness="0"
+                            FontSize="14"
+                            Click="Close_Click"
+                            Cursor="Hand">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Background="{TemplateBinding Background}">
+                                                <ContentPresenter HorizontalAlignment="Center"
+                                                                  VerticalAlignment="Center"/>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#E81123"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </StackPanel>
+
+                <!-- 全螢幕模式按鈕 [ref: raw_spec 8.3] 160×40 -->
+                <!-- T063: F11/ESC 退出全螢幕 -->
+                <Button Content="結束全螢幕 F11/ESC"
+                        Width="160" Height="40"
+                        MinWidth="160" MinHeight="40"
+                        Background="Transparent"
+                        Foreground="White"
+                        BorderThickness="0"
+                        FontFamily="Microsoft JhengHei"
+                        FontSize="13"
+                        Click="ExitFullScreen_Click"
+                        Cursor="Hand"
+                        Visibility="{Binding IsFullScreen, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}"
+                                                Padding="8,0">
+                                            <ContentPresenter HorizontalAlignment="Center"
+                                                              VerticalAlignment="Center"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="#2E4A6F"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </StackPanel>
+        </Grid>
+
+        <!-- 分頁標籤列 [ref: raw_spec 8.2, 8.6] -->
+        <!-- T061: 分頁標籤 min 40px, recommended 50px -->
+        <Border Grid.Row="1" Background="White" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1">
+            <StackPanel Orientation="Horizontal" Margin="8,0,0,0">
+                <!-- 標籤列印分頁標籤 -->
+                <!-- T061: min 44×44px 點擊區域 -->
+                <RadioButton x:Name="TabLabelPrint"
+                             IsChecked="True"
+                             GroupName="MainTabs"
+                             Checked="Tab_Checked"
+                             Cursor="Hand"
+                             MinHeight="50">
+                    <RadioButton.Template>
+                        <ControlTemplate TargetType="RadioButton">
+                            <Border x:Name="TabBorder"
+                                    Background="Transparent"
+                                    Padding="16,8"
+                                    MinHeight="50"
+                                    BorderThickness="0,0,0,3"
+                                    BorderBrush="Transparent">
+                                <StackPanel Orientation="Horizontal"
+                                            VerticalAlignment="Center">
+                                    <TextBlock Text="📋 "
+                                               FontSize="16"
+                                               VerticalAlignment="Center"/>
+                                    <TextBlock Text="標籤列印"
+                                               FontSize="14"
+                                               FontWeight="Bold"
+                                               FontFamily="Microsoft JhengHei"
+                                               VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsChecked" Value="True">
+                                    <Setter TargetName="TabBorder" Property="BorderBrush" Value="#0078D4"/>
+                                    <Setter TargetName="TabBorder" Property="Background" Value="#F0F8FF"/>
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="TabBorder" Property="Background" Value="#F5F5F5"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </RadioButton.Template>
+                </RadioButton>
+
+                <!-- 資料管理分頁標籤 -->
+                <!-- T061: min 44×44px 點擊區域 -->
+                <RadioButton x:Name="TabDataManage"
+                             GroupName="MainTabs"
+                             Checked="Tab_Checked"
+                             Cursor="Hand"
+                             Margin="8,0,0,0"
+                             MinHeight="50">
+                    <RadioButton.Template>
+                        <ControlTemplate TargetType="RadioButton">
+                            <Border x:Name="TabBorder"
+                                    Background="Transparent"
+                                    Padding="16,8"
+                                    MinHeight="50"
+                                    BorderThickness="0,0,0,3"
+                                    BorderBrush="Transparent">
+                                <StackPanel Orientation="Horizontal"
+                                            VerticalAlignment="Center">
+                                    <TextBlock Text="⚙️ "
+                                               FontSize="16"
+                                               VerticalAlignment="Center"/>
+                                    <TextBlock Text="資料管理"
+                                               FontSize="14"
+                                               FontWeight="Bold"
+                                               FontFamily="Microsoft JhengHei"
+                                               VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsChecked" Value="True">
+                                    <Setter TargetName="TabBorder" Property="BorderBrush" Value="#0078D4"/>
+                                    <Setter TargetName="TabBorder" Property="Background" Value="#F0F8FF"/>
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="TabBorder" Property="Background" Value="#F5F5F5"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </RadioButton.Template>
+                </RadioButton>
+            </StackPanel>
+        </Border>
+
+        <!-- 主內容區 -->
+        <Grid Grid.Row="2">
+            <!-- 標籤列印分頁 -->
+            <views:LabelPrintView x:Name="LabelPrintPage"
+                                  Visibility="Visible"/>
+
+            <!-- 資料管理分頁 [ref: raw_spec 8.5] -->
+            <views:DataManageView x:Name="DataManagePage"
+                                  Visibility="Collapsed"/>
+        </Grid>
+
+        <!-- 狀態列 [ref: raw_spec 8.2] -->
+        <Border Grid.Row="3"
+                Background="White"
+                BorderBrush="#E0E0E0"
+                BorderThickness="0,1,0,0">
+            <Grid Margin="12,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- 狀態訊息 -->
+                <TextBlock Grid.Column="0"
+                           Text="{Binding StatusMessage}"
+                           VerticalAlignment="Center"
+                           FontSize="12"
+                           FontFamily="Microsoft JhengHei"
+                           Foreground="#666666"/>
+
+                <!-- 資料筆數 -->
+                <TextBlock Grid.Column="1"
+                           Text="{Binding RecordCountText}"
+                           VerticalAlignment="Center"
+                           FontSize="12"
+                           FontFamily="Microsoft JhengHei"
+                           Foreground="#888888"/>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
