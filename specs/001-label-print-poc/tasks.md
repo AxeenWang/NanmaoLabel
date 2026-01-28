@@ -379,11 +379,11 @@ NanmaoLabel/
 
 ### Final Validation [ref: raw_spec 10, 13.7]
 
-- [ ] T077 Run all unit tests (dotnet test)
-- [ ] T078 Execute TC-01 to TC-18 test scenarios [ref: raw_spec 9]
-- [ ] T079 Execute A-01 to A-18 acceptance criteria [ref: raw_spec 10]
-- [ ] T080 Verify barcode/QR Code scanning stability (首次即成功) [ref: raw_spec 13.24]
-- [ ] T081 Verify preview vs PDF tolerance ≤ ±0.5mm [ref: raw_spec 13.23]
+- [x] T077 Run all unit tests (dotnet test)
+- [x] T078 Execute TC-01 to TC-18 test scenarios [ref: raw_spec 9]
+- [x] T079 Execute A-01 to A-18 acceptance criteria [ref: raw_spec 10]
+- [x] T080 Verify barcode/QR Code scanning stability (首次即成功) [ref: raw_spec 13.24]
+- [x] T081 Verify preview vs PDF tolerance ≤ ±0.5mm [ref: raw_spec 13.23]
 
 ---
 
