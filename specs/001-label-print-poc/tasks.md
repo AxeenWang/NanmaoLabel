@@ -42,13 +42,13 @@ NanmaoLabel/
 **Purpose**: Project initialization and basic structure [ref: raw_spec 7.2]
 **Milestone**: M1 (專案骨架)
 
-- [ ] T001 Create solution file `NanmaoLabel.sln` or new style `NanmaoLabel.slnx` at repository root
-- [ ] T002 [P] Create WPF project `NanmaoLabelPOC/NanmaoLabelPOC.csproj` targeting .NET 8 LTS with WindowStyle="None" [ref: raw_spec 7, 8.3]
-- [ ] T003 [P] Create test project `NanmaoLabelPOC.Tests/NanmaoLabelPOC.Tests.csproj` with xUnit [ref: raw_spec 7.2, 憲章 II]
-- [ ] T004 [P] Add NuGet packages: CommunityToolkit.Mvvm (8.x), ExcelDataReader (3.x), ExcelDataReader.DataSet (3.x), ZXing.Net (0.16.x), QuestPDF (2024.x) [ref: raw_spec 7.1]
-- [ ] T005 [P] Create directory structure: Views/, ViewModels/, Models/, Services/, Templates/, Converters/, Resources/ [ref: raw_spec 7.2]
-- [ ] T006 Configure QuestPDF Community License in `NanmaoLabelPOC/App.xaml.cs` [ref: raw_spec 7.1]
-- [ ] T007 [P] Create `samples/MockData.xlsx` with test data matching Appendix A fields [ref: raw_spec 附錄 A]
+- [x] T001 Create solution file `NanmaoLabel.sln` or new style `NanmaoLabel.slnx` at repository root
+- [x] T002 [P] Create WPF project `NanmaoLabelPOC/NanmaoLabelPOC.csproj` targeting .NET 8 LTS with WindowStyle="None" [ref: raw_spec 7, 8.3]
+- [x] T003 [P] Create test project `NanmaoLabelPOC.Tests/NanmaoLabelPOC.Tests.csproj` with xUnit [ref: raw_spec 7.2, 憲章 II]
+- [x] T004 [P] Add NuGet packages: CommunityToolkit.Mvvm (8.x), ExcelDataReader (3.x), ExcelDataReader.DataSet (3.x), ZXing.Net (0.16.x), QuestPDF (2024.x) [ref: raw_spec 7.1]
+- [x] T005 [P] Create directory structure: Views/, ViewModels/, Models/, Services/, Templates/, Converters/, Resources/ [ref: raw_spec 7.2]
+- [x] T006 Configure QuestPDF Community License in `NanmaoLabelPOC/App.xaml.cs` [ref: raw_spec 7.1]
+- [x] T007 [P] Create `samples/MockData.xlsx` with test data matching Appendix A fields [ref: raw_spec 附錄 A]
 
 ---
 

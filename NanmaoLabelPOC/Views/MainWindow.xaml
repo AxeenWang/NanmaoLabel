@@ -1,0 +1,21 @@
+<Window x:Class="NanmaoLabelPOC.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="南茂標籤列印 POC"
+        WindowStyle="None"
+        MinWidth="1024"
+        MinHeight="576"
+        Width="1280"
+        Height="720">
+    <!-- 暫時空白視窗 - 待 Phase 5 完成 MainWindow 完整實作 -->
+    <Grid Background="#F5F5F5">
+        <TextBlock Text="南茂標籤列印 POC - 建置中"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   FontSize="24"
+                   FontFamily="Microsoft JhengHei"/>
+    </Grid>
+</Window>
