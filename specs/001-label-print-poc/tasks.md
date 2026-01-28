@@ -59,9 +59,9 @@ NanmaoLabel/
 
 ### Data Models [ref: raw_spec 附錄 B, 7.2]
 
-- [ ] T008 [P] Create `NanmaoLabelPOC/Models/DataRecord.cs` with Id (UUID) + 17 data fields (ogb03, ogb19, ogb092, ogb905, ogd12b, ogd12e, ima902, ogd15, ogd09, obe25, nvr_cust, nvr_cust_item_no, nvr_cust_pn, nvr_remark10, pono, erpmat, cscustpo), GetRawValue/GetDisplayValue methods for Raw/Display Value separation [ref: raw_spec 附錄 B.2, 13.13]
-- [ ] T009 [P] Create `NanmaoLabelPOC/Models/LabelField.cs` with FieldType enum (Text, Barcode, QRCode), properties: Name, FieldType, DataSource, IsConstant, CombinePattern, X, Y, Width, Height, FontSize, IsBold, Alignment [ref: raw_spec 4.1, 4.2]
-- [ ] T010 [P] Create `NanmaoLabelPOC/Models/LabelTemplate.cs` with Code, Name, WidthMm (100), HeightMm (60), List<LabelField> Fields [ref: raw_spec 5.1, 5.2]
+- [x] T008 [P] Create `NanmaoLabelPOC/Models/DataRecord.cs` with Id (UUID) + 17 data fields (ogb03, ogb19, ogb092, ogb905, ogd12b, ogd12e, ima902, ogd15, ogd09, obe25, nvr_cust, nvr_cust_item_no, nvr_cust_pn, nvr_remark10, pono, erpmat, cscustpo), GetRawValue/GetDisplayValue methods for Raw/Display Value separation [ref: raw_spec 附錄 B.2, 13.13]
+- [x] T009 [P] Create `NanmaoLabelPOC/Models/LabelField.cs` with FieldType enum (Text, Barcode, QRCode), properties: Name, FieldType, DataSource, IsConstant, CombinePattern, X, Y, Width, Height, FontSize, IsBold, Alignment [ref: raw_spec 4.1, 4.2]
+- [x] T010 [P] Create `NanmaoLabelPOC/Models/LabelTemplate.cs` with Code, Name, WidthMm (100), HeightMm (60), List<LabelField> Fields [ref: raw_spec 5.1, 5.2]
 
 ### Unit Converter [ref: raw_spec 13.1]
 
