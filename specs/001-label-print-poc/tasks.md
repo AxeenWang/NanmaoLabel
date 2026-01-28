@@ -65,7 +65,7 @@ NanmaoLabel/
 
 ### Unit Converter [ref: raw_spec 13.1]
 
-- [ ] T011 Create `NanmaoLabelPOC/Services/UnitConverter.cs` static class with:
+- [x] T011 Create `NanmaoLabelPOC/Services/UnitConverter.cs` static class with:
   - MmToPt: `mm × 72 ÷ 25.4` (PDF output)
   - MmToPx300: `mm × 300 ÷ 25.4` (barcode generation)
   - MmToWpf: `mm × 96 ÷ 25.4` (preview)
