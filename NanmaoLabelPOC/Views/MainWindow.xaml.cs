@@ -6,7 +6,13 @@ namespace NanmaoLabelPOC.Views;
 
 /// <summary>
 /// 主視窗
-/// [ref: raw_spec 8.2, 8.3]
+/// [ref: raw_spec 8.2, 8.3, 8.6]
+///
+/// Phase 9 UI Polish:
+/// - T061: Kiosk 設計原則（大按鈕、大字體、高對比）
+/// - T062: 16:9 自適應佈局 (min 1024×576)
+/// - T063: 全螢幕模式（F11 切換、ESC 退出、顯示「結束全螢幕 F11/ESC」按鈕）
+/// - T064: 標題列拖曳移動與雙擊最大化
 /// </summary>
 public partial class MainWindow : Window
 {
@@ -42,10 +48,11 @@ public partial class MainWindow : Window
         _viewModel?.Initialize();
     }
 
-    #region 標題列事件 [ref: raw_spec 8.3]
+    #region 標題列事件 [ref: raw_spec 8.3] - T064
 
     /// <summary>
     /// 標題列拖曳移動視窗
+    /// [T064: 標題列拖曳移動與雙擊最大化]
     /// </summary>
     private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
@@ -110,11 +117,12 @@ public partial class MainWindow : Window
 
     #endregion
 
-    #region 全螢幕控制 [ref: raw_spec 8.3]
+    #region 全螢幕控制 [ref: raw_spec 8.3] - T063
 
     /// <summary>
     /// 進入全螢幕模式
     /// [ref: raw_spec 8.3]
+    /// [T063: F11 切換全螢幕]
     /// </summary>
     private void EnterFullScreen()
     {
@@ -130,6 +138,7 @@ public partial class MainWindow : Window
     /// <summary>
     /// 離開全螢幕模式
     /// [ref: raw_spec 8.3]
+    /// [T063: ESC 退出全螢幕]
     /// </summary>
     private void ExitFullScreen()
     {
@@ -144,6 +153,7 @@ public partial class MainWindow : Window
 
     /// <summary>
     /// 切換最大化/還原
+    /// [T064: 雙擊標題列切換最大化/還原]
     /// </summary>
     private void ToggleMaximize()
     {
@@ -157,11 +167,12 @@ public partial class MainWindow : Window
 
     #endregion
 
-    #region 鍵盤事件 [ref: raw_spec 8.3]
+    #region 鍵盤事件 [ref: raw_spec 8.3] - T063
 
     /// <summary>
     /// 處理鍵盤快捷鍵
     /// [ref: raw_spec 8.3]
+    /// [T063: F11 切換全螢幕、ESC 退出全螢幕]
     /// </summary>
     private void Window_KeyDown(object sender, KeyEventArgs e)
     {

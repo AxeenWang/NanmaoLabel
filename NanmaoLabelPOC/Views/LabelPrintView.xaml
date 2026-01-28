@@ -80,7 +80,8 @@
                 </Grid>
             </Border>
 
-            <!-- 格式選擇區 -->
+            <!-- 格式選擇區 [ref: raw_spec 8.6] -->
+            <!-- T061: 下拉選單高度 36-40px -->
             <Grid Grid.Row="1" Margin="0,16,0,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -91,17 +92,21 @@
                            Text="標籤格式"
                            VerticalAlignment="Center"
                            FontSize="14"
+                           FontWeight="Bold"
                            FontFamily="Microsoft JhengHei"
                            Margin="0,0,12,0"/>
 
-                <!-- 格式下拉選單 [ref: raw_spec 8.4] -->
+                <!-- 格式下拉選單 [ref: raw_spec 8.4, 8.6] -->
+                <!-- T061: 下拉選單 min 36px, recommended 40px -->
                 <ComboBox Grid.Column="1"
                           ItemsSource="{Binding AvailableTemplates}"
                           SelectedItem="{Binding SelectedTemplate}"
                           DisplayMemberPath="DisplayName"
+                          MinHeight="40"
                           Height="40"
                           FontSize="14"
-                          FontFamily="Microsoft JhengHei"/>
+                          FontFamily="Microsoft JhengHei"
+                          Padding="8,0"/>
             </Grid>
         </Grid>
 
@@ -134,19 +139,21 @@
                               MouseDoubleClick="RecordListView_MouseDoubleClick">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <!-- 項目高度 50px [ref: raw_spec 8.4] -->
-                                <Grid Height="50" Margin="8,0">
+                                <!-- 項目高度 50px [ref: raw_spec 8.4, 8.6] -->
+                                <!-- T061: ListView 項目 min 40px, recommended 50px -->
+                                <Grid Height="50" MinHeight="50" Margin="8,0">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <!-- 單據編號 [ref: raw_spec 8.4] -->
+                                    <!-- 單據編號 [ref: raw_spec 8.4, 8.6] -->
+                                    <!-- T061: 清單項目字體 14pt -->
                                     <StackPanel Grid.Column="0"
                                                 Orientation="Horizontal"
                                                 VerticalAlignment="Center">
-                                        <TextBlock Text="📦 " FontSize="14"/>
+                                        <TextBlock Text="📦 " FontSize="16"/>
                                         <TextBlock Text="{Binding Ogb19}"
                                                    FontSize="14"
                                                    FontWeight="Bold"
@@ -232,37 +239,44 @@
                 <!-- 待 T070-T072 實作分頁功能 -->
             </StackPanel>
 
-            <!-- 操作按鈕區 [ref: raw_spec 8.4] -->
+            <!-- 操作按鈕區 [ref: raw_spec 8.4, 8.6] -->
+            <!-- T061: Kiosk 設計 - 按鈕最小 100×40，建議 140×50 -->
             <Grid Grid.Row="2" Margin="0,8,0,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <!-- 輸出 PDF 按鈕 [ref: raw_spec 8.4] -->
+                <!-- 輸出 PDF 按鈕 [ref: raw_spec 8.4, 8.6] -->
+                <!-- T061: 大按鈕 (min 100×40, recommended 140×50) -->
                 <Button Grid.Column="0"
                         Command="{Binding ExportPdfCommand}"
+                        MinWidth="140" MinHeight="50"
                         Height="50"
-                        Margin="0,0,8,0"
+                        Margin="0,0,4,0"
                         FontSize="14"
+                        FontWeight="Bold"
                         FontFamily="Microsoft JhengHei"
                         Background="#0078D4"
                         Foreground="White"
                         BorderThickness="0"
                         Cursor="Hand">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="📄 " FontSize="16"/>
+                        <TextBlock Text="📄 " FontSize="18" VerticalAlignment="Center"/>
                         <TextBlock Text="輸出 PDF" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
 
-                <!-- 批次輸出全部按鈕 [ref: raw_spec 8.4, TC-12] -->
+                <!-- 批次輸出全部按鈕 [ref: raw_spec 8.4, 8.6, TC-12] -->
+                <!-- T061: 大按鈕 (min 100×40, recommended 140×50) -->
                 <Button x:Name="BatchExportButton"
                         Grid.Column="1"
                         Command="{Binding BatchExportCommand}"
+                        MinWidth="140" MinHeight="50"
                         Height="50"
-                        Margin="8,0,0,0"
+                        Margin="4,0,0,0"
                         FontSize="14"
+                        FontWeight="Bold"
                         FontFamily="Microsoft JhengHei"
                         Background="#107C10"
                         Foreground="White"
@@ -270,7 +284,7 @@
                         Cursor="Hand"
                         Click="BatchExportButton_Click">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="📑 " FontSize="16"/>
+                        <TextBlock Text="📑 " FontSize="18" VerticalAlignment="Center"/>
                         <TextBlock Text="批次輸出全部" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>

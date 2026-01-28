@@ -338,20 +338,20 @@ NanmaoLabel/
 
 ### UI Polish - Kiosk Style [ref: raw_spec 8.1]
 
-- [ ] T061 [P] Implement Kiosk design principles in all views:
+- [x] T061 [P] Implement Kiosk design principles in all views:
   - Large buttons (min 100×40, recommended 140×50) [ref: raw_spec 8.6]
   - Large fonts (base 14pt for ≥1920px width) [ref: raw_spec 8.6]
   - High contrast (dark text + light background) [ref: raw_spec 8.1]
   - Min click area 44×44px, button spacing 8px [ref: raw_spec 8.6]
 
-- [ ] T062 [P] Implement 16:9 adaptive layout (min 1024×576) [ref: raw_spec 8.1, 8.6]
+- [x] T062 [P] Implement 16:9 adaptive layout (min 1024×576) [ref: raw_spec 8.1, 8.6]
 
-- [ ] T063 [P] Implement fullscreen mode in MainWindow:
+- [x] T063 [P] Implement fullscreen mode in MainWindow:
   - F11: toggle fullscreen [ref: raw_spec 8.3]
   - ESC: exit fullscreen [ref: raw_spec 8.3]
   - Show [結束全螢幕 F11/ESC] button in fullscreen [ref: raw_spec 8.3]
 
-- [ ] T064 [P] Implement title bar drag-to-move and double-click maximize [ref: raw_spec 8.3]
+- [x] T064 [P] Implement title bar drag-to-move and double-click maximize [ref: raw_spec 8.3]
 
 ### Edge Cases [ref: raw_spec 8.9, 13.15]
 

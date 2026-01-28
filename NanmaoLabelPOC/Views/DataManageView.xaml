@@ -27,7 +27,8 @@
             <RowDefinition Height="40*"/>
         </Grid.RowDefinitions>
 
-        <!-- 工具列 [ref: raw_spec 8.5] -->
+        <!-- 工具列 [ref: raw_spec 8.5, 8.6] -->
+        <!-- T061: 工具列按鈕 min 80×36, recommended 110×45 -->
         <Border Grid.Row="0"
                 Background="White"
                 BorderBrush="#E0E0E0"
@@ -37,12 +38,15 @@
             <StackPanel Orientation="Horizontal"
                         VerticalAlignment="Center"
                         Margin="8,0">
-                <!-- 匯入按鈕 [ref: raw_spec 8.5] -->
+                <!-- 匯入按鈕 [ref: raw_spec 8.5, 8.6] -->
+                <!-- T061: 工具列按鈕 min 80×36, recommended 110×45, 按鈕間距 8px -->
                 <Button x:Name="ImportButton"
+                        MinWidth="110" MinHeight="45"
                         Height="45"
-                        MinWidth="110"
                         Margin="4"
+                        Padding="12,0"
                         FontSize="14"
+                        FontWeight="Bold"
                         FontFamily="Microsoft JhengHei"
                         Background="#0078D4"
                         Foreground="White"
@@ -50,35 +54,41 @@
                         Cursor="Hand"
                         Click="ImportButton_Click">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="📥 " FontSize="16"/>
+                        <TextBlock Text="📥 " FontSize="18" VerticalAlignment="Center"/>
                         <TextBlock Text="匯入" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
 
-                <!-- 新增按鈕 [ref: raw_spec 8.5, F-10] T052 -->
+                <!-- 新增按鈕 [ref: raw_spec 8.5, 8.6, F-10] T052 -->
+                <!-- T061: 工具列按鈕 min 80×36, recommended 110×45, 按鈕間距 8px -->
                 <Button x:Name="AddButton"
                         Command="{Binding AddRecordCommand}"
+                        MinWidth="110" MinHeight="45"
                         Height="45"
-                        MinWidth="110"
                         Margin="4"
+                        Padding="12,0"
                         FontSize="14"
+                        FontWeight="Bold"
                         FontFamily="Microsoft JhengHei"
                         Background="#107C10"
                         Foreground="White"
                         BorderThickness="0"
                         Cursor="Hand">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="➕ " FontSize="16"/>
+                        <TextBlock Text="➕ " FontSize="18" VerticalAlignment="Center"/>
                         <TextBlock Text="新增" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
 
-                <!-- 刪除按鈕 [ref: raw_spec 8.5, F-12] T053 -->
+                <!-- 刪除按鈕 [ref: raw_spec 8.5, 8.6, F-12] T053 -->
+                <!-- T061: 工具列按鈕 min 80×36, recommended 110×45, 按鈕間距 8px -->
                 <Button x:Name="DeleteButton"
+                        MinWidth="110" MinHeight="45"
                         Height="45"
-                        MinWidth="110"
                         Margin="4"
+                        Padding="12,0"
                         FontSize="14"
+                        FontWeight="Bold"
                         FontFamily="Microsoft JhengHei"
                         Background="#D13438"
                         Foreground="White"
@@ -87,17 +97,20 @@
                         IsEnabled="{Binding HasSelectedRecord}"
                         Click="DeleteButton_Click">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="🗑️ " FontSize="16"/>
+                        <TextBlock Text="🗑️ " FontSize="18" VerticalAlignment="Center"/>
                         <TextBlock Text="刪除" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
 
-                <!-- 儲存按鈕 [ref: raw_spec 8.5, F-13] T054/T058/T059/T060 -->
+                <!-- 儲存按鈕 [ref: raw_spec 8.5, 8.6, F-13] T054/T058/T059/T060 -->
+                <!-- T061: 工具列按鈕 min 80×36, recommended 110×45, 按鈕間距 8px -->
                 <Button x:Name="SaveButton"
+                        MinWidth="110" MinHeight="45"
                         Height="45"
-                        MinWidth="110"
                         Margin="4"
+                        Padding="12,0"
                         FontSize="14"
+                        FontWeight="Bold"
                         FontFamily="Microsoft JhengHei"
                         Background="#FFB900"
                         Foreground="Black"
@@ -106,7 +119,7 @@
                         IsEnabled="{Binding IsDirty}"
                         Click="SaveButton_Click">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="💾 " FontSize="16"/>
+                        <TextBlock Text="💾 " FontSize="18" VerticalAlignment="Center"/>
                         <TextBlock Text="儲存" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
@@ -120,6 +133,7 @@
                 BorderThickness="1"
                 CornerRadius="4"
                 Margin="0,0,0,8">
+            <!-- T061: DataGrid 行高 min 40px, 按鈕間距 4px -->
             <DataGrid x:Name="RecordDataGrid"
                       ItemsSource="{Binding Records}"
                       SelectedItem="{Binding SelectedRecord, Mode=TwoWay}"
@@ -134,7 +148,8 @@
                       BorderThickness="0"
                       FontFamily="Microsoft JhengHei"
                       FontSize="13"
-                      RowHeight="36"
+                      RowHeight="40"
+                      MinRowHeight="40"
                       IsReadOnly="True">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="單據編號" Binding="{Binding Ogb19}" Width="120"/>
@@ -170,7 +185,8 @@
             </DataGrid>
         </Border>
 
-        <!-- 欄位編輯區 [ref: raw_spec 8.5] -->
+        <!-- 欄位編輯區 [ref: raw_spec 8.5, 8.6] -->
+        <!-- T061: 輸入欄位 min 30px, recommended 36px -->
         <Border Grid.Row="2"
                 Background="White"
                 BorderBrush="#E0E0E0"
@@ -191,48 +207,48 @@
                             <ColumnDefinition Width="100"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="單據編號:" VerticalAlignment="Center" FontWeight="Bold"/>
-                        <TextBox Grid.Column="1" Text="{Binding SelectedRecord.Ogb19, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="30" TextChanged="EditField_TextChanged"/>
+                        <TextBlock Text="單據編號:" VerticalAlignment="Center" FontWeight="Bold" FontSize="13" FontFamily="Microsoft JhengHei"/>
+                        <TextBox Grid.Column="1" Text="{Binding SelectedRecord.Ogb19, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinHeight="36" Height="36" FontSize="13" FontFamily="Microsoft JhengHei" Padding="8,4" VerticalContentAlignment="Center" TextChanged="EditField_TextChanged"/>
                     </Grid>
                     <Grid Margin="0,4">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="100"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="客戶名稱:" VerticalAlignment="Center" FontWeight="Bold"/>
-                        <TextBox Grid.Column="1" Text="{Binding SelectedRecord.NvrCust, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="30" TextChanged="EditField_TextChanged"/>
+                        <TextBlock Text="客戶名稱:" VerticalAlignment="Center" FontWeight="Bold" FontSize="13" FontFamily="Microsoft JhengHei"/>
+                        <TextBox Grid.Column="1" Text="{Binding SelectedRecord.NvrCust, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinHeight="36" Height="36" FontSize="13" FontFamily="Microsoft JhengHei" Padding="8,4" VerticalContentAlignment="Center" TextChanged="EditField_TextChanged"/>
                     </Grid>
                     <Grid Margin="0,4">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="100"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="客戶料號:" VerticalAlignment="Center" FontWeight="Bold"/>
-                        <TextBox Grid.Column="1" Text="{Binding SelectedRecord.NvrCustItemNo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="30" TextChanged="EditField_TextChanged"/>
+                        <TextBlock Text="客戶料號:" VerticalAlignment="Center" FontWeight="Bold" FontSize="13" FontFamily="Microsoft JhengHei"/>
+                        <TextBox Grid.Column="1" Text="{Binding SelectedRecord.NvrCustItemNo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinHeight="36" Height="36" FontSize="13" FontFamily="Microsoft JhengHei" Padding="8,4" VerticalContentAlignment="Center" TextChanged="EditField_TextChanged"/>
                     </Grid>
                     <Grid Margin="0,4">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="100"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="客戶 P/N:" VerticalAlignment="Center" FontWeight="Bold"/>
-                        <TextBox Grid.Column="1" Text="{Binding SelectedRecord.NvrCustPn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="30" TextChanged="EditField_TextChanged"/>
+                        <TextBlock Text="客戶 P/N:" VerticalAlignment="Center" FontWeight="Bold" FontSize="13" FontFamily="Microsoft JhengHei"/>
+                        <TextBox Grid.Column="1" Text="{Binding SelectedRecord.NvrCustPn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinHeight="36" Height="36" FontSize="13" FontFamily="Microsoft JhengHei" Padding="8,4" VerticalContentAlignment="Center" TextChanged="EditField_TextChanged"/>
                     </Grid>
                     <Grid Margin="0,4">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="100"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="日期:" VerticalAlignment="Center" FontWeight="Bold"/>
-                        <TextBox Grid.Column="1" Text="{Binding SelectedRecord.Obe25, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="30" TextChanged="EditField_TextChanged"/>
+                        <TextBlock Text="日期:" VerticalAlignment="Center" FontWeight="Bold" FontSize="13" FontFamily="Microsoft JhengHei"/>
+                        <TextBox Grid.Column="1" Text="{Binding SelectedRecord.Obe25, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinHeight="36" Height="36" FontSize="13" FontFamily="Microsoft JhengHei" Padding="8,4" VerticalContentAlignment="Center" TextChanged="EditField_TextChanged"/>
                     </Grid>
                     <Grid Margin="0,4">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="100"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="數量:" VerticalAlignment="Center" FontWeight="Bold"/>
-                        <TextBox x:Name="QuantityTextBox" Grid.Column="1" Text="{Binding SelectedRecord.Ogd09, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="30" TextChanged="QuantityField_TextChanged"/>
+                        <TextBlock Text="數量:" VerticalAlignment="Center" FontWeight="Bold" FontSize="13" FontFamily="Microsoft JhengHei"/>
+                        <TextBox x:Name="QuantityTextBox" Grid.Column="1" Text="{Binding SelectedRecord.Ogd09, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinHeight="36" Height="36" FontSize="13" FontFamily="Microsoft JhengHei" Padding="8,4" VerticalContentAlignment="Center" TextChanged="QuantityField_TextChanged"/>
                     </Grid>
                 </StackPanel>
 
@@ -243,40 +259,40 @@
                             <ColumnDefinition Width="100"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="製令單號:" VerticalAlignment="Center" FontWeight="Bold"/>
-                        <TextBox Grid.Column="1" Text="{Binding SelectedRecord.Pono, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="30" TextChanged="EditField_TextChanged"/>
+                        <TextBlock Text="製令單號:" VerticalAlignment="Center" FontWeight="Bold" FontSize="13" FontFamily="Microsoft JhengHei"/>
+                        <TextBox Grid.Column="1" Text="{Binding SelectedRecord.Pono, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinHeight="36" Height="36" FontSize="13" FontFamily="Microsoft JhengHei" Padding="8,4" VerticalContentAlignment="Center" TextChanged="EditField_TextChanged"/>
                     </Grid>
                     <Grid Margin="0,4">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="100"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="裝置編號:" VerticalAlignment="Center" FontWeight="Bold"/>
-                        <TextBox Grid.Column="1" Text="{Binding SelectedRecord.Ima902, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="30" TextChanged="EditField_TextChanged"/>
+                        <TextBlock Text="裝置編號:" VerticalAlignment="Center" FontWeight="Bold" FontSize="13" FontFamily="Microsoft JhengHei"/>
+                        <TextBox Grid.Column="1" Text="{Binding SelectedRecord.Ima902, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinHeight="36" Height="36" FontSize="13" FontFamily="Microsoft JhengHei" Padding="8,4" VerticalContentAlignment="Center" TextChanged="EditField_TextChanged"/>
                     </Grid>
                     <Grid Margin="0,4">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="100"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="備註:" VerticalAlignment="Center" FontWeight="Bold"/>
-                        <TextBox Grid.Column="1" Text="{Binding SelectedRecord.NvrRemark10, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="30" TextChanged="EditField_TextChanged"/>
+                        <TextBlock Text="備註:" VerticalAlignment="Center" FontWeight="Bold" FontSize="13" FontFamily="Microsoft JhengHei"/>
+                        <TextBox Grid.Column="1" Text="{Binding SelectedRecord.NvrRemark10, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinHeight="36" Height="36" FontSize="13" FontFamily="Microsoft JhengHei" Padding="8,4" VerticalContentAlignment="Center" TextChanged="EditField_TextChanged"/>
                     </Grid>
                     <Grid Margin="0,4">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="100"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="ERP 料號:" VerticalAlignment="Center" FontWeight="Bold"/>
-                        <TextBox Grid.Column="1" Text="{Binding SelectedRecord.Erpmat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="30" TextChanged="EditField_TextChanged"/>
+                        <TextBlock Text="ERP 料號:" VerticalAlignment="Center" FontWeight="Bold" FontSize="13" FontFamily="Microsoft JhengHei"/>
+                        <TextBox Grid.Column="1" Text="{Binding SelectedRecord.Erpmat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinHeight="36" Height="36" FontSize="13" FontFamily="Microsoft JhengHei" Padding="8,4" VerticalContentAlignment="Center" TextChanged="EditField_TextChanged"/>
                     </Grid>
                     <Grid Margin="0,4">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="100"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="客戶採購單:" VerticalAlignment="Center" FontWeight="Bold"/>
-                        <TextBox Grid.Column="1" Text="{Binding SelectedRecord.Cscustpo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="30" TextChanged="EditField_TextChanged"/>
+                        <TextBlock Text="客戶採購單:" VerticalAlignment="Center" FontWeight="Bold" FontSize="13" FontFamily="Microsoft JhengHei"/>
+                        <TextBox Grid.Column="1" Text="{Binding SelectedRecord.Cscustpo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinHeight="36" Height="36" FontSize="13" FontFamily="Microsoft JhengHei" Padding="8,4" VerticalContentAlignment="Center" TextChanged="EditField_TextChanged"/>
                     </Grid>
                 </StackPanel>
             </Grid>
