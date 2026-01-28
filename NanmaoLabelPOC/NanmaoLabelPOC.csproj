@@ -9,6 +9,7 @@
     <ApplicationIcon></ApplicationIcon>
     <AssemblyName>NanmaoLabelPOC</AssemblyName>
     <RootNamespace>NanmaoLabelPOC</RootNamespace>
+    <Version>0.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
