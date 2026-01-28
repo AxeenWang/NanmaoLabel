@@ -137,17 +137,18 @@ public partial class LabelRenderer : ILabelRenderer
     /// [ref: raw_spec 13.15]
     ///
     /// 條碼/QR Code 內容為空時應略過（不產生空白圖片）
+    /// T067: 條碼空內容略過
     /// </summary>
     private static bool ShouldSkip(LabelField field, string content)
     {
-        // 條碼內容為空時略過
+        // 條碼內容為空時略過 [T067]
         // [ref: raw_spec 13.15]
         if (field.FieldType == FieldType.Barcode && string.IsNullOrWhiteSpace(content))
         {
             return true;
         }
 
-        // QR Code 若整個內容為空或僅有分號時，可能需要略過
+        // QR Code 若整個內容為空或僅有分號時，可能需要略過 [T068]
         // 但依據 raw_spec 13.15，空值欄位保留分號位置
         // 因此只有當全部欄位都為空（只剩分號）才考慮略過
         // 這裡保守處理：只有完全空白才略過
@@ -161,5 +162,52 @@ public partial class LabelRenderer : ILabelRenderer
         }
 
         return false;
+    }
+
+    /// <inheritdoc />
+    /// <summary>
+    /// 驗證資料紀錄是否具備必要欄位
+    /// [ref: raw_spec 3.3, 8.9]
+    /// T069: 必要欄位缺失警告
+    ///
+    /// 必要欄位定義：Barcode 類型的欄位（條碼必須有內容才能掃描）
+    /// </summary>
+    public IReadOnlyList<string> ValidateRequiredFields(LabelTemplate template, DataRecord record)
+    {
+        ArgumentNullException.ThrowIfNull(template);
+        ArgumentNullException.ThrowIfNull(record);
+
+        var missingFields = new List<string>();
+
+        foreach (var field in template.Fields)
+        {
+            // Barcode 欄位為必要欄位（沒有內容無法產生可掃描的條碼）
+            if (field.FieldType == FieldType.Barcode && !field.IsConstant)
+            {
+                var content = record.GetRawValue(field.DataSource);
+                if (string.IsNullOrWhiteSpace(content))
+                {
+                    // 回傳對使用者友善的欄位名稱
+                    missingFields.Add(GetFriendlyFieldName(field));
+                }
+            }
+        }
+
+        return missingFields.AsReadOnly();
+    }
+
+    /// <summary>
+    /// 取得對使用者友善的欄位名稱
+    /// [ref: raw_spec 13.21] 繁體中文訊息
+    /// </summary>
+    private static string GetFriendlyFieldName(LabelField field)
+    {
+        // 條碼欄位的友善名稱對應
+        return field.Name switch
+        {
+            "CSCUSTPN" => "客戶 P/N (nvr_cust_pn)",
+            "ERPPARTNO" => "ERP 料號 (erpmat)",
+            _ => field.Name
+        };
     }
 }

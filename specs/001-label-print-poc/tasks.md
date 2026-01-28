@@ -355,11 +355,11 @@ NanmaoLabel/
 
 ### Edge Cases [ref: raw_spec 8.9, 13.15]
 
-- [ ] T065 [P] Auto-create `.\output\` directory if not exists [ref: raw_spec 2.3]
-- [ ] T066 [P] Implement file overwrite confirmation "檔案已存在，是否覆蓋？" [ref: raw_spec 8.9]
-- [ ] T067 [P] Implement barcode skip when content is empty [ref: raw_spec 13.15]
-- [ ] T068 [P] Implement QR Code empty value placeholder (A;;C format) [ref: raw_spec 13.4, 13.15]
-- [ ] T069 [P] Implement required field missing warning "資料缺失：{欄位名稱}，無法產生標籤" [ref: raw_spec 3.3]
+- [x] T065 [P] Auto-create `.\output\` directory if not exists [ref: raw_spec 2.3]
+- [x] T066 [P] Implement file overwrite confirmation "檔案已存在，是否覆蓋？" [ref: raw_spec 8.9]
+- [x] T067 [P] Implement barcode skip when content is empty [ref: raw_spec 13.15]
+- [x] T068 [P] Implement QR Code empty value placeholder (A;;C format) [ref: raw_spec 13.4, 13.15]
+- [x] T069 [P] Implement required field missing warning "資料缺失：{欄位名稱}，無法產生標籤" [ref: raw_spec 3.3]
 
 ### Pagination [ref: raw_spec 8.4]
 

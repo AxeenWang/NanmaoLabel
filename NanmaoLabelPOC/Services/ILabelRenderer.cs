@@ -27,6 +27,17 @@ public interface ILabelRenderer
     /// <param name="record">資料紀錄</param>
     /// <returns>渲染指令集合</returns>
     IReadOnlyList<RenderCommand> Render(LabelTemplate template, DataRecord record);
+
+    /// <summary>
+    /// 驗證資料紀錄是否具備必要欄位
+    /// [ref: raw_spec 3.3, 8.9]
+    ///
+    /// 檢查 Barcode 欄位的資料來源是否有值
+    /// </summary>
+    /// <param name="template">標籤格式定義</param>
+    /// <param name="record">資料紀錄</param>
+    /// <returns>缺失的必要欄位名稱清單，若為空則表示通過驗證</returns>
+    IReadOnlyList<string> ValidateRequiredFields(LabelTemplate template, DataRecord record);
 }
 
 /// <summary>

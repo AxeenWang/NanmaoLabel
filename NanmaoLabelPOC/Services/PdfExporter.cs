@@ -349,6 +349,12 @@ public class PdfExporter : IPdfExporter
         return Path.Combine(OutputDirectory, fileName);
     }
 
+    /// <inheritdoc />
+    public bool FileExists(string outputPath)
+    {
+        return File.Exists(outputPath);
+    }
+
     /// <summary>
     /// 建立批次 PDF 文件（多頁）
     /// [ref: raw_spec 3.3 批次輸出規格]

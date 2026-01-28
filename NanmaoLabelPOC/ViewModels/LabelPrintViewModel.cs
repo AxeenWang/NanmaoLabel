@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Windows.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -135,6 +136,41 @@ public partial class LabelPrintViewModel : ObservableObject
     /// </summary>
     public string RecordCountText => $"共 {Records.Count} 筆資料";
 
+    /// <summary>
+    /// 最後一次驗證發現的缺失欄位
+    /// [ref: raw_spec 3.3, 8.9]
+    /// T069: 必要欄位缺失警告
+    /// </summary>
+    [ObservableProperty]
+    private IReadOnlyList<string>? _missingRequiredFields;
+
+    /// <summary>
+    /// 是否有缺失的必要欄位
+    /// </summary>
+    public bool HasMissingFields => MissingRequiredFields?.Count > 0;
+
+    /// <summary>
+    /// 缺失欄位警告訊息
+    /// [ref: raw_spec 8.9] 「資料缺失：{欄位名稱}，無法產生標籤」
+    /// </summary>
+    public string? MissingFieldsWarning => HasMissingFields
+        ? $"資料缺失：{string.Join("、", MissingRequiredFields!)}，無法產生標籤"
+        : null;
+
+    /// <summary>
+    /// 檔案覆蓋確認回調
+    /// [ref: raw_spec 8.9]
+    /// T066: 檔案覆蓋確認對話框
+    /// </summary>
+    public Func<string, bool>? ConfirmOverwriteCallback { get; set; }
+
+    /// <summary>
+    /// 必要欄位缺失警告回調
+    /// [ref: raw_spec 8.9]
+    /// T069: 必要欄位缺失警告
+    /// </summary>
+    public Action<string>? ShowWarningCallback { get; set; }
+
     #endregion
 
     #region Commands
@@ -175,15 +211,41 @@ public partial class LabelPrintViewModel : ObservableObject
         if (SelectedRecord == null || SelectedTemplate == null)
             return;
 
+        // T069: 必要欄位缺失檢查 [ref: raw_spec 3.3, 8.9]
+        var missingFields = _labelRenderer.ValidateRequiredFields(SelectedTemplate, SelectedRecord);
+        if (missingFields.Count > 0)
+        {
+            var warningMessage = $"資料缺失：{string.Join("、", missingFields)}，無法產生標籤";
+            ShowWarningCallback?.Invoke(warningMessage);
+            StatusMessage = $"⚠️ {warningMessage}";
+            return;
+        }
+
         try
         {
-            var outputPath = _pdfExporter.ExportSingle(SelectedTemplate, SelectedRecord);
+            // 產生預設輸出路徑
+            var fileName = _pdfExporter.GenerateDefaultFileName(SelectedRecord);
+            var outputPath = Path.Combine(_pdfExporter.OutputDirectory, fileName);
+
+            // T066: 檔案覆蓋確認 [ref: raw_spec 8.9]
+            // T065: 確保輸出目錄存在 [ref: raw_spec 2.3]
+            if (_pdfExporter.FileExists(outputPath))
+            {
+                var confirmOverwrite = ConfirmOverwriteCallback?.Invoke(outputPath) ?? true;
+                if (!confirmOverwrite)
+                {
+                    StatusMessage = "已取消輸出";
+                    return;
+                }
+            }
+
+            var actualPath = _pdfExporter.ExportSingle(SelectedTemplate, SelectedRecord, outputPath);
             // 狀態列訊息 [ref: raw_spec 8.8, 13.6]
-            StatusMessage = $"PDF 已輸出：{outputPath}";
+            StatusMessage = $"✅ PDF 已輸出：{actualPath}";
         }
         catch (Exception ex)
         {
-            StatusMessage = $"輸出失敗：{ex.Message}";
+            StatusMessage = $"❌ 輸出失敗：{ex.Message}";
         }
     }
 
@@ -201,14 +263,31 @@ public partial class LabelPrintViewModel : ObservableObject
 
         try
         {
-            var outputPath = _pdfExporter.ExportBatch(SelectedTemplate, Records);
-            LastBatchExportPath = outputPath;
+            // 產生預設輸出路徑
+            var fileName = _pdfExporter.GenerateBatchFileName();
+            var outputPath = Path.Combine(_pdfExporter.OutputDirectory, fileName);
+
+            // T066: 檔案覆蓋確認 [ref: raw_spec 8.9]
+            // T065: 確保輸出目錄存在 [ref: raw_spec 2.3]
+            if (_pdfExporter.FileExists(outputPath))
+            {
+                var confirmOverwrite = ConfirmOverwriteCallback?.Invoke(outputPath) ?? true;
+                if (!confirmOverwrite)
+                {
+                    StatusMessage = "已取消批次輸出";
+                    LastBatchExportPath = null;
+                    return;
+                }
+            }
+
+            var actualPath = _pdfExporter.ExportBatch(SelectedTemplate, Records, outputPath);
+            LastBatchExportPath = actualPath;
             // 狀態列訊息
-            StatusMessage = $"批次輸出完成：{outputPath}";
+            StatusMessage = $"✅ 批次輸出完成：{actualPath}";
         }
         catch (Exception ex)
         {
-            StatusMessage = $"批次輸出失敗：{ex.Message}";
+            StatusMessage = $"❌ 批次輸出失敗：{ex.Message}";
             LastBatchExportPath = null;
         }
     }

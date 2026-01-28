@@ -66,4 +66,12 @@ public interface IPdfExporter
     /// </summary>
     /// <returns>檔名</returns>
     string GenerateBatchFileName();
+
+    /// <summary>
+    /// 檢查輸出路徑是否已存在檔案
+    /// [ref: raw_spec 8.9]
+    /// </summary>
+    /// <param name="outputPath">輸出路徑</param>
+    /// <returns>true 表示檔案已存在</returns>
+    bool FileExists(string outputPath);
 }

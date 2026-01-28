@@ -16,6 +16,52 @@ public partial class LabelPrintView : UserControl
     public LabelPrintView()
     {
         InitializeComponent();
+        DataContextChanged += OnDataContextChanged;
+    }
+
+    /// <summary>
+    /// DataContext 變更時設定回調函數
+    /// </summary>
+    private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+    {
+        if (e.NewValue is LabelPrintViewModel viewModel)
+        {
+            // T066: 註冊檔案覆蓋確認對話框回調
+            viewModel.ConfirmOverwriteCallback = ShowOverwriteConfirmation;
+            // T069: 註冊必要欄位缺失警告對話框回調
+            viewModel.ShowWarningCallback = ShowWarningDialog;
+        }
+    }
+
+    /// <summary>
+    /// 顯示檔案覆蓋確認對話框
+    /// [ref: raw_spec 8.9]
+    /// T066: 「檔案已存在，是否覆蓋？」
+    /// </summary>
+    private static bool ShowOverwriteConfirmation(string filePath)
+    {
+        var fileName = Path.GetFileName(filePath);
+        var result = MessageBox.Show(
+            $"檔案已存在，是否覆蓋？\n\n{fileName}",
+            "確認",
+            MessageBoxButton.YesNo,
+            MessageBoxImage.Question);
+
+        return result == MessageBoxResult.Yes;
+    }
+
+    /// <summary>
+    /// 顯示警告對話框
+    /// [ref: raw_spec 8.9, 13.21]
+    /// T069: 「資料缺失：{欄位名稱}，無法產生標籤」
+    /// </summary>
+    private static void ShowWarningDialog(string message)
+    {
+        MessageBox.Show(
+            message,
+            "警告",
+            MessageBoxButton.OK,
+            MessageBoxImage.Warning);
     }
 
     /// <summary>
