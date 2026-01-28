@@ -110,7 +110,7 @@ NanmaoLabel/
 
 ### Label Templates [ref: raw_spec 5.1, 5.2]
 
-- [ ] T018 Create `NanmaoLabelPOC/Templates/BuiltInTemplates.cs` static class with:
+- [x] T018 Create `NanmaoLabelPOC/Templates/BuiltInTemplates.cs` static class with:
   - **QW075551-1** (出貨標籤): 17 fields per raw_spec 5.1 coordinates
     - Title, Customer label, CSCUSTOMER, Date label, FINDPRTDC, Q'ty label, CSQTY, Product NO label, CSCUSTITEMNO, CSCUSTPN (Barcode), MO label, CSMO, Device label, OUTDEVICENO, Remark label, CSREMARK, QRCODE
     - QR Code pattern: `{pono};{ima902};{ogd09};{nvr_remark10}`
