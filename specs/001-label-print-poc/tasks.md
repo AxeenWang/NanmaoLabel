@@ -238,12 +238,12 @@ NanmaoLabel/
 
 **Independent Test**: 啟動程式 → ListView 自動顯示資料 [ref: raw_spec TC-01]
 
-- [ ] T033 [US6] Create `NanmaoLabelPOC/ViewModels/MainViewModel.cs`:
+- [x] T033 [US6] Create `NanmaoLabelPOC/ViewModels/MainViewModel.cs`:
   - Auto-load data.json on startup [ref: raw_spec 13.5]
   - Tab navigation: 標籤列印, 資料管理 [ref: raw_spec 8.2]
   - Handle load failure gracefully [ref: raw_spec 8.9]
 
-- [ ] T034 [US6] Create `NanmaoLabelPOC/Views/MainWindow.xaml`:
+- [x] T034 [US6] Create `NanmaoLabelPOC/Views/MainWindow.xaml`:
   - Custom title bar (height 40px, #1E3A5F) [ref: raw_spec 8.3]
   - Buttons: [全螢幕 F11] [─] [□] [✕] [ref: raw_spec 8.3]
   - TabControl for pages [ref: raw_spec 8.2]
@@ -251,9 +251,9 @@ NanmaoLabel/
   - MinWidth: 1024, MinHeight: 576 [ref: raw_spec 8.3]
   - WindowStyle="None" [ref: raw_spec 8.3]
 
-- [ ] T035 [US6] Implement empty state message "📂 尚無資料，請至「資料管理」分頁匯入 Excel" [ref: raw_spec 8.4 空白狀態]
-- [ ] T036 [US6] Disable [輸出 PDF] button when no data [ref: raw_spec 8.10]
-- [ ] T037 [US6] Update `App.xaml.cs` to initialize MainWindow and trigger data load
+- [x] T035 [US6] Implement empty state message "📂 尚無資料，請至「資料管理」分頁匯入 Excel" [ref: raw_spec 8.4 空白狀態]
+- [x] T036 [US6] Disable [輸出 PDF] button when no data [ref: raw_spec 8.10]
+- [x] T037 [US6] Update `App.xaml.cs` to initialize MainWindow and trigger data load
 
 **Checkpoint**: US6 完成 - 程式啟動自動載入 [ref: raw_spec A-01]
 
