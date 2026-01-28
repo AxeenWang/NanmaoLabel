@@ -1,7 +1,7 @@
 # Tasks: 南茂標籤列印 POC
 
 **Reviewer**: Third-party Auditor
-**Date**: 2026-01-27
+**Date**: 2026-01-28 (v1.1)
 **Input**: Design documents from `/specs/001-label-print-poc/`
 **Authority**: `raw_spec.md` (第 13 章為最高優先規範)
 
@@ -42,7 +42,7 @@ NanmaoLabel/
 **Purpose**: Project initialization and basic structure [ref: raw_spec 7.2]
 **Milestone**: M1 (專案骨架)
 
-- [ ] T001 Create solution file `NanmaoLabel.sln` at repository root
+- [ ] T001 Create solution file `NanmaoLabel.sln` or new style `NanmaoLabel.slnx` at repository root
 - [ ] T002 [P] Create WPF project `NanmaoLabelPOC/NanmaoLabelPOC.csproj` targeting .NET 8 LTS with WindowStyle="None" [ref: raw_spec 7, 8.3]
 - [ ] T003 [P] Create test project `NanmaoLabelPOC.Tests/NanmaoLabelPOC.Tests.csproj` with xUnit [ref: raw_spec 7.2, 憲章 II]
 - [ ] T004 [P] Add NuGet packages: CommunityToolkit.Mvvm (8.x), ExcelDataReader (3.x), ExcelDataReader.DataSet (3.x), ZXing.Net (0.16.x), QuestPDF (2024.x) [ref: raw_spec 7.1]
@@ -59,7 +59,7 @@ NanmaoLabel/
 
 ### Data Models [ref: raw_spec 附錄 B, 7.2]
 
-- [ ] T008 [P] Create `NanmaoLabelPOC/Models/DataRecord.cs` with 17 fields (ogb03, ogb19, ogb092, ogb905, ogd12b, ogd12e, ima902, ogd15, ogd09, obe25, nvr_cust, nvr_cust_item_no, nvr_cust_pn, nvr_remark10, pono, erpmat, cscustpo), GetRawValue/GetDisplayValue methods for Raw/Display Value separation [ref: raw_spec 13.13]
+- [ ] T008 [P] Create `NanmaoLabelPOC/Models/DataRecord.cs` with Id (UUID) + 17 data fields (ogb03, ogb19, ogb092, ogb905, ogd12b, ogd12e, ima902, ogd15, ogd09, obe25, nvr_cust, nvr_cust_item_no, nvr_cust_pn, nvr_remark10, pono, erpmat, cscustpo), GetRawValue/GetDisplayValue methods for Raw/Display Value separation [ref: raw_spec 附錄 B.2, 13.13]
 - [ ] T009 [P] Create `NanmaoLabelPOC/Models/LabelField.cs` with FieldType enum (Text, Barcode, QRCode), properties: Name, FieldType, DataSource, IsConstant, CombinePattern, X, Y, Width, Height, FontSize, IsBold, Alignment [ref: raw_spec 4.1, 4.2]
 - [ ] T010 [P] Create `NanmaoLabelPOC/Models/LabelTemplate.cs` with Code, Name, WidthMm (100), HeightMm (60), List<LabelField> Fields [ref: raw_spec 5.1, 5.2]
 
@@ -76,8 +76,10 @@ NanmaoLabel/
 - [ ] T012 Create interface `NanmaoLabelPOC/Services/IDataStore.cs` with Load(), Save(records), GetAll() [ref: raw_spec 7.2]
 - [ ] T013 Create `NanmaoLabelPOC/Services/DataStore.cs` implementing IDataStore:
   - Path: `.\data\data.json` [ref: raw_spec 2.3]
+  - JSON structure: { version: "1.0", lastModified: ISO 8601, records: [] } [ref: raw_spec 附錄 B.1]
   - Auto-create directory if not exists [ref: raw_spec 2.3]
   - Update lastModified as ISO 8601 on save [ref: raw_spec 13.5]
+  - Generate UUID for new records [ref: raw_spec 附錄 B.2]
   - Single Source of Truth [ref: raw_spec 13.25]
 
 - [ ] T014 Create interface `NanmaoLabelPOC/Services/IExcelImporter.cs` with Import(filePath) [ref: raw_spec 7.2]
@@ -121,8 +123,9 @@ NanmaoLabel/
 ### Unit Tests (Foundational) [ref: raw_spec 7.2, 憲章 II]
 
 - [ ] T019 [P] Create `NanmaoLabelPOC.Tests/Services/DataStoreTests.cs`:
-  - Test Load/Save JSON
+  - Test Load/Save JSON with version field [ref: raw_spec 附錄 B.1]
   - Test lastModified update (ISO 8601)
+  - Test UUID generation for new records [ref: raw_spec 附錄 B.2]
   - Test auto-create directory
 
 - [ ] T020 [P] Create `NanmaoLabelPOC.Tests/Services/ExcelImporterTests.cs`:
@@ -151,8 +154,8 @@ NanmaoLabel/
 
 ### Label Rendering [ref: raw_spec 2.5, 4.2]
 
-- [ ] T022 Create interface `NanmaoLabelPOC/Services/ILabelRenderer.cs` with Render(template, record) returning render commands [ref: raw_spec 7.2]
-- [ ] T023 Create `NanmaoLabelPOC/Services/LabelRenderer.cs` implementing ILabelRenderer:
+- [ ] T022 [US1] Create interface `NanmaoLabelPOC/Services/ILabelRenderer.cs` with Render(template, record) returning render commands [ref: raw_spec 7.2]
+- [ ] T023 [US1] Create `NanmaoLabelPOC/Services/LabelRenderer.cs` implementing ILabelRenderer:
   - Variable substitution from DataRecord [ref: raw_spec 4.2]
   - Constant value handling (e.g., "17008") [ref: raw_spec 4.2]
   - **Raw Value for Barcode/QRCode** [ref: raw_spec 13.13]:
@@ -168,8 +171,8 @@ NanmaoLabel/
 
 ### PDF Export [ref: raw_spec 3.1 F-08]
 
-- [ ] T024 Create interface `NanmaoLabelPOC/Services/IPdfExporter.cs` with ExportSingle(template, record, outputPath) [ref: raw_spec 7.2]
-- [ ] T025 Create `NanmaoLabelPOC/Services/PdfExporter.cs` implementing IPdfExporter:
+- [ ] T024 [US1] Create interface `NanmaoLabelPOC/Services/IPdfExporter.cs` with ExportSingle(template, record, outputPath) [ref: raw_spec 7.2]
+- [ ] T025 [US1] Create `NanmaoLabelPOC/Services/PdfExporter.cs` implementing IPdfExporter:
   - Page size: 100mm × 60mm [ref: raw_spec 5.1]
   - Font embedding: Microsoft JhengHei (Regular + Bold) [ref: raw_spec 5.3, 13.2]
   - Use UnitConverter.MmToPt for coordinates [ref: raw_spec 13.1]
@@ -180,7 +183,7 @@ NanmaoLabel/
 
 ### ViewModel [ref: raw_spec 8.4]
 
-- [ ] T026 Create `NanmaoLabelPOC/ViewModels/LabelPrintViewModel.cs`:
+- [ ] T026 [US1] Create `NanmaoLabelPOC/ViewModels/LabelPrintViewModel.cs`:
   - Properties: Records, SelectedRecord, SelectedTemplate, PreviewContent
   - Commands: LoadDataCommand, ExportPdfCommand
   - Use CommunityToolkit.Mvvm [ref: raw_spec 7.1]
@@ -512,14 +515,23 @@ Phase 9 (Polish) ◀───── All user stories complete
 |-------|--------|----------|--------------|
 | 1 Setup | 7 | 5 | 0 |
 | 2 Foundational | 14 | 9 | 0 |
-| 3 US1 | 8 | 1 | 2 |
+| 3 US1 | 8 | 1 | 7 |
 | 4 US2 | 3 | 0 | 3 |
 | 5 US6 | 5 | 0 | 5 |
 | 6 US3 | 6 | 0 | 6 |
 | 7 US4 | 8 | 0 | 8 |
 | 8 US5 | 9 | 0 | 9 |
 | 9 Polish | 21 | 14 | 0 |
-| **Total** | **81** | **29** | **33** |
+| **Total** | **81** | **29** | **38** |
+
+---
+
+## Revision History
+
+| 版本 | 日期 | 修訂內容 |
+|------|------|----------|
+| v1.0 | 2026-01-27 | 初版產出 |
+| v1.1 | 2026-01-28 | 依第三方審查報告修正：(1) T022~T026 補上 [US1] 標記 (2) T008 補上 Id (UUID) 欄位 [ref: raw_spec 附錄 B.2] (3) T013 補上 version 欄位與 UUID 生成 [ref: raw_spec 附錄 B.1] (4) T019 補上 version/UUID 測試項目 |
 
 ---
 

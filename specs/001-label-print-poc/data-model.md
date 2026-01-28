@@ -1,8 +1,17 @@
 # Data Model: 南茂標籤列印 POC
 
-**Date**: 2026-01-27
+**Date**: 2026-01-28 (v1.1)
 **Phase**: 1 - Design & Contracts
 **Status**: Complete
+
+---
+
+## Revision History
+
+| 版本 | 日期 | 修訂內容 |
+|------|------|----------|
+| v1.0 | 2026-01-27 | 初版 |
+| v1.1 | 2026-01-28 | 新增 `id` (UUID) 欄位至 DataRecord [ref: raw_spec 附錄 B.2]；新增 `version` 欄位至 JSON 結構 [ref: raw_spec 附錄 B.1] |
 
 ---
 
@@ -39,7 +48,8 @@
 
 | 欄位代碼 | 說明 | 資料類型 | 必填 | 備註 |
 |----------|------|----------|------|------|
-| ogb19 | 單據編號 | string | ✅ | 主鍵識別，用於 PDF 檔名 |
+| id | 紀錄唯一識別碼 | string (UUID) | ✅ | 系統自動生成，格式為 UUID v4 [ref: raw_spec 附錄 B.2, 13.13] |
+| ogb19 | 單據編號 | string | ✅ | 業務主鍵，用於 PDF 檔名 |
 | nvr_cust | 客戶名稱 | string | ✅ | QW075551-1 CSCUSTOMER |
 | nvr_cust_item_no | 客戶料號 | string | ✅ | CSCUSTITEMNO |
 | nvr_cust_pn | 客戶 P/N | string | ✅ | Code 128 條碼來源 |
@@ -157,9 +167,11 @@
 
 ```json
 {
+  "version": "1.0",
   "lastModified": "2026-01-27T14:30:52+08:00",
   "records": [
     {
+      "id": "550e8400-e29b-41d4-a716-446655440000",
       "ogb19": "G25A111577",
       "nvr_cust": "XinshengIntelligent",
       "nvr_cust_item_no": "XPA72EA0I-008",
@@ -180,6 +192,7 @@
 
 | 欄位 | 說明 | 格式 |
 |------|------|------|
+| version | 資料格式版本 | 字串，如 "1.0" [ref: raw_spec 附錄 B.1] |
 | lastModified | 最後修改時間 | ISO 8601 (含時區) [ref: IC-017] |
 | records | 資料紀錄陣列 | DataRecord[] |
 

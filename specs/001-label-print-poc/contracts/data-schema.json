@@ -4,8 +4,13 @@
   "title": "NanmaoLabel Data Store",
   "description": "南茂標籤列印 POC 資料儲存格式 (data.json)",
   "type": "object",
-  "required": ["lastModified", "records"],
+  "required": ["version", "lastModified", "records"],
   "properties": {
+    "version": {
+      "type": "string",
+      "description": "資料格式版本 [ref: raw_spec 附錄 B.1]",
+      "const": "1.0"
+    },
     "lastModified": {
       "type": "string",
       "format": "date-time",
@@ -25,6 +30,7 @@
       "type": "object",
       "description": "單筆交易資料紀錄",
       "required": [
+        "id",
         "ogb19",
         "nvr_cust",
         "nvr_cust_item_no",
@@ -35,6 +41,12 @@
         "ima902"
       ],
       "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid",
+          "description": "紀錄唯一識別碼 (UUID v4，系統自動生成) [ref: raw_spec 附錄 B.2, 13.13]",
+          "examples": ["550e8400-e29b-41d4-a716-446655440000"]
+        },
         "ogb19": {
           "type": "string",
           "description": "單據編號 (主鍵識別)",

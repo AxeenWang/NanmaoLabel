@@ -13,6 +13,10 @@
 - Q: FR 未標註對應的 raw_spec 章節編號（憲章 A-4 需求追溯原則）→ A: 為 Assumptions 與 Edge Cases 補充 `[ref: raw_spec X.X]` 追溯標註
 - Q: 遺漏雙擊防抖、欄位名稱非法字元等 Edge Cases → A: 補充 3 項遺漏的 Edge Cases
 
+### Session 2026-01-28
+
+- Q: SD-03 規範缺陷 - raw_spec 13.17「300 DPI」定義模糊（是渲染 DPI 還是列印 DPI？）→ A: raw_spec 13.17 已補充「條碼圖片生成規範」表格，明確定義：(1) 300 DPI 為條碼光柵化生成時的像素密度基準 (2) 換算公式：像素 = 實體尺寸(mm) × 300 ÷ 25.4 (3) Code 128 高度 10mm = 118px，QR Code 20mm = 236px
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - 標籤列印與 PDF 輸出 (Priority: P1)

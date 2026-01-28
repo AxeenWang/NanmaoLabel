@@ -1,9 +1,21 @@
 # Tasks.md 第三方審查報告
 
 **Reviewer**: Third-party Auditor
-**Date**: 2026-01-27
-**Subject**: tasks.md 完整性與可執行性查核
+**Date**: 2026-01-28
+**Subject**: tasks.md v1.1 完整性與可執行性查核
 **Authority**: raw_spec.md（第 13 章為最高優先）、工程憲章 v1.1.0
+
+---
+
+## v1.1 修訂紀錄 (2026-01-28)
+
+| 任務 | 修訂內容 |
+|------|----------|
+| T008 | 新增 `Id (UUID)` 欄位 [ref: raw_spec 附錄 B.2, 13.13] |
+| T013 | 新增 `version: "1.0"` 與 UUID 生成邏輯 [ref: raw_spec 附錄 B.1] |
+| T019 | 新增 version/UUID 測試項目 |
+| T022~T026 | 補上 [US1] Story 標籤 |
+| 統計 | [Story] 標籤數量 33 → 38 |
 
 ---
 
@@ -318,7 +330,19 @@
 | 項目 | 內容 |
 |------|------|
 | 審查者 | Third-party Auditor |
-| 審查日期 | 2026-01-27 |
-| 審查版本 | tasks.md (81 tasks) |
-| 依據文件 | raw_spec.md v2.4, constitution.md v1.1.0 |
+| 初審日期 | 2026-01-27 |
+| 複審日期 | 2026-01-28 |
+| 審查版本 | tasks.md v1.1 (81 tasks) |
+| 依據文件 | raw_spec.md v2.4 (含附錄 B), constitution.md v1.1.0 |
 | 審查結果 | **PASS** |
+
+### 10.1 v1.1 複審說明
+
+v1.0 審查後發現以下缺漏，已於 v1.1 修正：
+
+1. **T008 DataRecord.cs** - 原缺 `Id (UUID)` 欄位定義 [ref: raw_spec 附錄 B.2]
+2. **T013 DataStore.cs** - 原缺 `version` 欄位與 UUID 生成邏輯 [ref: raw_spec 附錄 B.1]
+3. **T019 DataStoreTests.cs** - 原缺 version/UUID 測試項目
+4. **T022~T026** - 原缺 [US1] Story 標籤
+
+複審確認所有修正項目已正確納入 tasks.md v1.1，與 raw_spec 附錄 B 規範一致。

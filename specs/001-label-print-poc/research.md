@@ -1,8 +1,10 @@
 # Research: 南茂標籤列印 POC
 
-**Date**: 2026-01-27
+**Date**: 2026-01-28 (updated)
 **Phase**: 0 - Research & Technical Decisions
 **Status**: Complete
+
+**v1.1 更新 (2026-01-28)**: 條碼/QR Code 尺寸換算表格新增 raw_spec 13.17 引用與換算公式
 
 ---
 
@@ -79,7 +81,9 @@ var pixelData = barcodeWriter.Write(rawValue);
 // 轉換為 System.Drawing.Bitmap 或 SkiaSharp.SKBitmap
 ```
 
-### 條碼尺寸換算
+### 條碼尺寸換算 [ref: raw_spec 13.17]
+
+> 換算公式：`像素 = 實體尺寸(mm) × 300 ÷ 25.4`
 
 | 項目 | mm | @ 300 DPI (px) |
 |------|------|----------------|
@@ -133,7 +137,9 @@ var qrContent = $"{pono};{ima902};{ogd09}";  // 如 "A;;C"
 var pixelData = qrCodeWriter.Write(qrContent);
 ```
 
-### QR Code 尺寸換算
+### QR Code 尺寸換算 [ref: raw_spec 13.17]
+
+> 換算公式：`像素 = 實體尺寸(mm) × 300 ÷ 25.4`
 
 | 項目 | mm | @ 300 DPI (px) |
 |------|------|----------------|
