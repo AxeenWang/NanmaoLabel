@@ -10,6 +10,7 @@ bin/
 obj/
 [Bb]uild/
 [Dd]ist/
+[Pp]ublish/
 
 # ------------------------------------------
 # 2. Visual Studio / IDE 產物
