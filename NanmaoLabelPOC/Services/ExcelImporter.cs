@@ -29,9 +29,9 @@ public partial class ExcelImporter : IExcelImporter
     };
 
     /// <summary>
-    /// 欄位名稱驗證正規表達式：僅允許英數字 [ref: raw_spec 13.11]
+    /// 欄位名稱驗證正規表達式：允許英數字及底線 [ref: spec.md FR-001]
     /// </summary>
-    [GeneratedRegex(@"^[A-Za-z0-9]+$")]
+    [GeneratedRegex(@"^[A-Za-z0-9_]+$")]
     private static partial Regex FieldNamePattern();
 
     /// <summary>
@@ -151,13 +151,13 @@ public partial class ExcelImporter : IExcelImporter
                 continue;
             }
 
-            // 欄位名稱驗證：僅允許英數字 [ref: raw_spec 13.11]
+            // 欄位名稱驗證：允許英數字及底線 [ref: spec.md FR-001, FR-002]
             if (!FieldNamePattern().IsMatch(columnName))
             {
-                // 含底線、空白、特殊符號視為欄位缺失 [ref: raw_spec 13.11]
+                // 含空白、連字號、其他特殊符號視為非法欄位 [ref: spec.md FR-002]
                 // TODO: Phase 6 (T028) 將遷移至 Messages 屬性
 #pragma warning disable CS0618 // Obsolete - 向後相容，Phase 6 遷移
-                result.Warnings.Add($"欄位名稱 '{columnName}' 包含非法字元（僅允許英數字），已忽略");
+                result.Warnings.Add($"欄位名稱 '{columnName}' 包含非法字元（僅允許英數字及底線），已忽略");
 #pragma warning restore CS0618
                 continue;
             }

@@ -41,13 +41,13 @@
 
 ### Tests for User Story 1
 
-- [ ] T005 [P] [US1] 新增測試 FieldNameValidation_WithUnderscore_ShouldBeValid 至 NanmaoLabelPOC.Tests/Services/ExcelImporterTests.cs（FR-001）
-- [ ] T006 [P] [US1] 新增測試 FieldNameValidation_WithSpecialChars_ShouldBeInvalid 至 NanmaoLabelPOC.Tests/Services/ExcelImporterTests.cs（FR-002）
+- [X] T005 [P] [US1] 新增測試 FieldNameValidation_WithUnderscore_ShouldBeValid 至 NanmaoLabelPOC.Tests/Services/ExcelImporterTests.cs（FR-001）
+- [X] T006 [P] [US1] 新增測試 FieldNameValidation_WithSpecialChars_ShouldBeInvalid 至 NanmaoLabelPOC.Tests/Services/ExcelImporterTests.cs（FR-002）
 
 ### Implementation for User Story 1
 
-- [ ] T007 [US1] 修正 FieldNamePattern() 正規表達式從 `^[A-Za-z0-9]+$` 改為 `^[A-Za-z0-9_]+$` 至 NanmaoLabelPOC/Services/ExcelImporter.cs:34（FR-001）
-- [ ] T008 [US1] 更新 BuildColumnMapping() 中的警告訊息，含底線欄位不再產生警告至 NanmaoLabelPOC/Services/ExcelImporter.cs:140-170
+- [X] T007 [US1] 修正 FieldNamePattern() 正規表達式從 `^[A-Za-z0-9]+$` 改為 `^[A-Za-z0-9_]+$` 至 NanmaoLabelPOC/Services/ExcelImporter.cs:34（FR-001）
+- [X] T008 [US1] 更新 BuildColumnMapping() 中的警告訊息，含底線欄位不再產生警告至 NanmaoLabelPOC/Services/ExcelImporter.cs:140-170
 
 **Checkpoint**: 底線欄位可正常匯入，US1 可獨立測試驗證
 

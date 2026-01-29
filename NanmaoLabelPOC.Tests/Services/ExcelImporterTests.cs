@@ -103,39 +103,109 @@ public class ExcelImporterTests : IDisposable
 
     #endregion
 
-    #region Field Name Validation Tests [ref: raw_spec 13.11]
+    #region Field Name Validation Tests [ref: spec.md FR-001, FR-002]
 
     /// <summary>
-    /// 測試：含底線的欄位名稱應產生警告 [ref: raw_spec 13.11]
-    /// 注意：nvr_cust 等底線欄位需透過內部對應處理，外部欄位名不應含底線
+    /// T005: 含底線的欄位名稱應被判定為合法 [ref: spec.md FR-001]
+    ///
+    /// FR-001: 系統 MUST 接受欄位名稱包含英數字（A-Z、a-z、0-9）及底線（_）
+    ///
+    /// 此測試驗證：
+    /// - nvr_cust, nvr_cust_item_no, nvr_cust_pn, nvr_remark10 等含底線的標準欄位
+    /// - 使用新的正規表達式 ^[A-Za-z0-9_]+$ 進行驗證
     /// </summary>
     [Fact]
-    public void Import_FieldNameWithUnderscore_GeneratesWarning()
+    public void FieldNameValidation_WithUnderscore_ShouldBeValid()
     {
-        // 此測試驗證欄位名稱驗證邏輯
-        // 根據 raw_spec 13.11：「欄位名稱僅允許英數字，底線/空白/特殊符號視為欄位缺失」
+        // Arrange - 規格書定義的含底線合法欄位
+        var validNamesWithUnderscore = new[]
+        {
+            "nvr_cust",           // 客戶代號
+            "nvr_cust_item_no",   // 客戶件號
+            "nvr_cust_pn",        // 客戶料號
+            "nvr_remark10",       // 備註
+            "field_name",         // 一般底線欄位
+            "a_b_c",              // 多底線
+            "_prefix",            // 底線開頭
+            "suffix_"             // 底線結尾
+        };
 
-        // ExcelImporter 內部會檢查欄位名稱是否符合 [A-Za-z0-9]+ 模式
-        // 含底線的欄位會被忽略並產生警告
+        // 新的正規表達式：允許英數字及底線
+        var pattern = new System.Text.RegularExpressions.Regex(@"^[A-Za-z0-9_]+$");
 
-        // 由於我們無法直接建立 Excel 檔案，此測試透過模擬驗證邏輯
-        // 實際測試會在整合測試中使用真實 Excel 檔案
-
-        Assert.True(true); // 佔位測試 - 需透過整合測試驗證
+        // Act & Assert
+        foreach (var name in validNamesWithUnderscore)
+        {
+            Assert.True(pattern.IsMatch(name), $"'{name}' should be valid (FR-001: underscore allowed)");
+        }
     }
 
     /// <summary>
-    /// 測試：欄位名稱僅允許英數字 [ref: raw_spec 13.11]
+    /// T006: 含特殊字元的欄位名稱應被判定為非法 [ref: spec.md FR-002]
+    ///
+    /// FR-002: 系統 MUST 拒絕欄位名稱包含其他特殊字元（如 -、@、空格等）
+    ///
+    /// 此測試驗證：
+    /// - 含空格、連字號、@、中文等特殊字元的欄位名稱應被拒絕
+    /// - 空字串應被拒絕
     /// </summary>
     [Fact]
-    public void FieldNameValidation_AlphanumericOnly()
+    public void FieldNameValidation_WithSpecialChars_ShouldBeInvalid()
     {
-        // 驗證正則表達式模式
-        var validNames = new[] { "ogb19", "OGB19", "Ogb19", "nvrcust", "NVRCUST", "field123" };
-        var invalidNames = new[] { "nvr_cust", "field name", "field@name", "field-name", "欄位名" };
+        // Arrange - 含特殊字元的非法欄位名稱
+        var invalidNames = new[]
+        {
+            "field name",         // 含空格
+            "field-name",         // 含連字號
+            "field@name",         // 含 @
+            "field.name",         // 含句點
+            "field#name",         // 含 #
+            "欄位名",             // 中文
+            "field名稱",          // 混合中文
+            "",                   // 空字串
+            "   ",                // 純空白
+            "field\tname",        // 含 Tab
+            "field\nname"         // 含換行
+        };
 
-        var pattern = new System.Text.RegularExpressions.Regex(@"^[A-Za-z0-9]+$");
+        // 新的正規表達式：允許英數字及底線
+        var pattern = new System.Text.RegularExpressions.Regex(@"^[A-Za-z0-9_]+$");
 
+        // Act & Assert
+        foreach (var name in invalidNames)
+        {
+            Assert.False(pattern.IsMatch(name), $"'{name}' should be invalid (FR-002: special chars rejected)");
+        }
+    }
+
+    /// <summary>
+    /// 測試：欄位名稱允許英數字及底線 [ref: spec.md FR-001, FR-002]
+    ///
+    /// 綜合驗證新的欄位名稱規則
+    /// </summary>
+    [Fact]
+    public void FieldNameValidation_AlphanumericAndUnderscore()
+    {
+        // Arrange
+        var validNames = new[]
+        {
+            "ogb19", "OGB19", "Ogb19",           // 純英數字
+            "nvrcust", "NVRCUST", "field123",   // 純英數字
+            "nvr_cust", "nvr_cust_item_no",     // 含底線（FR-001 允許）
+            "field_name", "a_b_c"               // 含底線
+        };
+
+        var invalidNames = new[]
+        {
+            "field name",         // 空格（FR-002 拒絕）
+            "field@name",         // @ 符號
+            "field-name",         // 連字號
+            "欄位名"              // 中文
+        };
+
+        var pattern = new System.Text.RegularExpressions.Regex(@"^[A-Za-z0-9_]+$");
+
+        // Act & Assert
         foreach (var name in validNames)
         {
             Assert.True(pattern.IsMatch(name), $"'{name}' should be valid");
