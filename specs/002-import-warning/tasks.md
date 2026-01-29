@@ -24,10 +24,10 @@
 
 **Purpose**: 新增 MessageSeverity 列舉與 ImportMessage 類別
 
-- [ ] T001 [P] 新增 MessageSeverity 列舉至 NanmaoLabelPOC/Services/IExcelImporter.cs（FR-003）
-- [ ] T002 [P] 新增 ImportMessage 類別至 NanmaoLabelPOC/Services/IExcelImporter.cs（FR-003, FR-009）
-- [ ] T003 擴充 ImportResult 類別：新增 Messages 屬性與計算屬性（ErrorCount、WarningCount、InfoCount、HasErrors、HasWarnings、HasInfos）至 NanmaoLabelPOC/Services/IExcelImporter.cs（FR-007, FR-008）
-- [ ] T004 標記 ImportResult.Warnings 為 [Obsolete] 並實作向後相容邏輯至 NanmaoLabelPOC/Services/IExcelImporter.cs
+- [X] T001 [P] 新增 MessageSeverity 列舉至 NanmaoLabelPOC/Services/IExcelImporter.cs（FR-003）
+- [X] T002 [P] 新增 ImportMessage 類別至 NanmaoLabelPOC/Services/IExcelImporter.cs（FR-003, FR-009）
+- [X] T003 擴充 ImportResult 類別：新增 Messages 屬性與計算屬性（ErrorCount、WarningCount、InfoCount、HasErrors、HasWarnings、HasInfos）至 NanmaoLabelPOC/Services/IExcelImporter.cs（FR-007, FR-008）
+- [X] T004 標記 ImportResult.Warnings 為 [Obsolete] 並實作向後相容邏輯至 NanmaoLabelPOC/Services/IExcelImporter.cs
 
 **Checkpoint**: 資料模型擴充完成，可開始實作 User Story
 

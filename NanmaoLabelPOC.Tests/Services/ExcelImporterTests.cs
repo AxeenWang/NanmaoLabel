@@ -459,8 +459,11 @@ public class ExcelImporterTests : IDisposable
         Assert.NotNull(result.Records);
         Assert.Empty(result.Records);
         Assert.Null(result.ErrorMessage);
+        // TODO: Phase 6 (T027) 將遷移至 Messages 屬性
+#pragma warning disable CS0618 // Obsolete - 向後相容，Phase 6 遷移
         Assert.NotNull(result.Warnings);
         Assert.Empty(result.Warnings);
+#pragma warning restore CS0618
         Assert.Equal(0, result.RecordCount);
     }
 

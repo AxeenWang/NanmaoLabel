@@ -155,7 +155,10 @@ public partial class ExcelImporter : IExcelImporter
             if (!FieldNamePattern().IsMatch(columnName))
             {
                 // 含底線、空白、特殊符號視為欄位缺失 [ref: raw_spec 13.11]
+                // TODO: Phase 6 (T028) 將遷移至 Messages 屬性
+#pragma warning disable CS0618 // Obsolete - 向後相容，Phase 6 遷移
                 result.Warnings.Add($"欄位名稱 '{columnName}' 包含非法字元（僅允許英數字），已忽略");
+#pragma warning restore CS0618
                 continue;
             }
 
@@ -254,7 +257,10 @@ public partial class ExcelImporter : IExcelImporter
         // 檢查是否含千分位 [ref: raw_spec 13.14]
         if (ThousandSeparatorPattern().IsMatch(value))
         {
+            // TODO: Phase 6 (T028) 將遷移至 Messages 屬性
+#pragma warning disable CS0618 // Obsolete - 向後相容，Phase 6 遷移
             result.Warnings.Add($"數量欄位 '{fieldName}' 包含千分位格式 '{value}'，請使用純數字");
+#pragma warning restore CS0618
             // 移除千分位後繼續處理
             value = value.Replace(",", "");
         }
@@ -262,7 +268,10 @@ public partial class ExcelImporter : IExcelImporter
         // 驗證是否為純數字 [ref: raw_spec 13.14]
         if (!string.IsNullOrEmpty(value) && !DigitsOnlyPattern().IsMatch(value))
         {
+            // TODO: Phase 6 (T028) 將遷移至 Messages 屬性
+#pragma warning disable CS0618 // Obsolete - 向後相容，Phase 6 遷移
             result.Warnings.Add($"數量欄位 '{fieldName}' 值 '{value}' 包含非數字字元");
+#pragma warning restore CS0618
         }
 
         return value;
@@ -358,7 +367,10 @@ public partial class ExcelImporter : IExcelImporter
         {
             if (!string.IsNullOrEmpty(value) && value.Contains(';'))
             {
+                // TODO: Phase 6 (T028) 將遷移至 Messages 屬性
+#pragma warning disable CS0618 // Obsolete - 向後相容，Phase 6 遷移
                 result.Warnings.Add($"欄位 '{fieldName}' 值 '{value}' 包含分號，可能影響 QR Code 解析");
+#pragma warning restore CS0618
             }
         }
     }

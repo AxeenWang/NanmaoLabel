@@ -65,3 +65,8 @@ node_modules/
 *.snk
 appsettings.*.json
 !appsettings.example.json
+
+# ------------------------------------------
+# 7. 個人臨時筆記
+# ------------------------------------------
+*.local.md

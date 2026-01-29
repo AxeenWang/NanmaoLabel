@@ -197,9 +197,12 @@ public partial class DataManageView : UserControl
 
             // T050: 分號警告 [ref: raw_spec 3.3, 13.4]
             // T051: 千分位警告 [ref: raw_spec 13.14]
+            // TODO: Phase 4 (T024) 將改用 ImportResultDialog
+#pragma warning disable CS0618 // Obsolete - 向後相容，Phase 4 遷移
             if (result.Warnings.Count > 0)
             {
                 var warningText = BuildWarningText(result.Warnings);
+#pragma warning restore CS0618
                 // T074: 對話框標題使用「警告」[ref: raw_spec 8.10]
                 MessageBox.Show(
                     $"{successMessage}\n\n{warningText}",
