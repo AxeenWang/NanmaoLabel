@@ -87,12 +87,12 @@
 
 ### Implementation for User Story 3
 
-- [ ] T019 [P] [US3] 建立 ImportResultDialog.xaml 自訂對話框至 NanmaoLabelPOC/Views/ImportResultDialog.xaml（FR-006, FR-007, FR-008）
-- [ ] T020 [P] [US3] 建立 ImportResultDialog.xaml.cs code-behind 至 NanmaoLabelPOC/Views/ImportResultDialog.xaml.cs
-- [ ] T021 [US3] 實作 ImportResultDialog 內容：匯入筆數、Error 區段、Warning 區段至 NanmaoLabelPOC/Views/ImportResultDialog.xaml（FR-007）
-- [ ] T022 [US3] 實作 ImportResultDialog Info 區段：使用 Expander 預設收合至 NanmaoLabelPOC/Views/ImportResultDialog.xaml（FR-006, FR-008）
-- [ ] T023 [US3] 實作大量訊息摘要：Info 超過 10 條時顯示「共 N 條資訊」至 NanmaoLabelPOC/Views/ImportResultDialog.xaml.cs
-- [ ] T024 [US3] 修改 DataManageView.xaml.cs ImportButton_Click()：改用 ImportResultDialog 顯示結果至 NanmaoLabelPOC/Views/DataManageView.xaml.cs:155-229
+- [X] T019 [P] [US3] 建立 ImportResultDialog.xaml 自訂對話框至 NanmaoLabelPOC/Views/ImportResultDialog.xaml（FR-006, FR-007, FR-008）
+- [X] T020 [P] [US3] 建立 ImportResultDialog.xaml.cs code-behind 至 NanmaoLabelPOC/Views/ImportResultDialog.xaml.cs
+- [X] T021 [US3] 實作 ImportResultDialog 內容：匯入筆數、Error 區段、Warning 區段至 NanmaoLabelPOC/Views/ImportResultDialog.xaml（FR-007）
+- [X] T022 [US3] 實作 ImportResultDialog Info 區段：使用 Expander 預設收合至 NanmaoLabelPOC/Views/ImportResultDialog.xaml（FR-006, FR-008）
+- [X] T023 [US3] 實作大量訊息摘要：Info 超過 10 條時顯示「共 N 條資訊」至 NanmaoLabelPOC/Views/ImportResultDialog.xaml.cs
+- [X] T024 [US3] 修改 DataManageView.xaml.cs ImportButton_Click()：改用 ImportResultDialog 顯示結果至 NanmaoLabelPOC/Views/DataManageView.xaml.cs:155-229
 
 **Checkpoint**: 匯入結果以結構化對話框顯示，Info 可展開，US3 可獨立測試驗證
 
