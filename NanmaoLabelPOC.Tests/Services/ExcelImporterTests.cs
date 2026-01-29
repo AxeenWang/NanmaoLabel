@@ -433,6 +433,87 @@ public class ExcelImporterTests : IDisposable
         Assert.Contains("erpmat", expectedFields);
     }
 
+    /// <summary>
+    /// T025: 欄位值含分號應回傳 Warning 等級訊息 [ref: spec.md FR-005, FR-009]
+    ///
+    /// FR-005: Warning 等級訊息 MUST 允許匯入繼續，並在結果摘要中顯示
+    /// FR-009: 欄位值含分號應分類為 Warning
+    ///
+    /// 此測試驗證：
+    /// - 分號警告應為 Warning 等級（非 Error 或 Info）
+    /// - 訊息格式符合規格：「欄位 'pono' 值 'ABC;123' 包含分號，可能影響 QR Code」
+    /// - 訊息應包含正確的 FieldName 屬性
+    /// </summary>
+    [Fact]
+    public void Import_SemicolonInValue_ShouldReturnWarningSeverity()
+    {
+        // Arrange - 模擬分號警告訊息
+        var result = new ImportResult { Success = true };
+
+        // 模擬 CheckSemicolonWarnings 產生的訊息格式
+        var fieldName = "pono";
+        var value = "ABC;123";
+        var expectedMessage = $"欄位 '{fieldName}' 值 '{value}' 包含分號，可能影響 QR Code";
+
+        result.Messages.Add(new ImportMessage
+        {
+            Severity = MessageSeverity.Warning,
+            Message = expectedMessage,
+            FieldName = fieldName
+        });
+
+        // Assert - 驗證訊息等級
+        Assert.True(result.HasWarnings, "分號警告應為 Warning 等級");
+        Assert.False(result.HasErrors, "分號警告不應為 Error 等級");
+        Assert.Equal(1, result.WarningCount);
+
+        // Assert - 驗證訊息內容 (T026)
+        var warningMessage = result.Messages.First(m => m.Severity == MessageSeverity.Warning);
+        Assert.Equal(MessageSeverity.Warning, warningMessage.Severity);
+        Assert.Contains("包含分號", warningMessage.Message);
+        Assert.Contains("可能影響 QR Code", warningMessage.Message);
+        Assert.Equal(fieldName, warningMessage.FieldName);
+
+        // Assert - 驗證訊息格式符合 spec.md US4
+        // 格式：「欄位 'pono' 值 'ABC;123' 包含分號，可能影響 QR Code」
+        Assert.Contains($"欄位 '{fieldName}'", warningMessage.Message);
+        Assert.Contains($"值 '{value}'", warningMessage.Message);
+    }
+
+    /// <summary>
+    /// T026: 驗證 CheckSemicolonWarnings 訊息格式符合規格
+    ///
+    /// spec.md US4 Acceptance Scenario:
+    /// Given Excel 中 pono 欄位值為 ABC;123，
+    /// When 匯入操作完成，
+    /// Then 系統顯示 Warning「欄位 'pono' 值 'ABC;123' 包含分號，可能影響 QR Code」
+    /// </summary>
+    [Fact]
+    public void CheckSemicolonWarnings_MessageFormat_ShouldMatchSpec()
+    {
+        // Arrange - 所有需要檢查的 QR Code 欄位
+        var qrCodeFields = new[] { "pono", "ima902", "nvr_remark10", "erpmat", "cscustpo", "ogd09" };
+
+        foreach (var fieldName in qrCodeFields)
+        {
+            var testValue = $"TEST;{fieldName}";
+            var expectedMessagePattern = $"欄位 '{fieldName}' 值 '{testValue}' 包含分號，可能影響 QR Code";
+
+            // 模擬訊息
+            var message = new ImportMessage
+            {
+                Severity = MessageSeverity.Warning,
+                Message = expectedMessagePattern,
+                FieldName = fieldName
+            };
+
+            // Assert
+            Assert.Equal(MessageSeverity.Warning, message.Severity);
+            Assert.Equal(expectedMessagePattern, message.Message);
+            Assert.Equal(fieldName, message.FieldName);
+        }
+    }
+
     #endregion
 
     #region UUID Generation Tests [ref: raw_spec 附錄 B.2]

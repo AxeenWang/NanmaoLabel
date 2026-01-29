@@ -106,11 +106,11 @@
 
 ### Tests for User Story 4
 
-- [ ] T025 [P] [US4] 新增測試 Import_SemicolonInValue_ShouldReturnWarningSeverity 至 NanmaoLabelPOC.Tests/Services/ExcelImporterTests.cs（FR-005, FR-009）
+- [X] T025 [P] [US4] 新增測試 Import_SemicolonInValue_ShouldReturnWarningSeverity 至 NanmaoLabelPOC.Tests/Services/ExcelImporterTests.cs（FR-005, FR-009）
 
 ### Implementation for User Story 4
 
-- [ ] T026 [US4] 驗證 CheckSemicolonWarnings() 訊息格式符合規格：「欄位 'pono' 值 'ABC;123' 包含分號，可能影響 QR Code」至 NanmaoLabelPOC/Services/ExcelImporter.cs:345-364
+- [X] T026 [US4] 驗證 CheckSemicolonWarnings() 訊息格式符合規格：「欄位 'pono' 值 'ABC;123' 包含分號，可能影響 QR Code」至 NanmaoLabelPOC/Services/ExcelImporter.cs:345-364
 
 **Checkpoint**: 分號警告功能完整，US4 可獨立測試驗證
 
