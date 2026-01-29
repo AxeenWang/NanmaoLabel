@@ -540,11 +540,10 @@ public class ExcelImporterTests : IDisposable
         Assert.NotNull(result.ErrorMessage);
         Assert.Contains("找不到", result.ErrorMessage);
 
-        // Assert - 訊息分級驗證 (T012 實作後啟用)
-        // 目前 ExcelImporter 尚未使用 Messages 屬性處理此錯誤
-        // 當 T012 完成後，以下斷言應通過：
-        // Assert.True(result.HasErrors, "應有 Error 等級訊息");
-        // Assert.Contains(result.Messages, m => m.Severity == MessageSeverity.Error);
+        // Assert - 訊息分級驗證 (T012 已實作)
+        Assert.True(result.HasErrors, "應有 Error 等級訊息");
+        Assert.Contains(result.Messages, m => m.Severity == MessageSeverity.Error);
+        Assert.Contains(result.Messages, m => m.Message.Contains("找不到"));
     }
 
     /// <summary>

@@ -67,13 +67,13 @@
 
 ### Implementation for User Story 2
 
-- [ ] T012 [US2] 重構 Import() 方法：檔案不存在時新增 Error 等級 ImportMessage 至 NanmaoLabelPOC/Services/ExcelImporter.cs:60-66（FR-004, FR-009）
-- [ ] T013 [US2] 重構 Import() 方法：檔案格式錯誤時新增 Error 等級 ImportMessage 至 NanmaoLabelPOC/Services/ExcelImporter.cs:68-74（FR-004, FR-009）
-- [ ] T014 [US2] 重構 BuildColumnMapping()：額外欄位被忽略時新增 Info 等級 ImportMessage 至 NanmaoLabelPOC/Services/ExcelImporter.cs:140-170（FR-006, FR-009）
-- [ ] T015 [US2] 重構 BuildColumnMapping()：非法欄位名稱時新增 Info 等級 ImportMessage（非底線字元）至 NanmaoLabelPOC/Services/ExcelImporter.cs:140-170（FR-006, FR-009）
-- [ ] T016 [US2] 重構 Import() 迴圈：空白列略過時新增 Info 等級 ImportMessage 至 NanmaoLabelPOC/Services/ExcelImporter.cs:105-118（FR-006, FR-009）
-- [ ] T017 [US2] 重構 GetQuantityFieldValue()：千分位格式時新增 Warning 等級 ImportMessage 至 NanmaoLabelPOC/Services/ExcelImporter.cs:245-269（FR-005, FR-009, FR-010）
-- [ ] T018 [US2] 重構 CheckSemicolonWarnings()：含分號時新增 Warning 等級 ImportMessage 至 NanmaoLabelPOC/Services/ExcelImporter.cs:345-364（FR-005, FR-009）
+- [X] T012 [US2] 重構 Import() 方法：檔案不存在時新增 Error 等級 ImportMessage 至 NanmaoLabelPOC/Services/ExcelImporter.cs:60-66（FR-004, FR-009）
+- [X] T013 [US2] 重構 Import() 方法：檔案格式錯誤時新增 Error 等級 ImportMessage 至 NanmaoLabelPOC/Services/ExcelImporter.cs:68-74（FR-004, FR-009）
+- [X] T014 [US2] 重構 BuildColumnMapping()：額外欄位被忽略時新增 Info 等級 ImportMessage 至 NanmaoLabelPOC/Services/ExcelImporter.cs:140-170（FR-006, FR-009）
+- [X] T015 [US2] 重構 BuildColumnMapping()：非法欄位名稱時新增 Info 等級 ImportMessage（非底線字元）至 NanmaoLabelPOC/Services/ExcelImporter.cs:140-170（FR-006, FR-009）
+- [X] T016 [US2] 重構 Import() 迴圈：空白列略過時新增 Info 等級 ImportMessage 至 NanmaoLabelPOC/Services/ExcelImporter.cs:105-118（FR-006, FR-009）
+- [X] T017 [US2] 重構 GetQuantityFieldValue()：千分位格式時新增 Warning 等級 ImportMessage 至 NanmaoLabelPOC/Services/ExcelImporter.cs:245-269（FR-005, FR-009, FR-010）
+- [X] T018 [US2] 重構 CheckSemicolonWarnings()：含分號時新增 Warning 等級 ImportMessage 至 NanmaoLabelPOC/Services/ExcelImporter.cs:345-364（FR-005, FR-009）
 
 **Checkpoint**: 所有訊息皆有正確分級，US2 可獨立測試驗證
 
