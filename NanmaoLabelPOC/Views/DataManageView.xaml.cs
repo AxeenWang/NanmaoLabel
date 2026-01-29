@@ -1,4 +1,3 @@
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Win32;
@@ -151,6 +150,7 @@ public partial class DataManageView : UserControl
     /// <summary>
     /// 匯入按鈕點擊
     /// [ref: raw_spec F-01, 8.10, TC-13]
+    /// T024: 改用 ImportResultDialog 顯示結果 [ref: spec.md FR-006, FR-007, FR-008]
     /// </summary>
     private void ImportButton_Click(object sender, RoutedEventArgs e)
     {
@@ -190,67 +190,12 @@ public partial class DataManageView : UserControl
         if (result == null)
             return;
 
-        if (result.Success)
+        // T024: 使用 ImportResultDialog 顯示結果 [ref: spec.md FR-006, FR-007, FR-008]
+        var dialog = new ImportResultDialog
         {
-            // T048: 匯入成功訊息 [ref: raw_spec 8.10]
-            var successMessage = $"匯入成功，共 {result.RecordCount} 筆資料";
-
-            // T050: 分號警告 [ref: raw_spec 3.3, 13.4]
-            // T051: 千分位警告 [ref: raw_spec 13.14]
-            if (result.Warnings.Count > 0)
-            {
-                var warningText = BuildWarningText(result.Warnings);
-                // T074: 對話框標題使用「警告」[ref: raw_spec 8.10]
-                MessageBox.Show(
-                    $"{successMessage}\n\n{warningText}",
-                    "警告",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Warning);
-            }
-            else
-            {
-                // T074: 對話框標題使用「提示」[ref: raw_spec 8.10]
-                MessageBox.Show(
-                    successMessage,
-                    "提示",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Information);
-            }
-        }
-        else
-        {
-            // T049: 錯誤處理 [ref: raw_spec 8.9]
-            MessageBox.Show(
-                result.ErrorMessage ?? "匯入失敗",
-                "錯誤",
-                MessageBoxButton.OK,
-                MessageBoxImage.Error);
-        }
-    }
-
-    /// <summary>
-    /// 建立警告訊息文字
-    /// </summary>
-    private static string BuildWarningText(List<string> warnings)
-    {
-        if (warnings.Count == 0)
-            return string.Empty;
-
-        var sb = new StringBuilder();
-        sb.AppendLine("警告：");
-
-        // 顯示前 5 條警告
-        var displayCount = Math.Min(warnings.Count, 5);
-        for (int i = 0; i < displayCount; i++)
-        {
-            sb.AppendLine($"  • {warnings[i]}");
-        }
-
-        if (warnings.Count > 5)
-        {
-            sb.AppendLine($"  ... 及另外 {warnings.Count - 5} 條警告");
-        }
-
-        return sb.ToString();
+            Owner = Window.GetWindow(this)
+        };
+        dialog.SetResult(result);
+        dialog.ShowDialog();
     }
 }

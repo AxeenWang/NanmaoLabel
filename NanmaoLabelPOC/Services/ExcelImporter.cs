@@ -29,9 +29,9 @@ public partial class ExcelImporter : IExcelImporter
     };
 
     /// <summary>
-    /// 欄位名稱驗證正規表達式：僅允許英數字 [ref: raw_spec 13.11]
+    /// 欄位名稱驗證正規表達式：允許英數字及底線 [ref: spec.md FR-001]
     /// </summary>
-    [GeneratedRegex(@"^[A-Za-z0-9]+$")]
+    [GeneratedRegex(@"^[A-Za-z0-9_]+$")]
     private static partial Regex FieldNamePattern();
 
     /// <summary>
@@ -46,10 +46,37 @@ public partial class ExcelImporter : IExcelImporter
     [GeneratedRegex(@"^\d{1,3}(,\d{3})+$")]
     private static partial Regex ThousandSeparatorPattern();
 
+    /// <summary>
+    /// 已知的欄位名稱清單（用於識別額外欄位）[ref: raw_spec 附錄 A]
+    /// </summary>
+    private static readonly HashSet<string> KnownFields = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "ogb03", "ogb19", "ogb092", "ogb905", "ogd12b", "ogd12e",
+        "ima902", "ogd15", "ogd09", "obe25",
+        "nvr_cust", "nvrcust",
+        "nvr_cust_item_no", "nvrcustitemno",
+        "nvr_cust_pn", "nvrcustpn",
+        "nvr_remark10", "nvrremark10",
+        "pono", "erpmat", "cscustpo"
+    };
+
     static ExcelImporter()
     {
         // ExcelDataReader 需要註冊編碼提供者以支援舊版 Excel 格式
         System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+    }
+
+    /// <summary>
+    /// 新增訊息至結果 [ref: spec.md FR-003, FR-009]
+    /// </summary>
+    private static void AddMessage(ImportResult result, MessageSeverity severity, string message, string? fieldName = null)
+    {
+        result.Messages.Add(new ImportMessage
+        {
+            Severity = severity,
+            Message = message,
+            FieldName = fieldName
+        });
     }
 
     /// <inheritdoc />
@@ -57,19 +84,21 @@ public partial class ExcelImporter : IExcelImporter
     {
         var result = new ImportResult();
 
-        // 檢查檔案是否存在 [ref: raw_spec 8.9]
+        // 檢查檔案是否存在 [ref: raw_spec 8.9, spec.md FR-004, FR-009]
         if (!File.Exists(filePath))
         {
             result.Success = false;
             result.ErrorMessage = "找不到指定的檔案";
+            AddMessage(result, MessageSeverity.Error, "找不到指定的檔案");
             return result;
         }
 
-        // 檢查檔案格式 [ref: raw_spec 8.9]
+        // 檢查檔案格式 [ref: raw_spec 8.9, spec.md FR-004, FR-009]
         if (!filePath.EndsWith(".xlsx", StringComparison.OrdinalIgnoreCase))
         {
             result.Success = false;
             result.ErrorMessage = "檔案格式不正確，請確認為 .xlsx 格式";
+            AddMessage(result, MessageSeverity.Error, "檔案格式不正確，請確認為 .xlsx 格式");
             return result;
         }
 
@@ -90,6 +119,7 @@ public partial class ExcelImporter : IExcelImporter
             {
                 result.Success = false;
                 result.ErrorMessage = "Excel 檔案中沒有資料表";
+                AddMessage(result, MessageSeverity.Error, "Excel 檔案中沒有資料表");
                 return result;
             }
 
@@ -102,11 +132,15 @@ public partial class ExcelImporter : IExcelImporter
             }
 
             // 讀取資料列
+            var rowIndex = 0;
+            var skippedEmptyRows = 0;
             foreach (DataRow row in table.Rows)
             {
-                // 跳過空白列 [ref: raw_spec 3.3]
+                rowIndex++;
+                // T016: 跳過空白列 [ref: raw_spec 3.3, spec.md FR-006, FR-009]
                 if (IsEmptyRow(row, columnMapping))
                 {
+                    skippedEmptyRows++;
                     continue;
                 }
 
@@ -117,6 +151,13 @@ public partial class ExcelImporter : IExcelImporter
                 }
             }
 
+            // T016: 若有空白列被略過，新增 Info 訊息 [ref: spec.md FR-006, FR-009]
+            if (skippedEmptyRows > 0)
+            {
+                AddMessage(result, MessageSeverity.Info,
+                    $"已略過 {skippedEmptyRows} 列空白資料列");
+            }
+
             result.Success = true;
             return result;
         }
@@ -124,18 +165,20 @@ public partial class ExcelImporter : IExcelImporter
         {
             result.Success = false;
             result.ErrorMessage = $"無法讀取檔案：{ex.Message}";
+            AddMessage(result, MessageSeverity.Error, $"無法讀取檔案：{ex.Message}");
             return result;
         }
         catch (Exception ex)
         {
             result.Success = false;
             result.ErrorMessage = $"匯入失敗：{ex.Message}";
+            AddMessage(result, MessageSeverity.Error, $"匯入失敗：{ex.Message}");
             return result;
         }
     }
 
     /// <summary>
-    /// 建立欄位名稱對應 [ref: raw_spec 3.3, 13.11]
+    /// 建立欄位名稱對應 [ref: raw_spec 3.3, 13.11, spec.md FR-006, FR-009]
     /// </summary>
     private static Dictionary<string, int> BuildColumnMapping(DataTable table, ImportResult result)
     {
@@ -151,12 +194,22 @@ public partial class ExcelImporter : IExcelImporter
                 continue;
             }
 
-            // 欄位名稱驗證：僅允許英數字 [ref: raw_spec 13.11]
+            // 欄位名稱驗證：允許英數字及底線 [ref: spec.md FR-001, FR-002]
             if (!FieldNamePattern().IsMatch(columnName))
             {
-                // 含底線、空白、特殊符號視為欄位缺失 [ref: raw_spec 13.11]
-                result.Warnings.Add($"欄位名稱 '{columnName}' 包含非法字元（僅允許英數字），已忽略");
+                // T015: 含空白、連字號、其他特殊符號視為非法欄位 [ref: spec.md FR-002, FR-006, FR-009]
+                AddMessage(result, MessageSeverity.Info,
+                    $"欄位名稱 '{columnName}' 包含非法字元（僅允許英數字及底線），已忽略",
+                    columnName);
                 continue;
+            }
+
+            // T014: 檢查是否為已知欄位 [ref: spec.md FR-006, FR-009]
+            if (!KnownFields.Contains(columnName))
+            {
+                AddMessage(result, MessageSeverity.Info,
+                    $"欄位 '{columnName}' 不在對應清單中，已忽略",
+                    columnName);
             }
 
             // 不分大小寫對應 [ref: raw_spec 3.3, 13.11]
@@ -240,7 +293,7 @@ public partial class ExcelImporter : IExcelImporter
     }
 
     /// <summary>
-    /// 取得數量欄位值 [ref: raw_spec 13.14]
+    /// 取得數量欄位值 [ref: raw_spec 13.14, spec.md FR-005, FR-009, FR-010]
     /// </summary>
     private static string GetQuantityFieldValue(DataRow row, Dictionary<string, int> columnMapping, string fieldName, ImportResult result)
     {
@@ -251,18 +304,22 @@ public partial class ExcelImporter : IExcelImporter
             return string.Empty;
         }
 
-        // 檢查是否含千分位 [ref: raw_spec 13.14]
+        // T017: 檢查是否含千分位 [ref: raw_spec 13.14, spec.md FR-005, FR-009, FR-010]
         if (ThousandSeparatorPattern().IsMatch(value))
         {
-            result.Warnings.Add($"數量欄位 '{fieldName}' 包含千分位格式 '{value}'，請使用純數字");
-            // 移除千分位後繼續處理
+            AddMessage(result, MessageSeverity.Warning,
+                $"數量欄位 '{fieldName}' 包含千分位格式 '{value}'，已自動移除",
+                fieldName);
+            // 移除千分位後繼續處理 [ref: spec.md FR-010]
             value = value.Replace(",", "");
         }
 
         // 驗證是否為純數字 [ref: raw_spec 13.14]
         if (!string.IsNullOrEmpty(value) && !DigitsOnlyPattern().IsMatch(value))
         {
-            result.Warnings.Add($"數量欄位 '{fieldName}' 值 '{value}' 包含非數字字元");
+            AddMessage(result, MessageSeverity.Warning,
+                $"數量欄位 '{fieldName}' 值 '{value}' 包含非數字字元",
+                fieldName);
         }
 
         return value;
@@ -340,7 +397,7 @@ public partial class ExcelImporter : IExcelImporter
     }
 
     /// <summary>
-    /// 檢查 QR Code 組合欄位的分號警告 [ref: raw_spec 3.3, 13.4]
+    /// 檢查 QR Code 組合欄位的分號警告 [ref: raw_spec 3.3, 13.4, spec.md FR-005, FR-009]
     /// </summary>
     private static void CheckSemicolonWarnings(DataRecord record, ImportResult result)
     {
@@ -358,7 +415,10 @@ public partial class ExcelImporter : IExcelImporter
         {
             if (!string.IsNullOrEmpty(value) && value.Contains(';'))
             {
-                result.Warnings.Add($"欄位 '{fieldName}' 值 '{value}' 包含分號，可能影響 QR Code 解析");
+                // T018: 分號警告 [ref: spec.md FR-005, FR-009]
+                AddMessage(result, MessageSeverity.Warning,
+                    $"欄位 '{fieldName}' 值 '{value}' 包含分號，可能影響 QR Code",
+                    fieldName);
             }
         }
     }

@@ -10,6 +10,7 @@ bin/
 obj/
 [Bb]uild/
 [Dd]ist/
+[Pp]ublish/
 
 # ------------------------------------------
 # 2. Visual Studio / IDE 產物
@@ -64,3 +65,10 @@ node_modules/
 *.snk
 appsettings.*.json
 !appsettings.example.json
+
+# ------------------------------------------
+# 7. 個人臨時筆記
+# ------------------------------------------
+*.local.md
+*.local.png
+
