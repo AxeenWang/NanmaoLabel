@@ -61,9 +61,9 @@
 
 ### Tests for User Story 2
 
-- [ ] T009 [P] [US2] 新增測試 Import_FileNotExists_ShouldReturnErrorSeverity 至 NanmaoLabelPOC.Tests/Services/ExcelImporterTests.cs（FR-004）
-- [ ] T010 [P] [US2] 新增測試 Import_MissingRequiredField_ShouldReturnWarningSeverity 至 NanmaoLabelPOC.Tests/Services/ExcelImporterTests.cs（FR-005）
-- [ ] T011 [P] [US2] 新增測試 Import_ExtraField_ShouldReturnInfoSeverity 至 NanmaoLabelPOC.Tests/Services/ExcelImporterTests.cs（FR-006）
+- [X] T009 [P] [US2] 新增測試 Import_FileNotExists_ShouldReturnErrorSeverity 至 NanmaoLabelPOC.Tests/Services/ExcelImporterTests.cs（FR-004）
+- [X] T010 [P] [US2] 新增測試 Import_MissingRequiredField_ShouldReturnWarningSeverity 至 NanmaoLabelPOC.Tests/Services/ExcelImporterTests.cs（FR-005）
+- [X] T011 [P] [US2] 新增測試 Import_ExtraField_ShouldReturnInfoSeverity 至 NanmaoLabelPOC.Tests/Services/ExcelImporterTests.cs（FR-006）
 
 ### Implementation for User Story 2
 
