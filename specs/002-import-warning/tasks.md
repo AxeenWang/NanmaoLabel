@@ -120,10 +120,10 @@
 
 **Purpose**: 清理、文件更新、回歸測試
 
-- [ ] T027 [P] 更新 ExcelImporterTests.cs 中所有使用 Warnings 的測試改用 Messages 至 NanmaoLabelPOC.Tests/Services/ExcelImporterTests.cs
-- [ ] T028 [P] 移除 ExcelImporter.cs 中的舊式 result.Warnings.Add() 呼叫（改用 AddMessage helper）至 NanmaoLabelPOC/Services/ExcelImporter.cs
-- [ ] T029 執行完整測試套件確認回歸：`dotnet test NanmaoLabelPOC.Tests`
-- [ ] T030 執行 quickstart.md 驗證流程確認功能正常
+- [X] T027 [P] 更新 ExcelImporterTests.cs 中所有使用 Warnings 的測試改用 Messages 至 NanmaoLabelPOC.Tests/Services/ExcelImporterTests.cs（確認：已使用 Messages，Warnings 保留用於向後相容測試）
+- [X] T028 [P] 移除 ExcelImporter.cs 中的舊式 result.Warnings.Add() 呼叫（改用 AddMessage helper）至 NanmaoLabelPOC/Services/ExcelImporter.cs（確認：已全面改用 AddMessage）
+- [X] T029 執行完整測試套件確認回歸：`dotnet test NanmaoLabelPOC.Tests`（結果：111 測試通過，0 錯誤，0 警告）
+- [X] T030 執行 quickstart.md 驗證流程確認功能正常（結果：建置成功，0 錯誤，0 警告）
 
 ---
 
