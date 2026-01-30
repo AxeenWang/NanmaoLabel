@@ -172,19 +172,14 @@
                         <Setter Property="BorderBrush" Value="#E0E0E0"/>
                     </Style>
                 </DataGrid.ColumnHeaderStyle>
+                <!-- T015/T016: 套用共用 DataGridRowStyle [US1] -->
                 <DataGrid.RowStyle>
-                    <Style TargetType="DataGridRow">
-                        <Style.Triggers>
-                            <Trigger Property="IsSelected" Value="True">
-                                <Setter Property="Background" Value="#0078D4"/>
-                                <Setter Property="Foreground" Value="White"/>
-                            </Trigger>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#F0F0F0"/>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
+                    <StaticResource ResourceKey="DataGridRowStyle"/>
                 </DataGrid.RowStyle>
+                <!-- T017: 套用 DataGridCellStyle 確保 Cell 透明不覆蓋 Row 光條 [US1] -->
+                <DataGrid.CellStyle>
+                    <StaticResource ResourceKey="DataGridCellStyle"/>
+                </DataGrid.CellStyle>
             </DataGrid>
         </Border>
 

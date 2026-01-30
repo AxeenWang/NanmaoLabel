@@ -68,14 +68,14 @@ NanmaoLabelPOC/
 
 ### Implementation for User Story 1
 
-- [ ] T010 [US1] 在 `ListViewItemStyle` 加入 Trigger: IsSelected=True → Background=#0078D4, Foreground=White（`Resources/ListViewStyles.xaml`）
-- [ ] T011 [US1] 在 `DataGridRowStyle` 加入 Trigger: IsSelected=True → Background=#0078D4（`Resources/ListViewStyles.xaml`）
-- [ ] T012 [US1] 修改 `Views/LabelPrintView.xaml`: 移除 ListView.ItemContainerStyle 內現有 Style.Triggers（line 192-207）
-- [ ] T013 [US1] 修改 `Views/LabelPrintView.xaml`: 套用 `{StaticResource ListViewItemStyle}` 至 ListView.ItemContainerStyle
-- [ ] T014 [US1] 在 `Views/LabelPrintView.xaml` DataTemplate 加入 DataTrigger: IsSelected=True → FontWeight=Bold, Foreground=White
-- [ ] T015 [US1] 修改 `Views/DataManageView.xaml`: 移除 DataGrid.RowStyle 內現有 Style.Triggers（line 175-187）
-- [ ] T016 [US1] 修改 `Views/DataManageView.xaml`: 套用 `{StaticResource DataGridRowStyle}` 至 DataGrid.RowStyle
-- [ ] T017 [US1] 修改 `Views/DataManageView.xaml`: 套用 `{StaticResource DataGridCellStyle}` 至 DataGrid.CellStyle
+- [x] T010 [US1] 在 `ListViewItemStyle` 加入 Trigger: IsSelected=True → Background=#0078D4, Foreground=White（`Resources/ListViewStyles.xaml`）
+- [x] T011 [US1] 在 `DataGridRowStyle` 加入 Trigger: IsSelected=True → Background=#0078D4（`Resources/ListViewStyles.xaml`）
+- [x] T012 [US1] 修改 `Views/LabelPrintView.xaml`: 移除 ListView.ItemContainerStyle 內現有 Style.Triggers（line 192-207）
+- [x] T013 [US1] 修改 `Views/LabelPrintView.xaml`: 套用 `{StaticResource ListViewItemStyle}` 至 ListView.ItemContainerStyle
+- [x] T014 [US1] 在 `Views/LabelPrintView.xaml` DataTemplate 加入 DataTrigger: IsSelected=True → FontWeight=Bold, Foreground=White
+- [x] T015 [US1] 修改 `Views/DataManageView.xaml`: 移除 DataGrid.RowStyle 內現有 Style.Triggers（line 175-187）
+- [x] T016 [US1] 修改 `Views/DataManageView.xaml`: 套用 `{StaticResource DataGridRowStyle}` 至 DataGrid.RowStyle
+- [x] T017 [US1] 修改 `Views/DataManageView.xaml`: 套用 `{StaticResource DataGridCellStyle}` 至 DataGrid.CellStyle
 
 **Checkpoint**: Selected 狀態視覺完成，光條完整無破碎
 
