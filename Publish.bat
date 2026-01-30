@@ -8,7 +8,7 @@ echo ========================================
 echo.
 
 set PROJECT_DIR=NanmaoLabelPOC
-set OUTPUT_DIR=publish
+set OUTPUT_DIR=Publish
 set CONFIGURATION=Release
 set RUNTIME=win-x64
 

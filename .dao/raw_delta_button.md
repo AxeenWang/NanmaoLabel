@@ -135,7 +135,7 @@
 | 狀態 | Background | Foreground | Border |
 |------|------------|------------|--------|
 | Default | `#1E3A5F` | `#FFFFFF` | Transparent |
-| Hover | `#2E4A6F` | `#FFFFFF` | Transparent |
+| Hover | `#3D5A80` | `#FFFFFF` | Transparent + DropShadow + Scale 1.02x |
 | Active (Press) | `#0E2A4F` | `#FFFFFF` | Transparent |
 | Focus | `#1E3A5F` | `#FFFFFF` | `#FFFFFF` 2px |
 
@@ -153,7 +153,7 @@
 完整清單：
 - ButtonDefaultBackground: #1E3A5F
 - ButtonDefaultForeground: #FFFFFF
-- ButtonHoverBackground: #2E4A6F
+- ButtonHoverBackground: #3D5A80
 - ButtonActiveBackground: #0E2A4F
 - ButtonFocusBorder: #FFFFFF
 - ButtonDisabledBackground: #E0E0E0
@@ -349,7 +349,7 @@
 | `BrandPrimary` | `#1E3A5F` | 品牌主色（與標題列一致） |
 | `ButtonDefaultBackground` | `#1E3A5F` | Action 按鈕預設背景 |
 | `ButtonDefaultForeground` | `#FFFFFF` | Action 按鈕預設文字 |
-| `ButtonHoverBackground` | `#2E4A6F` | Action 按鈕 Hover 背景 |
+| `ButtonHoverBackground` | `#3D5A80` | Action 按鈕 Hover 背景 (+ DropShadow + Scale 1.02x) |
 | `ButtonActiveBackground` | `#0E2A4F` | Action 按鈕 Active 背景 |
 | `ButtonFocusBorder` | `#FFFFFF` | Action 按鈕 Focus 外框 |
 | `ButtonDisabledBackground` | `#E0E0E0` | Disabled 按鈕背景 |

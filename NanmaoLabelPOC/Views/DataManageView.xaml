@@ -28,72 +28,76 @@
         </Grid.RowDefinitions>
 
         <!-- 工具列 [ref: raw_spec 8.5, 8.6] -->
-        <!-- T061: 工具列按鈕 min 80×36, recommended 110×45 -->
+        <!-- T010-T012: 位置分區佈局（建立區 | 危險區 | 確認區）[ref: spec.md FR-001~FR-004] -->
         <Border Grid.Row="0"
                 Background="White"
                 BorderBrush="#E0E0E0"
                 BorderThickness="1"
                 CornerRadius="4"
                 Margin="0,0,0,8">
-            <StackPanel Orientation="Horizontal"
-                        VerticalAlignment="Center"
-                        Margin="8,0">
-                <!-- 匯入按鈕 [ref: raw_spec 8.5, 8.6] -->
-                <!-- T061: 工具列按鈕 min 80×36, recommended 110×45, 按鈕間距 8px -->
-                <Button x:Name="ImportButton"
-                        MinWidth="110" MinHeight="45"
-                        Height="45"
-                        Margin="4"
-                        Padding="12,0"
-                        FontSize="14"
-                        FontWeight="Bold"
-                        FontFamily="Microsoft JhengHei"
-                        Background="#0078D4"
-                        Foreground="White"
-                        BorderThickness="0"
-                        Cursor="Hand"
-                        Click="ImportButton_Click">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="📥 " FontSize="18" VerticalAlignment="Center"/>
-                        <TextBlock Text="匯入" VerticalAlignment="Center"/>
-                    </StackPanel>
-                </Button>
+            <Grid VerticalAlignment="Center" Margin="8,0">
+                <Grid.ColumnDefinitions>
+                    <!-- 建立區（左側）[FR-001, FR-002] -->
+                    <ColumnDefinition Width="Auto"/>
+                    <!-- 彈性空間 -->
+                    <ColumnDefinition Width="*"/>
+                    <!-- 危險區（中間）[FR-001, FR-003] -->
+                    <ColumnDefinition Width="Auto"/>
+                    <!-- 彈性空間 -->
+                    <ColumnDefinition Width="*"/>
+                    <!-- 確認區（右側）[FR-001, FR-004] -->
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
 
-                <!-- 新增按鈕 [ref: raw_spec 8.5, 8.6, F-10] T052 -->
-                <!-- T061: 工具列按鈕 min 80×36, recommended 110×45, 按鈕間距 8px -->
-                <Button x:Name="AddButton"
-                        Command="{Binding AddRecordCommand}"
-                        MinWidth="110" MinHeight="45"
-                        Height="45"
-                        Margin="4"
-                        Padding="12,0"
-                        FontSize="14"
-                        FontWeight="Bold"
-                        FontFamily="Microsoft JhengHei"
-                        Background="#107C10"
-                        Foreground="White"
-                        BorderThickness="0"
-                        Cursor="Hand">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="➕ " FontSize="18" VerticalAlignment="Center"/>
-                        <TextBlock Text="新增" VerticalAlignment="Center"/>
-                    </StackPanel>
-                </Button>
+                <!-- ============================================================ -->
+                <!-- 建立區（左側）：匯入、新增 [FR-001, FR-002]                   -->
+                <!-- 建立區內按鈕間距 8px [FR-002]                                 -->
+                <!-- T015: 套用 ActionButtonStyle                                  -->
+                <!-- ============================================================ -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal">
+                    <!-- 匯入按鈕 -->
+                    <Button x:Name="ImportButton"
+                            Style="{StaticResource ActionButtonStyle}"
+                            MinWidth="110" MinHeight="45"
+                            Height="45"
+                            FontSize="14"
+                            FontFamily="Microsoft JhengHei"
+                            Click="ImportButton_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="📥 " FontSize="18" VerticalAlignment="Center"/>
+                            <TextBlock Text="匯入" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
 
-                <!-- 刪除按鈕 [ref: raw_spec 8.5, 8.6, F-12] T053 -->
-                <!-- T061: 工具列按鈕 min 80×36, recommended 110×45, 按鈕間距 8px -->
-                <Button x:Name="DeleteButton"
+                    <!-- 新增按鈕（間距 8px）[FR-002] -->
+                    <Button x:Name="AddButton"
+                            Style="{StaticResource ActionButtonStyle}"
+                            Command="{Binding AddRecordCommand}"
+                            MinWidth="110" MinHeight="45"
+                            Height="45"
+                            Margin="8,0,0,0"
+                            FontSize="14"
+                            FontFamily="Microsoft JhengHei">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="➕ " FontSize="18" VerticalAlignment="Center"/>
+                            <TextBlock Text="新增" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+
+                <!-- ============================================================ -->
+                <!-- 危險區（中間）：刪除 [FR-001, FR-003]                         -->
+                <!-- 與相鄰區域間距 ≥32px [FR-003]                                 -->
+                <!-- T015: 套用 ActionButtonStyle                                  -->
+                <!-- ============================================================ -->
+                <Button Grid.Column="2"
+                        x:Name="DeleteButton"
+                        Style="{StaticResource ActionButtonStyle}"
                         MinWidth="110" MinHeight="45"
                         Height="45"
-                        Margin="4"
-                        Padding="12,0"
+                        Margin="32,0"
                         FontSize="14"
-                        FontWeight="Bold"
                         FontFamily="Microsoft JhengHei"
-                        Background="#D13438"
-                        Foreground="White"
-                        BorderThickness="0"
-                        Cursor="Hand"
                         IsEnabled="{Binding HasSelectedRecord}"
                         Click="DeleteButton_Click">
                     <StackPanel Orientation="Horizontal">
@@ -102,20 +106,19 @@
                     </StackPanel>
                 </Button>
 
-                <!-- 儲存按鈕 [ref: raw_spec 8.5, 8.6, F-13] T054/T058/T059/T060 -->
-                <!-- T061: 工具列按鈕 min 80×36, recommended 110×45, 按鈕間距 8px -->
-                <Button x:Name="SaveButton"
+                <!-- ============================================================ -->
+                <!-- 確認區（右側）：儲存 [FR-001, FR-004]                         -->
+                <!-- T015: 套用 ActionButtonStyle                                  -->
+                <!-- T035: 套用 PulseActionButtonStyle（脈動效果）                 -->
+                <!-- FR-016: IsDirty=True 時儲存按鈕脈動光暈                       -->
+                <!-- ============================================================ -->
+                <Button Grid.Column="4"
+                        x:Name="SaveButton"
+                        Style="{StaticResource PulseActionButtonStyle}"
                         MinWidth="110" MinHeight="45"
                         Height="45"
-                        Margin="4"
-                        Padding="12,0"
                         FontSize="14"
-                        FontWeight="Bold"
                         FontFamily="Microsoft JhengHei"
-                        Background="#FFB900"
-                        Foreground="Black"
-                        BorderThickness="0"
-                        Cursor="Hand"
                         IsEnabled="{Binding IsDirty}"
                         Click="SaveButton_Click">
                     <StackPanel Orientation="Horizontal">
@@ -123,7 +126,7 @@
                         <TextBlock Text="儲存" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
-            </StackPanel>
+            </Grid>
         </Border>
 
         <!-- DataGrid [ref: raw_spec 8.5] -->
