@@ -80,18 +80,27 @@
 
 ### Implementation for User Story 2
 
-- [ ] T018 [US2] 為 ActionButtonStyle 新增 IsMouseOver Trigger（背景變 #2E4A6F）於 NanmaoLabelPOC/Resources/ButtonStyles.xaml
-- [ ] T019 [US2] 為 ActionButtonStyle 新增 IsPressed Trigger（背景變 #0E2A4F）於 NanmaoLabelPOC/Resources/ButtonStyles.xaml
-- [ ] T020 [US2] 為 ActionButtonStyle 新增 IsFocused Trigger（白色外框 2px）於 NanmaoLabelPOC/Resources/ButtonStyles.xaml
-- [ ] T021 [US2] 為 ActionButtonStyle 新增 IsEnabled=False Trigger（灰底灰字、游標 Arrow）於 NanmaoLabelPOC/Resources/ButtonStyles.xaml
-- [ ] T022 [US2] 調整 Trigger 順序確保狀態優先序正確（Disabled 最後定義 = 最高優先）於 NanmaoLabelPOC/Resources/ButtonStyles.xaml
-- [ ] T023 [US2] 為 SecondaryButtonStyle 新增 IsMouseOver Trigger（背景變 #F0F0F0）於 NanmaoLabelPOC/Resources/ButtonStyles.xaml
-- [ ] T024 [US2] 為 SecondaryButtonStyle 新增 IsEnabled=False Trigger（灰色系）於 NanmaoLabelPOC/Resources/ButtonStyles.xaml
-- [ ] T025 [US2] 建立 TabHeaderStyle 頁簽樣式（選中=深藍底白字, 未選中=淡色）於 NanmaoLabelPOC/Resources/ButtonStyles.xaml
-- [ ] T026 [US2] 為 TabHeaderStyle 新增 IsMouseOver Trigger（視覺回饋）於 NanmaoLabelPOC/Resources/ButtonStyles.xaml
-- [ ] T027 [US2] 套用 TabHeaderStyle 至 MainWindow.xaml 頁簽於 NanmaoLabelPOC/Views/MainWindow.xaml
+- [x] T018 [US2] 為 ActionButtonStyle 新增 IsMouseOver Trigger（背景變 #2E4A6F）於 NanmaoLabelPOC/Resources/ButtonStyles.xaml
+- [x] T019 [US2] 為 ActionButtonStyle 新增 IsPressed Trigger（背景變 #0E2A4F）於 NanmaoLabelPOC/Resources/ButtonStyles.xaml
+- [x] T020 [US2] 為 ActionButtonStyle 新增 IsFocused Trigger（白色外框 2px）於 NanmaoLabelPOC/Resources/ButtonStyles.xaml
+- [x] T021 [US2] 為 ActionButtonStyle 新增 IsEnabled=False Trigger（灰底灰字、游標 Arrow）於 NanmaoLabelPOC/Resources/ButtonStyles.xaml
+- [x] T022 [US2] 調整 Trigger 順序確保狀態優先序正確（Disabled 最後定義 = 最高優先）於 NanmaoLabelPOC/Resources/ButtonStyles.xaml
+- [x] T023 [US2] 為 SecondaryButtonStyle 新增 IsMouseOver Trigger（背景變 #F0F0F0）於 NanmaoLabelPOC/Resources/ButtonStyles.xaml
+- [x] T024 [US2] 為 SecondaryButtonStyle 新增 IsEnabled=False Trigger（灰色系）於 NanmaoLabelPOC/Resources/ButtonStyles.xaml
+- [x] T025 [US2] 建立 TabHeaderStyle 頁簽樣式（選中=深藍底白字, 未選中=淡色）於 NanmaoLabelPOC/Resources/ButtonStyles.xaml
+- [x] T026 [US2] 為 TabHeaderStyle 新增 IsMouseOver Trigger（視覺回饋）於 NanmaoLabelPOC/Resources/ButtonStyles.xaml
+- [x] T027 [US2] 套用 TabHeaderStyle 至 MainWindow.xaml 頁簽於 NanmaoLabelPOC/Views/MainWindow.xaml
 
-**Checkpoint**: User Story 2 完成 - 所有按鈕狀態視覺回饋正常，可獨立驗證
+**Checkpoint**: User Story 2 完成 - 所有按鈕狀態視覺回饋正常，可獨立驗證 ✅
+
+### Hotfix: 強化 Hover 視覺回饋
+
+- [x] T018-HF1 [US2] 調整 ButtonHoverBackground 顏色從 #2E4A6F 至 #3D5A80（提高對比度）於 NanmaoLabelPOC/Resources/ButtonStyles.xaml
+- [x] T018-HF2 [US2] 為 ActionButtonStyle 新增 Hover 時 DropShadow 效果（ShadowDepth=2, BlurRadius=6）於 NanmaoLabelPOC/Resources/ButtonStyles.xaml
+- [x] T018-HF3 [US2] 為 ActionButtonStyle 新增 Hover 時 ScaleTransform (1.02x) 微幅放大效果於 NanmaoLabelPOC/Resources/ButtonStyles.xaml
+- [x] T018-HF4 [US2] 為 SecondaryButtonStyle 新增 Hover 時 DropShadow 和 ScaleTransform 效果於 NanmaoLabelPOC/Resources/ButtonStyles.xaml
+
+**Hotfix 完成** - Hover 視覺回饋已強化：顏色對比度提升 + 陰影效果 + 微幅放大 ✅
 
 ---
 

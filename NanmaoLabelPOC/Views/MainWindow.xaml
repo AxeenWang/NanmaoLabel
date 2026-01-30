@@ -260,85 +260,45 @@
         <Border Grid.Row="1" Background="White" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1">
             <StackPanel Orientation="Horizontal" Margin="8,0,0,0">
                 <!-- 標籤列印分頁標籤 -->
+                <!-- T027: 套用 TabHeaderStyle -->
                 <!-- T061: min 44×44px 點擊區域 -->
                 <RadioButton x:Name="TabLabelPrint"
                              IsChecked="True"
                              GroupName="MainTabs"
                              Checked="Tab_Checked"
-                             Cursor="Hand"
-                             MinHeight="50">
-                    <RadioButton.Template>
-                        <ControlTemplate TargetType="RadioButton">
-                            <Border x:Name="TabBorder"
-                                    Background="Transparent"
-                                    Padding="16,8"
-                                    MinHeight="50"
-                                    BorderThickness="0,0,0,3"
-                                    BorderBrush="Transparent">
-                                <StackPanel Orientation="Horizontal"
-                                            VerticalAlignment="Center">
-                                    <TextBlock Text="📋 "
-                                               FontSize="16"
-                                               VerticalAlignment="Center"/>
-                                    <TextBlock Text="標籤列印"
-                                               FontSize="14"
-                                               FontWeight="Bold"
-                                               FontFamily="Microsoft JhengHei"
-                                               VerticalAlignment="Center"/>
-                                </StackPanel>
-                            </Border>
-                            <ControlTemplate.Triggers>
-                                <Trigger Property="IsChecked" Value="True">
-                                    <Setter TargetName="TabBorder" Property="BorderBrush" Value="#0078D4"/>
-                                    <Setter TargetName="TabBorder" Property="Background" Value="#F0F8FF"/>
-                                </Trigger>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter TargetName="TabBorder" Property="Background" Value="#F5F5F5"/>
-                                </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </RadioButton.Template>
+                             Style="{StaticResource TabHeaderStyle}">
+                    <StackPanel Orientation="Horizontal"
+                                VerticalAlignment="Center">
+                        <TextBlock Text="📋 "
+                                   FontSize="16"
+                                   VerticalAlignment="Center"/>
+                        <TextBlock Text="標籤列印"
+                                   FontSize="14"
+                                   FontWeight="Bold"
+                                   FontFamily="Microsoft JhengHei"
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
                 </RadioButton>
 
                 <!-- 資料管理分頁標籤 -->
+                <!-- T027: 套用 TabHeaderStyle -->
                 <!-- T061: min 44×44px 點擊區域 -->
                 <RadioButton x:Name="TabDataManage"
                              GroupName="MainTabs"
                              Checked="Tab_Checked"
-                             Cursor="Hand"
                              Margin="8,0,0,0"
-                             MinHeight="50">
-                    <RadioButton.Template>
-                        <ControlTemplate TargetType="RadioButton">
-                            <Border x:Name="TabBorder"
-                                    Background="Transparent"
-                                    Padding="16,8"
-                                    MinHeight="50"
-                                    BorderThickness="0,0,0,3"
-                                    BorderBrush="Transparent">
-                                <StackPanel Orientation="Horizontal"
-                                            VerticalAlignment="Center">
-                                    <TextBlock Text="⚙️ "
-                                               FontSize="16"
-                                               VerticalAlignment="Center"/>
-                                    <TextBlock Text="資料管理"
-                                               FontSize="14"
-                                               FontWeight="Bold"
-                                               FontFamily="Microsoft JhengHei"
-                                               VerticalAlignment="Center"/>
-                                </StackPanel>
-                            </Border>
-                            <ControlTemplate.Triggers>
-                                <Trigger Property="IsChecked" Value="True">
-                                    <Setter TargetName="TabBorder" Property="BorderBrush" Value="#0078D4"/>
-                                    <Setter TargetName="TabBorder" Property="Background" Value="#F0F8FF"/>
-                                </Trigger>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter TargetName="TabBorder" Property="Background" Value="#F5F5F5"/>
-                                </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </RadioButton.Template>
+                             Style="{StaticResource TabHeaderStyle}">
+                    <StackPanel Orientation="Horizontal"
+                                VerticalAlignment="Center">
+                        <TextBlock Text="⚙️ "
+                                   FontSize="16"
+                                   VerticalAlignment="Center"/>
+                        <TextBlock Text="資料管理"
+                                   FontSize="14"
+                                   FontWeight="Bold"
+                                   FontFamily="Microsoft JhengHei"
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
                 </RadioButton>
             </StackPanel>
         </Border>
