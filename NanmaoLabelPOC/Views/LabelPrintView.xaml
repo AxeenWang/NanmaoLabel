@@ -231,102 +231,82 @@
                 </Grid>
             </Border>
 
-            <!-- 分頁指示器 [ref: raw_spec 8.4] T070-T072 -->
+            <!-- ============================================================ -->
+            <!-- 分頁導航區（置中）[FR-006]                                    -->
+            <!-- T014: 分頁導航按鈕（◀ ▶）置中顯示                            -->
+            <!-- T017: 套用 SecondaryButtonStyle                               -->
+            <!-- ============================================================ -->
             <StackPanel Grid.Row="1"
                         Orientation="Horizontal"
                         HorizontalAlignment="Center"
                         Margin="0,8"
                         Visibility="{Binding HasRecords, Converter={StaticResource BoolToVisibilityConverter}}">
-                <!-- 上一頁按鈕 ◀ [ref: raw_spec 8.4, 8.6] T071, T072 -->
+                <!-- 上一頁按鈕 ◀ -->
                 <Button Command="{Binding PreviousPageCommand}"
+                        Style="{StaticResource SecondaryButtonStyle}"
                         Width="50" Height="50"
-                        MinWidth="44" MinHeight="44"
                         FontSize="18"
-                        FontWeight="Bold"
                         FontFamily="Microsoft JhengHei"
-                        Background="White"
-                        BorderBrush="#E0E0E0"
-                        BorderThickness="1"
-                        Margin="0,0,8,0"
-                        Cursor="Hand"
                         Content="◀"
                         ToolTip="上一頁"/>
 
-                <!-- 頁碼指示器 [ref: raw_spec 8.4] T071 -->
+                <!-- 頁碼指示器 -->
                 <TextBlock Text="{Binding PageIndicatorText}"
                            VerticalAlignment="Center"
                            FontSize="14"
                            FontWeight="Bold"
                            FontFamily="Microsoft JhengHei"
                            Foreground="#333333"
-                           Margin="8,0"/>
+                           Margin="16,0"/>
 
-                <!-- 下一頁按鈕 ▶ [ref: raw_spec 8.4, 8.6] T071, T072 -->
+                <!-- 下一頁按鈕 ▶ -->
                 <Button Command="{Binding NextPageCommand}"
+                        Style="{StaticResource SecondaryButtonStyle}"
                         Width="50" Height="50"
-                        MinWidth="44" MinHeight="44"
                         FontSize="18"
-                        FontWeight="Bold"
                         FontFamily="Microsoft JhengHei"
-                        Background="White"
-                        BorderBrush="#E0E0E0"
-                        BorderThickness="1"
-                        Margin="8,0,0,0"
-                        Cursor="Hand"
                         Content="▶"
                         ToolTip="下一頁"/>
             </StackPanel>
 
-            <!-- 操作按鈕區 [ref: raw_spec 8.4, 8.6] -->
-            <!-- T061: Kiosk 設計 - 按鈕最小 100×40，建議 140×50 -->
-            <Grid Grid.Row="2" Margin="0,8,0,0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <!-- 輸出 PDF 按鈕 [ref: raw_spec 8.4, 8.6] -->
-                <!-- T061: 大按鈕 (min 100×40, recommended 140×50) -->
-                <Button Grid.Column="0"
-                        Command="{Binding ExportPdfCommand}"
+            <!-- ============================================================ -->
+            <!-- 操作按鈕區（並排置中）[FR-005]                                -->
+            <!-- T013: 輸出 PDF 和批次輸出全部按鈕並排置中顯示                 -->
+            <!-- T016: 套用 ActionButtonStyle                                  -->
+            <!-- ============================================================ -->
+            <StackPanel Grid.Row="2"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        Margin="0,8,0,0">
+                <!-- 輸出 PDF 按鈕 -->
+                <Button Command="{Binding ExportPdfCommand}"
+                        Style="{StaticResource ActionButtonStyle}"
                         MinWidth="140" MinHeight="50"
                         Height="50"
-                        Margin="0,0,4,0"
                         FontSize="14"
-                        FontWeight="Bold"
-                        FontFamily="Microsoft JhengHei"
-                        Background="#0078D4"
-                        Foreground="White"
-                        BorderThickness="0"
-                        Cursor="Hand">
+                        FontFamily="Microsoft JhengHei">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="📄 " FontSize="18" VerticalAlignment="Center"/>
                         <TextBlock Text="輸出 PDF" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
 
-                <!-- 批次輸出全部按鈕 [ref: raw_spec 8.4, 8.6, TC-12] -->
-                <!-- T061: 大按鈕 (min 100×40, recommended 140×50) -->
+                <!-- 批次輸出全部按鈕（間距 16px）-->
                 <Button x:Name="BatchExportButton"
-                        Grid.Column="1"
                         Command="{Binding BatchExportCommand}"
+                        Style="{StaticResource ActionButtonStyle}"
                         MinWidth="140" MinHeight="50"
                         Height="50"
-                        Margin="4,0,0,0"
+                        Margin="16,0,0,0"
                         FontSize="14"
-                        FontWeight="Bold"
                         FontFamily="Microsoft JhengHei"
-                        Background="#107C10"
-                        Foreground="White"
-                        BorderThickness="0"
-                        Cursor="Hand"
                         Click="BatchExportButton_Click">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="📑 " FontSize="18" VerticalAlignment="Center"/>
                         <TextBlock Text="批次輸出全部" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
-            </Grid>
+            </StackPanel>
         </Grid>
     </Grid>
 </UserControl>

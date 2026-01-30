@@ -57,14 +57,14 @@
 
 ### Implementation for User Story 1
 
-- [ ] T010 [US1] 修改 DataManageView.xaml 工具列佈局為三欄 Grid（建立區 | 危險區 | 確認區）於 NanmaoLabelPOC/Views/DataManageView.xaml
-- [ ] T011 [US1] 套用 8px 間距於建立區內（匯入↔新增）於 NanmaoLabelPOC/Views/DataManageView.xaml
-- [ ] T012 [US1] 套用 32px 間距於危險區（刪除按鈕）與相鄰區域於 NanmaoLabelPOC/Views/DataManageView.xaml
-- [ ] T013 [US1] 修改 LabelPrintView.xaml 輸出按鈕佈局為並排置中於 NanmaoLabelPOC/Views/LabelPrintView.xaml
-- [ ] T014 [US1] 修改 LabelPrintView.xaml 分頁導航按鈕（◀ ▶）置中顯示於 NanmaoLabelPOC/Views/LabelPrintView.xaml
-- [ ] T015 [US1] 套用 ActionButtonStyle 至資料管理工具列按鈕（匯入、新增、刪除、儲存）於 NanmaoLabelPOC/Views/DataManageView.xaml
-- [ ] T016 [US1] 套用 ActionButtonStyle 至標籤列印按鈕（輸出 PDF、批次輸出全部）於 NanmaoLabelPOC/Views/LabelPrintView.xaml
-- [ ] T017 [US1] 套用 SecondaryButtonStyle 至分頁導航按鈕（◀ ▶）於 NanmaoLabelPOC/Views/LabelPrintView.xaml
+- [x] T010 [US1] 修改 DataManageView.xaml 工具列佈局為三欄 Grid（建立區 | 危險區 | 確認區）於 NanmaoLabelPOC/Views/DataManageView.xaml
+- [x] T011 [US1] 套用 8px 間距於建立區內（匯入↔新增）於 NanmaoLabelPOC/Views/DataManageView.xaml
+- [x] T012 [US1] 套用 32px 間距於危險區（刪除按鈕）與相鄰區域於 NanmaoLabelPOC/Views/DataManageView.xaml
+- [x] T013 [US1] 修改 LabelPrintView.xaml 輸出按鈕佈局為並排置中於 NanmaoLabelPOC/Views/LabelPrintView.xaml
+- [x] T014 [US1] 修改 LabelPrintView.xaml 分頁導航按鈕（◀ ▶）置中顯示於 NanmaoLabelPOC/Views/LabelPrintView.xaml
+- [x] T015 [US1] 套用 ActionButtonStyle 至資料管理工具列按鈕（匯入、新增、刪除、儲存）於 NanmaoLabelPOC/Views/DataManageView.xaml
+- [x] T016 [US1] 套用 ActionButtonStyle 至標籤列印按鈕（輸出 PDF、批次輸出全部）於 NanmaoLabelPOC/Views/LabelPrintView.xaml
+- [x] T017 [US1] 套用 SecondaryButtonStyle 至分頁導航按鈕（◀ ▶）於 NanmaoLabelPOC/Views/LabelPrintView.xaml
 
 **Checkpoint**: User Story 1 完成 - 按鈕位置分區佈局就緒，可獨立驗證
 
