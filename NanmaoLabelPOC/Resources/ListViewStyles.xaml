@@ -60,8 +60,19 @@
                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                           SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                     </Border>
-                    <!-- T010: IsSelected Trigger [US1, FR-009, FR-011] -->
+                    <!-- T018: Hover MultiTrigger [US2, FR-006~FR-008] -->
+                    <!-- T020: Trigger 順序：MultiTrigger (Hover) 在前，確保 Selected 優先級最高 [ref: research.md R-001] -->
                     <ControlTemplate.Triggers>
+                        <!-- Hover 狀態：僅在未選中時顯示淡藍色光條 -->
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver" Value="True"/>
+                                <Condition Property="IsSelected" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="Bd" Property="Background" Value="{StaticResource ListViewHighlightHover}"/>
+                        </MultiTrigger>
+                        <!-- T010: IsSelected Trigger [US1, FR-009, FR-011] -->
+                        <!-- Selected 狀態：放在最後確保最高優先級 -->
                         <Trigger Property="IsSelected" Value="True">
                             <Setter TargetName="Bd" Property="Background" Value="{StaticResource ListViewHighlightSelected}"/>
                             <Setter Property="Foreground" Value="{StaticResource ListViewForegroundSelected}"/>
@@ -106,8 +117,19 @@
                                                Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.Row}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
                         </SelectiveScrollingGrid>
                     </Border>
-                    <!-- T011: IsSelected Trigger [US1, FR-009] -->
+                    <!-- T019: Hover MultiTrigger [US2, FR-006~FR-008] -->
+                    <!-- T020: Trigger 順序：MultiTrigger (Hover) 在前，確保 Selected 優先級最高 [ref: research.md R-001] -->
                     <ControlTemplate.Triggers>
+                        <!-- Hover 狀態：僅在未選中時顯示淡藍色光條 -->
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver" Value="True"/>
+                                <Condition Property="IsSelected" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="DGR_Border" Property="Background" Value="{StaticResource ListViewHighlightHover}"/>
+                        </MultiTrigger>
+                        <!-- T011: IsSelected Trigger [US1, FR-009] -->
+                        <!-- Selected 狀態：放在最後確保最高優先級 -->
                         <Trigger Property="IsSelected" Value="True">
                             <Setter TargetName="DGR_Border" Property="Background" Value="{StaticResource ListViewHighlightSelected}"/>
                             <Setter Property="Foreground" Value="{StaticResource ListViewForegroundSelected}"/>

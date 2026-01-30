@@ -91,9 +91,9 @@ NanmaoLabelPOC/
 
 ### Implementation for User Story 2
 
-- [ ] T018 [US2] 在 `ListViewItemStyle` 加入 MultiTrigger: IsMouseOver=True AND IsSelected=False → Background=#E5F3FF（`Resources/ListViewStyles.xaml`）
-- [ ] T019 [US2] 在 `DataGridRowStyle` 加入 MultiTrigger: IsMouseOver=True AND IsSelected=False → Background=#E5F3FF（`Resources/ListViewStyles.xaml`）
-- [ ] T020 [US2] 確認 Trigger 順序：MultiTrigger (Hover) 在前，Trigger (IsSelected) 在後，確保 Selected 優先級最高（`Resources/ListViewStyles.xaml`）
+- [x] T018 [US2] 在 `ListViewItemStyle` 加入 MultiTrigger: IsMouseOver=True AND IsSelected=False → Background=#E5F3FF（`Resources/ListViewStyles.xaml`）
+- [x] T019 [US2] 在 `DataGridRowStyle` 加入 MultiTrigger: IsMouseOver=True AND IsSelected=False → Background=#E5F3FF（`Resources/ListViewStyles.xaml`）
+- [x] T020 [US2] 確認 Trigger 順序：MultiTrigger (Hover) 在前，Trigger (IsSelected) 在後，確保 Selected 優先級最高（`Resources/ListViewStyles.xaml`）
 
 **Checkpoint**: Hover 狀態視覺完成，且 Selected 狀態不被 Hover 覆蓋
 
