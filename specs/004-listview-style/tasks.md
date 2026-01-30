@@ -47,12 +47,12 @@ NanmaoLabelPOC/
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T006 定義 `ListViewItemStyle` ControlTemplate 於 `Resources/ListViewStyles.xaml`，包含：
+- [x] T006 定義 `ListViewItemStyle` ControlTemplate 於 `Resources/ListViewStyles.xaml`，包含：
   - Border 作為光條背景層（SnapsToDevicePixels="True", UseLayoutRounding="True"）
   - ContentPresenter 用於顯示內容
-- [ ] T007 [P] 定義 `DataGridRowStyle` ControlTemplate 於 `Resources/ListViewStyles.xaml`，結構同 T006
-- [ ] T008 [P] 定義 `DataGridCellStyle` 於 `Resources/ListViewStyles.xaml`：設定 Background="Transparent" 避免覆蓋 Row 光條
-- [ ] T009 在 `NanmaoLabelPOC/App.xaml` 的 `Application.Resources.MergedDictionaries` 加入 `Resources/ListViewStyles.xaml`
+- [x] T007 [P] 定義 `DataGridRowStyle` ControlTemplate 於 `Resources/ListViewStyles.xaml`，結構同 T006
+- [x] T008 [P] 定義 `DataGridCellStyle` 於 `Resources/ListViewStyles.xaml`：設定 Background="Transparent" 避免覆蓋 Row 光條
+- [x] T009 在 `NanmaoLabelPOC/App.xaml` 的 `Application.Resources.MergedDictionaries` 加入 `Resources/ListViewStyles.xaml`
 
 **Checkpoint**: 共用樣式資源已就緒，可開始各 User Story 實作
 

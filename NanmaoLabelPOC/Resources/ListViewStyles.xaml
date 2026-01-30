@@ -29,4 +29,104 @@
     <!-- T005: Selected 狀態文字顏色 [FR-011] -->
     <SolidColorBrush x:Key="ListViewForegroundSelected" Color="#FFFFFF"/>
 
+    <!-- ============================================================ -->
+    <!-- Phase 2: ControlTemplate 定義                                 -->
+    <!-- T006-T008: 共用樣式 Template                                  -->
+    <!-- ============================================================ -->
+
+    <!-- T006: ListViewItemStyle - ListView 項目樣式 [FR-010, FR-012~FR-014] -->
+    <!--
+    光條完整性技術要點 [ref: research.md R-004]:
+    - SnapsToDevicePixels="True" 避免子像素渲染導致模糊
+    - UseLayoutRounding="True" 確保邊界對齊像素格線
+    - Border 無圓角 (CornerRadius="0") 避免裁切感
+    -->
+    <Style x:Key="ListViewItemStyle" TargetType="ListViewItem">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="Padding" Value="8,0"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{StaticResource ListViewTextNormal}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListViewItem">
+                    <Border x:Name="Bd"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Padding="{TemplateBinding Padding}"
+                            SnapsToDevicePixels="True"
+                            UseLayoutRounding="True">
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- T007: DataGridRowStyle - DataGrid 列樣式 [FR-010, FR-012~FR-014] -->
+    <Style x:Key="DataGridRowStyle" TargetType="DataGridRow">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{StaticResource ListViewTextNormal}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="DataGridRow">
+                    <Border x:Name="DGR_Border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            SnapsToDevicePixels="True"
+                            UseLayoutRounding="True">
+                        <SelectiveScrollingGrid>
+                            <SelectiveScrollingGrid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </SelectiveScrollingGrid.ColumnDefinitions>
+                            <SelectiveScrollingGrid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </SelectiveScrollingGrid.RowDefinitions>
+                            <DataGridCellsPresenter Grid.Column="1"
+                                                    ItemsPanel="{TemplateBinding ItemsPanel}"
+                                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                            <DataGridDetailsPresenter Grid.Row="1"
+                                                      Grid.Column="1"
+                                                      SelectiveScrollingGrid.SelectiveScrollingOrientation="{Binding AreRowDetailsFrozen, ConverterParameter={x:Static SelectiveScrollingOrientation.Vertical}, Converter={x:Static DataGrid.RowDetailsScrollingConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"
+                                                      Visibility="{TemplateBinding DetailsVisibility}"/>
+                            <DataGridRowHeader Grid.RowSpan="2"
+                                               SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical"
+                                               Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.Row}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                        </SelectiveScrollingGrid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- T008: DataGridCellStyle - DataGrid 儲存格樣式 [ref: research.md R-002] -->
+    <!--
+    背景設為透明，讓 Row 光條可穿透顯示
+    避免 Cell 背景覆蓋 Row 背景導致光條破碎
+    -->
+    <Style x:Key="DataGridCellStyle" TargetType="DataGridCell">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="4,0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="DataGridCell">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Padding="{TemplateBinding Padding}"
+                            SnapsToDevicePixels="True">
+                        <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>

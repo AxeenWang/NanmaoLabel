@@ -7,6 +7,8 @@
             <ResourceDictionary.MergedDictionaries>
                 <!-- 按鈕樣式資源 (003-button-style) -->
                 <ResourceDictionary Source="Resources/ButtonStyles.xaml"/>
+                <!-- ListView/DataGrid 樣式資源 (004-listview-style) -->
+                <ResourceDictionary Source="Resources/ListViewStyles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
             <!-- 值轉換器 -->
