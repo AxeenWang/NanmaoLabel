@@ -155,11 +155,11 @@
 
 ### Implementation for User Story 5
 
-- [ ] T039 [US5] 確認 ActionButtonStyle 的 IsFocused Trigger 正確顯示白色外框於 NanmaoLabelPOC/Resources/ButtonStyles.xaml
-- [ ] T040 [US5] 確認 SecondaryButtonStyle 的 IsFocused Trigger 正確顯示白色外框於 NanmaoLabelPOC/Resources/ButtonStyles.xaml
-- [ ] T041 [US5] 確認 TabHeaderStyle 的 IsFocused Trigger 正確顯示焦點指示於 NanmaoLabelPOC/Resources/ButtonStyles.xaml
+- [x] T039 [US5] 確認 ActionButtonStyle 的 IsFocused Trigger 正確顯示白色外框於 NanmaoLabelPOC/Resources/ButtonStyles.xaml
+- [x] T040 [US5] 確認 SecondaryButtonStyle 的 IsFocused Trigger 正確顯示白色外框於 NanmaoLabelPOC/Resources/ButtonStyles.xaml
+- [x] T041 [US5] 確認 TabHeaderStyle 的 IsFocused Trigger 正確顯示焦點指示於 NanmaoLabelPOC/Resources/ButtonStyles.xaml
 
-**Checkpoint**: User Story 5 完成 - 鍵盤 Focus 指示正常，可獨立驗證
+**Checkpoint**: User Story 5 完成 - 鍵盤 Focus 指示正常，可獨立驗證 ✅
 
 ---
 

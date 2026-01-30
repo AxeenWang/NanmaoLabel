@@ -185,6 +185,11 @@
                                 </Setter.Value>
                             </Setter>
                         </Trigger>
+                        <!-- T040: IsFocused Trigger (深色邊框 2px) [FR-014, US5] -->
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource SecondaryDefaultForeground}"/>
+                            <Setter TargetName="border" Property="BorderThickness" Value="2"/>
+                        </Trigger>
                         <!-- IsPressed Trigger (Active) -->
                         <Trigger Property="IsPressed" Value="True">
                             <Setter TargetName="border" Property="Background" Value="{StaticResource SecondaryActiveBackground}"/>
@@ -240,6 +245,11 @@
                         <!-- T026: IsMouseOver Trigger (Hover) -->
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="TabBorder" Property="Background" Value="#F5F5F5"/>
+                        </Trigger>
+                        <!-- T041: IsFocused Trigger (鍵盤焦點指示) [FR-014, US5] -->
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="TabBorder" Property="BorderBrush" Value="#0078D4"/>
+                            <Setter TargetName="TabBorder" Property="BorderThickness" Value="0,0,0,3"/>
                         </Trigger>
                         <!-- IsChecked Trigger (Selected) - 最高優先序 -->
                         <Trigger Property="IsChecked" Value="True">
