@@ -109,10 +109,10 @@ NanmaoLabelPOC/
 
 ### Implementation for User Story 3
 
-- [ ] T021 [US3] 驗證 `Views/DataManageView.xaml` DataGrid 已設定 `SelectionUnit="FullRow"`
-- [ ] T022 [US3] 確認 ListView 與 DataGrid 皆使用相同色彩 Token（ListViewHighlightSelected, ListViewHighlightHover）（`Resources/ListViewStyles.xaml`）
-- [ ] T023 [US3] 視覺比對：標籤列印分頁 ListView 與資料管理分頁 DataGrid 的 Selected 光條顏色一致
-- [ ] T024 [US3] 視覺比對：兩分頁的 Hover 光條顏色一致
+- [x] T021 [US3] 驗證 `Views/DataManageView.xaml` DataGrid 已設定 `SelectionUnit="FullRow"`
+- [x] T022 [US3] 確認 ListView 與 DataGrid 皆使用相同色彩 Token（ListViewHighlightSelected, ListViewHighlightHover）（`Resources/ListViewStyles.xaml`）
+- [x] T023 [US3] 視覺比對：標籤列印分頁 ListView 與資料管理分頁 DataGrid 的 Selected 光條顏色一致
+- [x] T024 [US3] 視覺比對：兩分頁的 Hover 光條顏色一致
 
 **Checkpoint**: 兩分頁視覺 100% 一致
 
