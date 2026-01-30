@@ -36,12 +36,12 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T004 定義 Action 按鈕顏色 Token（ButtonDefaultBackground #1E3A5F, ButtonDefaultForeground #FFFFFF, ButtonHoverBackground #2E4A6F, ButtonActiveBackground #0E2A4F, ButtonFocusBorder #FFFFFF）於 NanmaoLabelPOC/Resources/ButtonStyles.xaml
-- [ ] T005 [P] 定義 Disabled 按鈕顏色 Token（ButtonDisabledBackground #E0E0E0, ButtonDisabledForeground #A0A0A0）於 NanmaoLabelPOC/Resources/ButtonStyles.xaml
-- [ ] T006 [P] 定義 Secondary 按鈕顏色 Token（SecondaryDefaultBackground #FFFFFF, SecondaryDefaultForeground #333333, SecondaryHoverBackground #F0F0F0, SecondaryBorder #E0E0E0）於 NanmaoLabelPOC/Resources/ButtonStyles.xaml
-- [ ] T007 [P] 定義 Feedback 顏色 Token（FeedbackSuccess #107C10, FeedbackError #D13438）於 NanmaoLabelPOC/Resources/ButtonStyles.xaml
-- [ ] T008 建立 ActionButtonStyle 基礎樣式（TargetType=Button, 深藍底白字, CornerRadius=4）於 NanmaoLabelPOC/Resources/ButtonStyles.xaml
-- [ ] T009 建立 SecondaryButtonStyle 樣式（白底黑字帶邊框, MinWidth=40, MinHeight=40）於 NanmaoLabelPOC/Resources/ButtonStyles.xaml
+- [x] T004 定義 Action 按鈕顏色 Token（ButtonDefaultBackground #1E3A5F, ButtonDefaultForeground #FFFFFF, ButtonHoverBackground #2E4A6F, ButtonActiveBackground #0E2A4F, ButtonFocusBorder #FFFFFF）於 NanmaoLabelPOC/Resources/ButtonStyles.xaml
+- [x] T005 [P] 定義 Disabled 按鈕顏色 Token（ButtonDisabledBackground #E0E0E0, ButtonDisabledForeground #A0A0A0）於 NanmaoLabelPOC/Resources/ButtonStyles.xaml
+- [x] T006 [P] 定義 Secondary 按鈕顏色 Token（SecondaryDefaultBackground #FFFFFF, SecondaryDefaultForeground #333333, SecondaryHoverBackground #F0F0F0, SecondaryBorder #E0E0E0）於 NanmaoLabelPOC/Resources/ButtonStyles.xaml
+- [x] T007 [P] 定義 Feedback 顏色 Token（FeedbackSuccess #107C10, FeedbackError #D13438）於 NanmaoLabelPOC/Resources/ButtonStyles.xaml
+- [x] T008 建立 ActionButtonStyle 基礎樣式（TargetType=Button, 深藍底白字, CornerRadius=4）於 NanmaoLabelPOC/Resources/ButtonStyles.xaml
+- [x] T009 建立 SecondaryButtonStyle 樣式（白底黑字帶邊框, MinWidth=40, MinHeight=40）於 NanmaoLabelPOC/Resources/ButtonStyles.xaml
 
 **Checkpoint**: Foundation ready - Color Tokens 與基礎樣式可用，user story implementation can now begin
 
