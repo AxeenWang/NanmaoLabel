@@ -114,11 +114,11 @@
 
 ### Implementation for User Story 3
 
-- [ ] T028 [US3] 修改 DataManageViewModel.cs 新增 ShowDeleteConfirmation 方法（MessageBox 確認對話框）於 NanmaoLabelPOC/ViewModels/DataManageViewModel.cs
-- [ ] T029 [US3] 修改 DeleteCommand 執行邏輯，加入二次確認呼叫於 NanmaoLabelPOC/ViewModels/DataManageViewModel.cs
-- [ ] T030 [US3] 確認對話框訊息使用繁體中文（「確定要刪除選取的資料嗎？此操作無法復原。」）於 NanmaoLabelPOC/ViewModels/DataManageViewModel.cs
+- [x] T028 [US3] 修改 DataManageViewModel.cs 新增 ShowDeleteConfirmation 方法（MessageBox 確認對話框）於 NanmaoLabelPOC/ViewModels/DataManageViewModel.cs
+- [x] T029 [US3] 修改 DeleteCommand 執行邏輯，加入二次確認呼叫於 NanmaoLabelPOC/ViewModels/DataManageViewModel.cs
+- [x] T030 [US3] 確認對話框訊息使用繁體中文（「確定要刪除選取的資料嗎？此操作無法復原。」）於 NanmaoLabelPOC/ViewModels/DataManageViewModel.cs
 
-**Checkpoint**: User Story 3 完成 - 刪除保護機制正常，可獨立驗證
+**Checkpoint**: User Story 3 完成 - 刪除保護機制正常，可獨立驗證 ✅
 
 ---
 
