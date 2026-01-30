@@ -167,12 +167,14 @@
 
 **Purpose**: 測試、驗證、收尾工作
 
-- [ ] T042 [P] 新增 ButtonStateTests.cs 測試狀態優先序邏輯於 NanmaoLabelPOC.Tests/ViewModels/ButtonStateTests.cs
-- [ ] T043 執行完整測試套件確認無回歸於 NanmaoLabelPOC.Tests/
-- [ ] T044 [P] 執行手動視覺驗證檢查清單（對照 spec.md Success Criteria）
-- [ ] T045 確認所有顏色值與 raw_delta_button.md 一致（程式碼審查）
-- [ ] T046 確認建置無警告（Constitution I 要求）
-- [ ] T047 執行 quickstart.md 驗證步驟
+- [x] T042 [P] 新增 ButtonStateTests.cs 測試狀態優先序邏輯於 NanmaoLabelPOC.Tests/ViewModels/ButtonStateTests.cs
+- [x] T043 執行完整測試套件確認無回歸於 NanmaoLabelPOC.Tests/
+- [x] T044 [P] 執行手動視覺驗證檢查清單（對照 spec.md Success Criteria）
+- [x] T045 確認所有顏色值與 raw_delta_button.md 一致（程式碼審查）
+- [x] T046 確認建置無警告（Constitution I 要求）
+- [x] T047 執行 quickstart.md 驗證步驟
+
+**Checkpoint**: Phase 8 完成 - 所有測試通過，建置無警告，視覺驗證完成 ✅
 
 ---
 
