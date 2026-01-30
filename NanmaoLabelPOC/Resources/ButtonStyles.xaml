@@ -252,4 +252,54 @@
         </Setter>
     </Style>
 
+    <!-- ============================================================ -->
+    <!-- T033-T034: PulseActionButtonStyle 脈動樣式                      -->
+    <!-- 儲存按鈕專用，當 IsDirty=True 時啟動脈動光暈效果                 -->
+    <!-- 動畫規格：光暈透明度 0.3-0.6 循環，週期 1.5 秒                  -->
+    <!-- Source: raw_delta_button.md §5.3                                -->
+    <!-- FR-016: 儲存按鈕脈動效果                                        -->
+    <!-- ============================================================ -->
+    <Style x:Key="PulseActionButtonStyle" TargetType="Button" BasedOn="{StaticResource ActionButtonStyle}">
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect x:Name="PulseGlow"
+                                  Color="White"
+                                  BlurRadius="8"
+                                  ShadowDepth="0"
+                                  Opacity="0"/>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <!-- T034: DataTrigger - IsDirty=True 時啟動脈動 -->
+            <DataTrigger Binding="{Binding IsDirty}" Value="True">
+                <Setter Property="Effect">
+                    <Setter.Value>
+                        <DropShadowEffect Color="White"
+                                          BlurRadius="8"
+                                          ShadowDepth="0"
+                                          Opacity="0.3"/>
+                    </Setter.Value>
+                </Setter>
+                <DataTrigger.EnterActions>
+                    <BeginStoryboard x:Name="PulseStoryboard">
+                        <Storyboard RepeatBehavior="Forever">
+                            <DoubleAnimation
+                                Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.Opacity)"
+                                From="0.3" To="0.6"
+                                Duration="0:0:0.75"
+                                AutoReverse="True">
+                                <DoubleAnimation.EasingFunction>
+                                    <SineEase EasingMode="EaseInOut"/>
+                                </DoubleAnimation.EasingFunction>
+                            </DoubleAnimation>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </DataTrigger.EnterActions>
+                <DataTrigger.ExitActions>
+                    <StopStoryboard BeginStoryboardName="PulseStoryboard"/>
+                </DataTrigger.ExitActions>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
 </ResourceDictionary>

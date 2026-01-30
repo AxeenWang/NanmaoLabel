@@ -186,6 +186,16 @@ public partial class LabelPrintViewModel : ObservableObject
     private string _statusMessage = "就緒";
 
     /// <summary>
+    /// 是否正在輸出 PDF
+    /// [ref: raw_delta_button.md FR-017, FR-018]
+    /// T036: IsExporting 屬性用於 Loading 狀態管理
+    /// </summary>
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(ExportPdfCommand))]
+    [NotifyCanExecuteChangedFor(nameof(BatchExportCommand))]
+    private bool _isExporting;
+
+    /// <summary>
     /// 資料筆數顯示
     /// </summary>
     public string RecordCountText => $"共 {Records.Count} 筆資料";
@@ -273,6 +283,11 @@ public partial class LabelPrintViewModel : ObservableObject
     /// 輸出 PDF 命令
     /// [ref: raw_spec 3.1 F-08]
     /// </summary>
+    /// <summary>
+    /// 輸出 PDF 命令
+    /// [ref: raw_spec 3.1 F-08]
+    /// T037: 設定 IsExporting 狀態管理
+    /// </summary>
     [RelayCommand(CanExecute = nameof(CanExportPdf))]
     private void ExportPdf()
     {
@@ -291,6 +306,9 @@ public partial class LabelPrintViewModel : ObservableObject
 
         try
         {
+            // T037: 設定 IsExporting=true，開始輸出
+            IsExporting = true;
+
             // 產生預設輸出路徑
             var fileName = _pdfExporter.GenerateDefaultFileName(SelectedRecord);
             var outputPath = Path.Combine(_pdfExporter.OutputDirectory, fileName);
@@ -315,13 +333,27 @@ public partial class LabelPrintViewModel : ObservableObject
         {
             StatusMessage = $"❌ 輸出失敗：{ex.Message}";
         }
+        finally
+        {
+            // T037: 設定 IsExporting=false，完成輸出
+            IsExporting = false;
+        }
     }
 
-    private bool CanExportPdf() => SelectedRecord != null && SelectedTemplate != null;
+    /// <summary>
+    /// 是否可輸出 PDF
+    /// T037: 加入 !IsExporting 條件，防止輸出中重複點擊
+    /// </summary>
+    private bool CanExportPdf() => SelectedRecord != null && SelectedTemplate != null && !IsExporting;
 
     /// <summary>
     /// 批次輸出全部命令
     /// [ref: raw_spec 3.3, TC-12]
+    /// </summary>
+    /// <summary>
+    /// 批次輸出全部命令
+    /// [ref: raw_spec 3.3, TC-12]
+    /// T037: 設定 IsExporting 狀態管理
     /// </summary>
     [RelayCommand(CanExecute = nameof(CanBatchExport))]
     private void BatchExport()
@@ -331,6 +363,9 @@ public partial class LabelPrintViewModel : ObservableObject
 
         try
         {
+            // T037: 設定 IsExporting=true，開始批次輸出
+            IsExporting = true;
+
             // 產生預設輸出路徑
             var fileName = _pdfExporter.GenerateBatchFileName();
             var outputPath = Path.Combine(_pdfExporter.OutputDirectory, fileName);
@@ -358,9 +393,18 @@ public partial class LabelPrintViewModel : ObservableObject
             StatusMessage = $"❌ 批次輸出失敗：{ex.Message}";
             LastBatchExportPath = null;
         }
+        finally
+        {
+            // T037: 設定 IsExporting=false，完成批次輸出
+            IsExporting = false;
+        }
     }
 
-    private bool CanBatchExport() => HasRecords && SelectedTemplate != null;
+    /// <summary>
+    /// 是否可批次輸出
+    /// T037: 加入 !IsExporting 條件，防止輸出中重複點擊
+    /// </summary>
+    private bool CanBatchExport() => HasRecords && SelectedTemplate != null && !IsExporting;
 
     #region Pagination Commands [ref: raw_spec 8.4] T070-T072
 

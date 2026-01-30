@@ -109,10 +109,12 @@
                 <!-- ============================================================ -->
                 <!-- 確認區（右側）：儲存 [FR-001, FR-004]                         -->
                 <!-- T015: 套用 ActionButtonStyle                                  -->
+                <!-- T035: 套用 PulseActionButtonStyle（脈動效果）                 -->
+                <!-- FR-016: IsDirty=True 時儲存按鈕脈動光暈                       -->
                 <!-- ============================================================ -->
                 <Button Grid.Column="4"
                         x:Name="SaveButton"
-                        Style="{StaticResource ActionButtonStyle}"
+                        Style="{StaticResource PulseActionButtonStyle}"
                         MinWidth="110" MinHeight="45"
                         Height="45"
                         FontSize="14"

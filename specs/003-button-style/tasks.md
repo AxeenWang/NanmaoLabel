@@ -132,16 +132,16 @@
 
 ### Implementation for User Story 4
 
-- [ ] T031 [US4] 修改 DataManageViewModel.cs 新增 IsDirty 屬性（追蹤未儲存變更）於 NanmaoLabelPOC/ViewModels/DataManageViewModel.cs
-- [ ] T032 [US4] 在資料編輯時設定 IsDirty=true，儲存後設定 IsDirty=false 於 NanmaoLabelPOC/ViewModels/DataManageViewModel.cs
-- [ ] T033 [US4] 建立 PulseActionButtonStyle 樣式（含 DropShadowEffect 脈動 Storyboard）於 NanmaoLabelPOC/Resources/ButtonStyles.xaml
-- [ ] T034 [US4] 為 PulseActionButtonStyle 新增 DataTrigger（Binding IsDirty=True 時啟動脈動）於 NanmaoLabelPOC/Resources/ButtonStyles.xaml
-- [ ] T035 [US4] 套用 PulseActionButtonStyle 至儲存按鈕於 NanmaoLabelPOC/Views/DataManageView.xaml
-- [ ] T036 [US4] 修改 LabelPrintViewModel.cs 新增 IsExporting 屬性於 NanmaoLabelPOC/ViewModels/LabelPrintViewModel.cs
-- [ ] T037 [US4] 在輸出 PDF 開始時設定 IsExporting=true，完成後設定 IsExporting=false 於 NanmaoLabelPOC/ViewModels/LabelPrintViewModel.cs
-- [ ] T038 [US4] 綁定輸出 PDF 按鈕 IsEnabled 至 !IsExporting 於 NanmaoLabelPOC/Views/LabelPrintView.xaml
+- [x] T031 [US4] 修改 DataManageViewModel.cs 新增 IsDirty 屬性（追蹤未儲存變更）於 NanmaoLabelPOC/ViewModels/DataManageViewModel.cs
+- [x] T032 [US4] 在資料編輯時設定 IsDirty=true，儲存後設定 IsDirty=false 於 NanmaoLabelPOC/ViewModels/DataManageViewModel.cs
+- [x] T033 [US4] 建立 PulseActionButtonStyle 樣式（含 DropShadowEffect 脈動 Storyboard）於 NanmaoLabelPOC/Resources/ButtonStyles.xaml
+- [x] T034 [US4] 為 PulseActionButtonStyle 新增 DataTrigger（Binding IsDirty=True 時啟動脈動）於 NanmaoLabelPOC/Resources/ButtonStyles.xaml
+- [x] T035 [US4] 套用 PulseActionButtonStyle 至儲存按鈕於 NanmaoLabelPOC/Views/DataManageView.xaml
+- [x] T036 [US4] 修改 LabelPrintViewModel.cs 新增 IsExporting 屬性於 NanmaoLabelPOC/ViewModels/LabelPrintViewModel.cs
+- [x] T037 [US4] 在輸出 PDF 開始時設定 IsExporting=true，完成後設定 IsExporting=false 於 NanmaoLabelPOC/ViewModels/LabelPrintViewModel.cs
+- [x] T038 [US4] 綁定輸出 PDF 按鈕 IsEnabled 至 !IsExporting 於 NanmaoLabelPOC/Views/LabelPrintView.xaml
 
-**Checkpoint**: User Story 4 完成 - 操作回饋（脈動、Loading）正常，可獨立驗證
+**Checkpoint**: User Story 4 完成 - 操作回饋（脈動、Loading）正常，可獨立驗證 ✅
 
 ---
 
