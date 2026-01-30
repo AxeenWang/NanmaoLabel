@@ -1,0 +1,32 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--
+    ListView/DataGrid 選取狀態視覺規範
+    [ref: spec.md 004-listview-style]
+
+    色彩規範：
+    - Selected 光條: #0078D4 (高亮藍)
+    - Hover 光條: #E5F3FF (淡藍)
+    - Normal 字體: #333333
+    - Selected 字體: #FFFFFF (白)
+    -->
+
+    <!-- ============================================================ -->
+    <!-- Phase 1: 色彩 Token 定義                                      -->
+    <!-- T002-T005: 共用色彩常數                                       -->
+    <!-- ============================================================ -->
+
+    <!-- T002: Selected 狀態光條背景色 [FR-009] -->
+    <SolidColorBrush x:Key="ListViewHighlightSelected" Color="#0078D4"/>
+
+    <!-- T003: Hover 狀態光條背景色 [FR-006] -->
+    <SolidColorBrush x:Key="ListViewHighlightHover" Color="#E5F3FF"/>
+
+    <!-- T004: Normal 狀態文字顏色 [FR-005] -->
+    <SolidColorBrush x:Key="ListViewTextNormal" Color="#333333"/>
+
+    <!-- T005: Selected 狀態文字顏色 [FR-011] -->
+    <SolidColorBrush x:Key="ListViewForegroundSelected" Color="#FFFFFF"/>
+
+</ResourceDictionary>

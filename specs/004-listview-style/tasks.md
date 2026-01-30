@@ -33,11 +33,11 @@ NanmaoLabelPOC/
 
 **Purpose**: 建立共用樣式資源檔與色彩 Token
 
-- [ ] T001 建立 `NanmaoLabelPOC/Resources/ListViewStyles.xaml` 檔案
-- [ ] T002 [P] 定義色彩 Token: `ListViewHighlightSelected` (#0078D4) 於 `Resources/ListViewStyles.xaml`
-- [ ] T003 [P] 定義色彩 Token: `ListViewHighlightHover` (#E5F3FF) 於 `Resources/ListViewStyles.xaml`
-- [ ] T004 [P] 定義色彩 Token: `ListViewTextNormal` (#333333) 於 `Resources/ListViewStyles.xaml`
-- [ ] T005 [P] 定義色彩 Token: `ListViewForegroundSelected` (#FFFFFF) 於 `Resources/ListViewStyles.xaml`
+- [x] T001 建立 `NanmaoLabelPOC/Resources/ListViewStyles.xaml` 檔案
+- [x] T002 [P] 定義色彩 Token: `ListViewHighlightSelected` (#0078D4) 於 `Resources/ListViewStyles.xaml`
+- [x] T003 [P] 定義色彩 Token: `ListViewHighlightHover` (#E5F3FF) 於 `Resources/ListViewStyles.xaml`
+- [x] T004 [P] 定義色彩 Token: `ListViewTextNormal` (#333333) 於 `Resources/ListViewStyles.xaml`
+- [x] T005 [P] 定義色彩 Token: `ListViewForegroundSelected` (#FFFFFF) 於 `Resources/ListViewStyles.xaml`
 
 ---
 
