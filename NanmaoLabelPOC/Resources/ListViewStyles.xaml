@@ -144,12 +144,16 @@
     <!--
     背景設為透明，讓 Row 光條可穿透顯示
     避免 Cell 背景覆蓋 Row 背景導致光條破碎
+
+    重要：DataGridTextColumn 的文字顏色繼承自 DataGridCell.Foreground，
+    而非 DataGridRow.Foreground，因此需要在 Cell 層級處理 Selected 文字顏色
     -->
     <Style x:Key="DataGridCellStyle" TargetType="DataGridCell">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderBrush" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Padding" Value="4,0"/>
+        <Setter Property="Foreground" Value="{StaticResource ListViewTextNormal}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="DataGridCell">
@@ -163,6 +167,13 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+        <!-- Selected 狀態文字顏色切換 [FR-011, FR-018] -->
+        <Style.Triggers>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Foreground" Value="{StaticResource ListViewForegroundSelected}"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
 </ResourceDictionary>
