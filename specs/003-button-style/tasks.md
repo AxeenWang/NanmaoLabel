@@ -24,9 +24,9 @@
 
 **Purpose**: 建立樣式資源基礎架構
 
-- [ ] T001 建立 Resources 目錄結構於 NanmaoLabelPOC/Resources/
-- [ ] T002 [P] 建立 ButtonStyles.xaml 於 NanmaoLabelPOC/Resources/ButtonStyles.xaml（空檔案含 ResourceDictionary 根元素）
-- [ ] T003 修改 App.xaml 合併 ButtonStyles.xaml 於 NanmaoLabelPOC/App.xaml
+- [x] T001 建立 Resources 目錄結構於 NanmaoLabelPOC/Resources/
+- [x] T002 [P] 建立 ButtonStyles.xaml 於 NanmaoLabelPOC/Resources/ButtonStyles.xaml（空檔案含 ResourceDictionary 根元素）
+- [x] T003 修改 App.xaml 合併 ButtonStyles.xaml 於 NanmaoLabelPOC/App.xaml
 
 ---
 
