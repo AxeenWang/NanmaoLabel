@@ -149,14 +149,14 @@
                                     </Grid.ColumnDefinitions>
 
                                     <!-- 單據編號 [ref: raw_spec 8.4, 8.6] -->
-                                    <!-- T014: 清單項目字體 14pt, Selected 時 Bold + White [US1, FR-011] -->
+                                    <!-- T025: 清單項目字體 16pt [US4, FR-005], Selected 時 Bold + White [US1, FR-011] -->
                                     <StackPanel Grid.Column="0"
                                                 Orientation="Horizontal"
                                                 VerticalAlignment="Center">
                                         <TextBlock x:Name="IconText" Text="📦 " FontSize="16"/>
                                         <TextBlock x:Name="Ogb19Text"
                                                    Text="{Binding Ogb19}"
-                                                   FontSize="14"
+                                                   FontSize="16"
                                                    FontWeight="Bold"
                                                    FontFamily="Microsoft JhengHei"/>
                                     </StackPanel>
@@ -169,10 +169,10 @@
                                         <TextBlock x:Name="Sep1Text"
                                                    Text="│ "
                                                    Foreground="#CCCCCC"
-                                                   FontSize="14"/>
+                                                   FontSize="16"/>
                                         <TextBlock x:Name="NvrCustText"
                                                    Text="{Binding NvrCust}"
-                                                   FontSize="14"
+                                                   FontSize="16"
                                                    FontFamily="Microsoft JhengHei"
                                                    TextTrimming="CharacterEllipsis"
                                                    MaxWidth="200"/>
@@ -185,10 +185,10 @@
                                         <TextBlock x:Name="Sep2Text"
                                                    Text="│ "
                                                    Foreground="#CCCCCC"
-                                                   FontSize="14"/>
+                                                   FontSize="16"/>
                                         <TextBlock x:Name="Ogd09Text"
                                                    Text="{Binding Ogd09, StringFormat=N0}"
-                                                   FontSize="14"
+                                                   FontSize="16"
                                                    FontFamily="Microsoft JhengHei"/>
                                     </StackPanel>
                                 </Grid>

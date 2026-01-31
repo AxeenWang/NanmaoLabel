@@ -128,9 +128,9 @@ NanmaoLabelPOC/
 
 ### Implementation for User Story 4
 
-- [ ] T025 [P] [US4] 修改 `Views/LabelPrintView.xaml` DataTemplate 內所有 TextBlock FontSize 從 14 改為 16（line 157, 159, 171, 185, 187）
-- [ ] T026 [P] [US4] 修改 `Views/DataManageView.xaml` DataGrid FontSize 從 13 改為 16（若需調整）或確認欄位編輯區維持現有大小
-- [ ] T027 [US4] 確認字體變大後版面無溢出，TextTrimming="CharacterEllipsis" 設定正確（`Views/LabelPrintView.xaml`）
+- [x] T025 [P] [US4] 修改 `Views/LabelPrintView.xaml` DataTemplate 內所有 TextBlock FontSize 從 14 改為 16（line 157, 159, 171, 185, 187）
+- [x] T026 [P] [US4] 修改 `Views/DataManageView.xaml` DataGrid FontSize 從 13 改為 16（若需調整）或確認欄位編輯區維持現有大小
+- [x] T027 [US4] 確認字體變大後版面無溢出，TextTrimming="CharacterEllipsis" 設定正確（`Views/LabelPrintView.xaml`）
 
 **Checkpoint**: 字體可讀性提升完成
 
@@ -140,13 +140,13 @@ NanmaoLabelPOC/
 
 **Purpose**: 最終驗收與跨功能檢查
 
-- [ ] T028 編譯專案確認無 XAML 警告（`dotnet build`）
-- [ ] T029 執行應用程式確認無 Binding 錯誤（檢查 Output 視窗）
-- [ ] T030 [P] 執行視覺驗收清單 V-001~V-007（quickstart.md）
-- [ ] T031 [P] 執行互動驗收清單 I-001~I-004（quickstart.md）
-- [ ] T032 [P] 執行跨頁驗收清單 C-001~C-003（quickstart.md）
-- [ ] T033 確認 ListView 功能正常：選取、雙擊、分頁
-- [ ] T034 確認 DataGrid 功能正常：選取、編輯、排序
+- [x] T028 編譯專案確認無 XAML 警告（`dotnet build`）
+- [x] T029 執行應用程式確認無 Binding 錯誤（檢查 Output 視窗）
+- [x] T030 [P] 執行視覺驗收清單 V-001~V-007（quickstart.md）
+- [x] T031 [P] 執行互動驗收清單 I-001~I-004（quickstart.md）
+- [x] T032 [P] 執行跨頁驗收清單 C-001~C-003（quickstart.md）
+- [x] T033 確認 ListView 功能正常：選取、雙擊、分頁
+- [x] T034 確認 DataGrid 功能正常：選取、編輯、排序
 
 ---
 

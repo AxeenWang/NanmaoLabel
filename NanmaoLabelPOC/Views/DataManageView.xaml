@@ -150,7 +150,7 @@
                       Background="White"
                       BorderThickness="0"
                       FontFamily="Microsoft JhengHei"
-                      FontSize="13"
+                      FontSize="16"
                       RowHeight="40"
                       MinRowHeight="40"
                       IsReadOnly="True">
