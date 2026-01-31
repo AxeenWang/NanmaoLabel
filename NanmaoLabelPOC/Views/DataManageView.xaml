@@ -150,18 +150,19 @@
                       Background="White"
                       BorderThickness="0"
                       FontFamily="Microsoft JhengHei"
-                      FontSize="13"
+                      FontSize="16"
                       RowHeight="40"
                       MinRowHeight="40"
                       IsReadOnly="True">
+                <!-- 欄位寬度依 16pt 微軟正黑體 Bold 計算，確保內容完整顯示 -->
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="單據編號" Binding="{Binding Ogb19}" Width="120"/>
-                    <DataGridTextColumn Header="客戶名稱" Binding="{Binding NvrCust}" Width="150"/>
-                    <DataGridTextColumn Header="客戶料號" Binding="{Binding NvrCustItemNo}" Width="130"/>
-                    <DataGridTextColumn Header="日期" Binding="{Binding Obe25}" Width="100"/>
+                    <DataGridTextColumn Header="單據編號" Binding="{Binding Ogb19}" Width="130"/>
+                    <DataGridTextColumn Header="客戶名稱" Binding="{Binding NvrCust}" Width="200"/>
+                    <DataGridTextColumn Header="客戶料號" Binding="{Binding NvrCustItemNo}" Width="160"/>
+                    <DataGridTextColumn Header="日期" Binding="{Binding Obe25}" Width="120"/>
                     <DataGridTextColumn Header="數量" Binding="{Binding Ogd09}" Width="80"/>
-                    <DataGridTextColumn Header="製令單號" Binding="{Binding Pono}" Width="130"/>
-                    <DataGridTextColumn Header="裝置編號" Binding="{Binding Ima902}" Width="130"/>
+                    <DataGridTextColumn Header="製令單號" Binding="{Binding Pono}" Width="160"/>
+                    <DataGridTextColumn Header="裝置編號" Binding="{Binding Ima902}" Width="160"/>
                 </DataGrid.Columns>
                 <DataGrid.ColumnHeaderStyle>
                     <Style TargetType="DataGridColumnHeader">
@@ -172,19 +173,14 @@
                         <Setter Property="BorderBrush" Value="#E0E0E0"/>
                     </Style>
                 </DataGrid.ColumnHeaderStyle>
+                <!-- T015/T016: 套用共用 DataGridRowStyle [US1] -->
                 <DataGrid.RowStyle>
-                    <Style TargetType="DataGridRow">
-                        <Style.Triggers>
-                            <Trigger Property="IsSelected" Value="True">
-                                <Setter Property="Background" Value="#0078D4"/>
-                                <Setter Property="Foreground" Value="White"/>
-                            </Trigger>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#F0F0F0"/>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
+                    <StaticResource ResourceKey="DataGridRowStyle"/>
                 </DataGrid.RowStyle>
+                <!-- T017: 套用 DataGridCellStyle 確保 Cell 透明不覆蓋 Row 光條 [US1] -->
+                <DataGrid.CellStyle>
+                    <StaticResource ResourceKey="DataGridCellStyle"/>
+                </DataGrid.CellStyle>
             </DataGrid>
         </Border>
 

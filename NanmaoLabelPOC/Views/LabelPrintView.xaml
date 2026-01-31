@@ -141,7 +141,7 @@
                             <DataTemplate>
                                 <!-- 項目高度 50px [ref: raw_spec 8.4, 8.6] -->
                                 <!-- T061: ListView 項目 min 40px, recommended 50px -->
-                                <Grid Height="50" MinHeight="50" Margin="8,0">
+                                <Grid x:Name="ItemGrid" Height="50" MinHeight="50" Margin="8,0">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="*"/>
@@ -149,13 +149,14 @@
                                     </Grid.ColumnDefinitions>
 
                                     <!-- 單據編號 [ref: raw_spec 8.4, 8.6] -->
-                                    <!-- T061: 清單項目字體 14pt -->
+                                    <!-- T025: 清單項目字體 16pt [US4, FR-005], Selected 時 Bold + White [US1, FR-011] -->
                                     <StackPanel Grid.Column="0"
                                                 Orientation="Horizontal"
                                                 VerticalAlignment="Center">
-                                        <TextBlock Text="📦 " FontSize="16"/>
-                                        <TextBlock Text="{Binding Ogb19}"
-                                                   FontSize="14"
+                                        <TextBlock x:Name="IconText" Text="📦 " FontSize="16"/>
+                                        <TextBlock x:Name="Ogb19Text"
+                                                   Text="{Binding Ogb19}"
+                                                   FontSize="16"
                                                    FontWeight="Bold"
                                                    FontFamily="Microsoft JhengHei"/>
                                     </StackPanel>
@@ -165,11 +166,13 @@
                                                 Orientation="Horizontal"
                                                 VerticalAlignment="Center"
                                                 Margin="16,0">
-                                        <TextBlock Text="│ "
+                                        <TextBlock x:Name="Sep1Text"
+                                                   Text="│ "
                                                    Foreground="#CCCCCC"
-                                                   FontSize="14"/>
-                                        <TextBlock Text="{Binding NvrCust}"
-                                                   FontSize="14"
+                                                   FontSize="16"/>
+                                        <TextBlock x:Name="NvrCustText"
+                                                   Text="{Binding NvrCust}"
+                                                   FontSize="16"
                                                    FontFamily="Microsoft JhengHei"
                                                    TextTrimming="CharacterEllipsis"
                                                    MaxWidth="200"/>
@@ -179,32 +182,33 @@
                                     <StackPanel Grid.Column="2"
                                                 Orientation="Horizontal"
                                                 VerticalAlignment="Center">
-                                        <TextBlock Text="│ "
+                                        <TextBlock x:Name="Sep2Text"
+                                                   Text="│ "
                                                    Foreground="#CCCCCC"
-                                                   FontSize="14"/>
-                                        <TextBlock Text="{Binding Ogd09, StringFormat=N0}"
-                                                   FontSize="14"
+                                                   FontSize="16"/>
+                                        <TextBlock x:Name="Ogd09Text"
+                                                   Text="{Binding Ogd09, StringFormat=N0}"
+                                                   FontSize="16"
                                                    FontFamily="Microsoft JhengHei"/>
                                     </StackPanel>
                                 </Grid>
+                                <!-- T014: DataTrigger 處理 Selected 狀態字體樣式 [US1, FR-011] -->
+                                <DataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListViewItem}}" Value="True">
+                                        <Setter TargetName="Ogb19Text" Property="Foreground" Value="White"/>
+                                        <Setter TargetName="NvrCustText" Property="Foreground" Value="White"/>
+                                        <Setter TargetName="NvrCustText" Property="FontWeight" Value="Bold"/>
+                                        <Setter TargetName="Ogd09Text" Property="Foreground" Value="White"/>
+                                        <Setter TargetName="Ogd09Text" Property="FontWeight" Value="Bold"/>
+                                        <Setter TargetName="Sep1Text" Property="Foreground" Value="White"/>
+                                        <Setter TargetName="Sep2Text" Property="Foreground" Value="White"/>
+                                    </DataTrigger>
+                                </DataTemplate.Triggers>
                             </DataTemplate>
                         </ListView.ItemTemplate>
+                        <!-- T012/T013: 套用共用 ListViewItemStyle [US1] -->
                         <ListView.ItemContainerStyle>
-                            <Style TargetType="ListViewItem">
-                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                                <Setter Property="Padding" Value="8,0"/>
-                                <Style.Triggers>
-                                    <!-- 選取樣式 [ref: raw_spec 8.4] -->
-                                    <Trigger Property="IsSelected" Value="True">
-                                        <Setter Property="Background" Value="#0078D4"/>
-                                        <Setter Property="Foreground" Value="White"/>
-                                    </Trigger>
-                                    <!-- Hover 樣式 [ref: raw_spec 8.4] -->
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="#F0F0F0"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
+                            <StaticResource ResourceKey="ListViewItemStyle"/>
                         </ListView.ItemContainerStyle>
                     </ListView>
 
