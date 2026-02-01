@@ -151,11 +151,18 @@
 
 ### Implementation for User Story 3
 
-- [ ] T014 [US3] 確認 XAML 中空白狀態提示已透過 `HasSelectedRecord` Visibility 綁定正確顯示（已實作於既有 `LabelPrintView.xaml`，無需修改）
+- [x] T014 [US3] 確認 XAML 中空白狀態提示已透過 `HasSelectedRecord` Visibility 綁定正確顯示（已實作於既有 `LabelPrintView.xaml`，無需修改）
+  - ✅ 已驗證：預覽區 Viewbox 使用 `HasSelectedRecord` + `BoolToVisibilityConverter`
+  - ✅ 已驗證：空白提示使用 `HasSelectedRecord` + `InverseBoolToVisibilityConverter`
+  - ✅ 已驗證：ListView 使用 `HasRecords` 控制顯示
+  - ✅ 無需額外程式碼修改
 
-- [ ] T015 [US3] 在 `NanmaoLabelPOC/Views/LabelPrintView.xaml.cs` 的 `RenderPreview()` 方法中加入 try-catch 包覆：
+- [x] T015 [US3] 在 `NanmaoLabelPOC/Views/LabelPrintView.xaml.cs` 的 `RenderPreview()` 方法中加入 try-catch 包覆：
   - catch 區塊顯示錯誤提示 TextBlock（「⚠️ 標籤渲染失敗」）
   - 使用 `Debug.WriteLine()` 記錄錯誤詳情
+  - ✅ 已在 Phase 3 T006 實作時一併完成
+  - ✅ 已驗證：try-catch 結構完整包覆 RenderPreview() 邏輯
+  - ✅ 已驗證：錯誤時顯示紅色「⚠️ 標籤渲染失敗」提示
 
 **Checkpoint**: User Story 3 完成 — 所有邊界情況皆顯示適當提示
 
