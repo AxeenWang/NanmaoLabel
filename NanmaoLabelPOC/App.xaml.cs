@@ -23,6 +23,14 @@ namespace NanmaoLabelPOC;
 /// </summary>
 public partial class App : Application
 {
+    /// <summary>
+    /// 條碼生成服務實例（供 View 層存取）
+    /// [ref: raw_delta_label_display §7.2] T004
+    ///
+    /// 因使用 Poor Man's DI，View 層需透過此靜態屬性取得服務實例
+    /// </summary>
+    public static IBarcodeGenerator? BarcodeGenerator { get; private set; }
+
     protected override void OnStartup(StartupEventArgs e)
     {
         // T075: 啟動效能監控 [ref: 憲章 IV]
@@ -39,6 +47,7 @@ public partial class App : Application
         // 建立服務實例 (Poor Man's DI) [ref: raw_spec 7.2]
         IDataStore dataStore = new DataStore();
         IBarcodeGenerator barcodeGenerator = new BarcodeGenerator();
+        BarcodeGenerator = barcodeGenerator; // T004: 供 View 層存取
         ILabelRenderer labelRenderer = new LabelRenderer();
         IPdfExporter pdfExporter = new PdfExporter(labelRenderer, barcodeGenerator);
         IExcelImporter excelImporter = new ExcelImporter();
