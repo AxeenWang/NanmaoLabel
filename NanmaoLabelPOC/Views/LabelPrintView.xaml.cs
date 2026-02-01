@@ -478,16 +478,18 @@ public partial class LabelPrintView : UserControl
             {
                 Process.Start("explorer.exe", $"/select,\"{outputPath}\"");
             }
-            catch
+            catch (Exception ex)
             {
                 // 若開啟失敗，嘗試只開啟資料夾
+                Debug.WriteLine($"[ShowBatchExportCompletionDialog] 無法選取檔案: {ex.Message}");
                 try
                 {
                     Process.Start("explorer.exe", folderPath);
                 }
-                catch
+                catch (Exception innerEx)
                 {
-                    // 忽略錯誤
+                    // 記錄錯誤但不阻擋主流程（符合憲章：空 catch 必須記錄）
+                    Debug.WriteLine($"[ShowBatchExportCompletionDialog] 無法開啟資料夾: {innerEx.Message}");
                 }
             }
         }
