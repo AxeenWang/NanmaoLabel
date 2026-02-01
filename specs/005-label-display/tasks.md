@@ -67,18 +67,20 @@
 
 ### Implementation for User Story 1
 
-- [ ] T006 [US1] 在 `NanmaoLabelPOC/Views/LabelPrintView.xaml.cs` 實作 `RenderPreview()` 主方法：
+- [x] T006 [US1] 在 `NanmaoLabelPOC/Views/LabelPrintView.xaml.cs` 實作 `RenderPreview()` 主方法：
   - 取得 ViewModel.PreviewCommands
   - 若為 null 或空，清空 Canvas 並返回
   - 清空 `PreviewCanvas.Children`
   - 呼叫 `RenderCommands(commands)` 遍歷渲染
+  - ✅ 已實作，含 try-catch 錯誤處理
 
-- [ ] T007 [US1] 在 `NanmaoLabelPOC/Views/LabelPrintView.xaml.cs` 實作 `RenderCommands(IReadOnlyList<RenderCommand>)` 方法：
+- [x] T007 [US1] 在 `NanmaoLabelPOC/Views/LabelPrintView.xaml.cs` 實作 `RenderCommands(IReadOnlyList<RenderCommand>)` 方法：
   - 遍歷 RenderCommand 集合
   - 依 `command.Skip` 判斷是否略過
   - 依 `command.CommandType` 分派至對應 Render 方法
+  - ✅ 已實作 switch 分派邏輯
 
-- [ ] T008 [P] [US1] 在 `NanmaoLabelPOC/Views/LabelPrintView.xaml.cs` 實作 `RenderTextCommand(RenderCommand)` 方法：
+- [x] T008 [P] [US1] 在 `NanmaoLabelPOC/Views/LabelPrintView.xaml.cs` 實作 `RenderTextCommand(RenderCommand)` 方法：
   - 建立 `TextBlock` 元素
   - 設定 `Text = command.Content`
   - 設定 `FontFamily = PreviewFontFamily`
@@ -91,26 +93,30 @@
   - 設定 `Height = command.Height * ScaleFactor`
   - 設定 `TextTrimming = TextTrimming.CharacterEllipsis`
   - 加入 `PreviewCanvas.Children`
+  - ✅ 已實作，含 ConvertAlignment 輔助方法
 
-- [ ] T009 [P] [US1] 在 `NanmaoLabelPOC/Views/LabelPrintView.xaml.cs` 實作 `RenderBarcodeCommand(RenderCommand)` 方法：
+- [x] T009 [P] [US1] 在 `NanmaoLabelPOC/Views/LabelPrintView.xaml.cs` 實作 `RenderBarcodeCommand(RenderCommand)` 方法：
   - 呼叫 `_barcodeGenerator.GenerateCode128(command.Content, heightMm)` 取得 byte[]
   - 將 byte[] 轉為 `BitmapImage`
   - 建立 `Image` 元素並設定 `Source`
   - 計算條碼高度（預留 3mm 給下方文字）
   - 設定座標與尺寸
   - 加入 `PreviewCanvas.Children`
+  - ✅ 已實作，含條碼下方文字渲染
 
-- [ ] T010 [P] [US1] 在 `NanmaoLabelPOC/Views/LabelPrintView.xaml.cs` 實作 `RenderQRCodeCommand(RenderCommand)` 方法：
+- [x] T010 [P] [US1] 在 `NanmaoLabelPOC/Views/LabelPrintView.xaml.cs` 實作 `RenderQRCodeCommand(RenderCommand)` 方法：
   - 呼叫 `_barcodeGenerator.GenerateQRCode(command.Content, sizeMm)` 取得 byte[]
   - 將 byte[] 轉為 `BitmapImage`
   - 建立 `Image` 元素並設定 `Source`
   - 設定座標與尺寸（正方形）
   - 加入 `PreviewCanvas.Children`
+  - ✅ 已實作
 
-- [ ] T011 [P] [US1] 在 `NanmaoLabelPOC/Views/LabelPrintView.xaml.cs` 實作 `ByteArrayToBitmapImage(byte[])` Helper 方法：
+- [x] T011 [P] [US1] 在 `NanmaoLabelPOC/Views/LabelPrintView.xaml.cs` 實作 `ByteArrayToBitmapImage(byte[])` Helper 方法：
   - 建立 `BitmapImage`
   - 使用 `MemoryStream` 載入 byte[]
   - 返回 `BitmapImage`
+  - ✅ 已實作，含 Freeze() 確保跨執行緒安全
 
 **Checkpoint**: User Story 1 完成 — 單擊 ListView 項目可顯示標籤預覽
 
@@ -124,9 +130,14 @@
 
 ### Implementation for User Story 2
 
-- [ ] T012 [US2] 驗證 `SelectedTemplate` 變更時 `PreviewCommands` 連鎖通知正確觸發（檢查 `LabelPrintViewModel.cs` 中的 `[NotifyPropertyChangedFor]` 屬性）
+- [x] T012 [US2] 驗證 `SelectedTemplate` 變更時 `PreviewCommands` 連鎖通知正確觸發（檢查 `LabelPrintViewModel.cs` 中的 `[NotifyPropertyChangedFor]` 屬性）
+  - ✅ 已驗證：`_selectedTemplate` 欄位使用 `[NotifyPropertyChangedFor(nameof(PreviewCommands))]` 屬性
+  - ✅ 連鎖通知機制正確：SelectedTemplate 變更 → PreviewCommands PropertyChanged
 
-- [ ] T013 [US2] 於 `NanmaoLabelPOC/Views/LabelPrintView.xaml.cs` 確認 `SubscribeToViewModel()` 已正確處理格式切換（無需額外程式碼，因 `PreviewCommands` 已連鎖通知）
+- [x] T013 [US2] 於 `NanmaoLabelPOC/Views/LabelPrintView.xaml.cs` 確認 `SubscribeToViewModel()` 已正確處理格式切換（無需額外程式碼，因 `PreviewCommands` 已連鎖通知）
+  - ✅ 已驗證：`SubscribeToViewModel()` 正確訂閱 `PropertyChanged` 事件
+  - ✅ 已驗證：`OnViewModelPropertyChanged()` 監聽 `PreviewCommands` 並呼叫 `RenderPreview()`
+  - ✅ 無需額外程式碼修改
 
 **Checkpoint**: User Story 2 完成 — 切換格式可即時更新預覽
 
