@@ -276,7 +276,8 @@ public static class BuiltInTemplates
     /// 建立 QW075551-2 物料標籤格式
     /// [ref: raw_delta_label_QW075551-2.md, data-model.md]
     ///
-    /// 欄位數: 19 (標題 1 + 小字行標籤 6 + 小字行數值 6 + 大字行數值 6)
+    /// 欄位數: 13 (標題 1 + 小字行標籤 6 + 大字行數值 6)
+    /// [FIX] 移除小字行數值欄位 (_LabelValue)，避免長文字換行疊字問題
     /// 尺寸: 100mm × 80mm [FR-001, Clarification]
     /// 外框: 有 [FR-010]
     /// 版面: 左右兩欄式佈局 [FR-003]
@@ -306,31 +307,20 @@ public static class BuiltInTemplates
                 },
 
                 // === 第一列：單號 (左欄) + 代碼 (右欄) [FR-003, FR-004, FR-005] ===
+                // [FIX] 移除 _LabelValue 欄位，避免長文字換行疊字問題
 
-                // T004: 單號標籤 (8pt) [FR-005]
+                // 單號標籤 (8pt) [FR-005]
                 new()
                 {
                     Name = "CSCUSTPO_Label",
                     FieldType = FieldType.Text,
                     DataSource = "單號:",
                     IsConstant = true,
-                    X = 5, Y = 14, Width = 12, Height = 4,
+                    X = 5, Y = 14, Width = 45, Height = 4,
                     FontSize = 8, IsBold = false,
                     Alignment = TextAlignment.Left
                 },
-                // T004: 單號值 (8pt)
-                new()
-                {
-                    Name = "CSCUSTPO_LabelValue",
-                    FieldType = FieldType.Text,
-                    DataSource = "cscustpo",
-                    IsConstant = false,
-                    X = 17, Y = 14, Width = 33, Height = 4,
-                    FontSize = 8, IsBold = false,
-                    Alignment = TextAlignment.Left,
-                    AutoShrinkFont = true
-                },
-                // T004: 單號大字 (11pt Bold)
+                // 單號大字 (11pt Bold)
                 new()
                 {
                     Name = "CSCUSTPO",
@@ -343,29 +333,18 @@ public static class BuiltInTemplates
                     AutoShrinkFont = true
                 },
 
-                // T005: 代碼標籤 (8pt) [FR-005, FR-006]
+                // 代碼標籤 (8pt) [FR-005, FR-006]
                 new()
                 {
                     Name = "CSNUMBER_Label",
                     FieldType = FieldType.Text,
                     DataSource = "代碼:",
                     IsConstant = true,
-                    X = 55, Y = 14, Width = 10, Height = 4,
+                    X = 55, Y = 14, Width = 40, Height = 4,
                     FontSize = 8, IsBold = false,
                     Alignment = TextAlignment.Left
                 },
-                // T005: 代碼值 (8pt, 固定 "17008") [FR-006]
-                new()
-                {
-                    Name = "CSNUMBER_LabelValue",
-                    FieldType = FieldType.Text,
-                    DataSource = "17008",  // [FR-006] 固定值
-                    IsConstant = true,
-                    X = 65, Y = 14, Width = 30, Height = 4,
-                    FontSize = 8, IsBold = false,
-                    Alignment = TextAlignment.Left
-                },
-                // T005: 代碼大字 (11pt Bold, 固定 "17008") [FR-006]
+                // 代碼大字 (11pt Bold, 固定 "17008") [FR-006]
                 new()
                 {
                     Name = "CSNUMBER",
@@ -378,31 +357,20 @@ public static class BuiltInTemplates
                 },
 
                 // === 第二列：ERP料號 (左欄) + 規格型號 (右欄) [FR-003, FR-004, FR-005, FR-011] ===
+                // [FIX] 移除 _LabelValue 欄位，避免長文字換行疊字問題
 
-                // T006: ERP料號標籤 (8pt) [FR-005, FR-011]
+                // ERP料號標籤 (8pt) [FR-005, FR-011]
                 new()
                 {
                     Name = "ERPPARTNO_Label",
                     FieldType = FieldType.Text,
                     DataSource = "ERP料號:",
                     IsConstant = true,
-                    X = 5, Y = 32, Width = 18, Height = 4,
+                    X = 5, Y = 32, Width = 45, Height = 4,
                     FontSize = 8, IsBold = false,
                     Alignment = TextAlignment.Left
                 },
-                // T006: ERP料號值 (8pt)
-                new()
-                {
-                    Name = "ERPPARTNO_LabelValue",
-                    FieldType = FieldType.Text,
-                    DataSource = "erpmat",
-                    IsConstant = false,
-                    X = 23, Y = 32, Width = 27, Height = 4,
-                    FontSize = 8, IsBold = false,
-                    Alignment = TextAlignment.Left,
-                    AutoShrinkFont = true
-                },
-                // T006: ERP料號大字 (11pt Bold) [FR-011] 由 Barcode 改為 Text
+                // ERP料號大字 (11pt Bold) [FR-011] 由 Barcode 改為 Text
                 new()
                 {
                     Name = "ERPPARTNO",
@@ -415,30 +383,18 @@ public static class BuiltInTemplates
                     AutoShrinkFont = true
                 },
 
-                // T007: 規格型號標籤 (8pt) [FR-005]
+                // 規格型號標籤 (8pt) [FR-005]
                 new()
                 {
                     Name = "CSCUSTITEMNO_Label",
                     FieldType = FieldType.Text,
                     DataSource = "規格型號:",
                     IsConstant = true,
-                    X = 55, Y = 32, Width = 18, Height = 4,
+                    X = 55, Y = 32, Width = 40, Height = 4,
                     FontSize = 8, IsBold = false,
                     Alignment = TextAlignment.Left
                 },
-                // T007: 規格型號值 (8pt)
-                new()
-                {
-                    Name = "CSCUSTITEMNO_LabelValue",
-                    FieldType = FieldType.Text,
-                    DataSource = "nvr_cust_item_no",
-                    IsConstant = false,
-                    X = 73, Y = 32, Width = 22, Height = 4,
-                    FontSize = 8, IsBold = false,
-                    Alignment = TextAlignment.Left,
-                    AutoShrinkFont = true
-                },
-                // T007: 規格型號大字 (11pt Bold)
+                // 規格型號大字 (11pt Bold)
                 new()
                 {
                     Name = "CSCUSTITEMNO",
@@ -452,32 +408,20 @@ public static class BuiltInTemplates
                 },
 
                 // === 第三列：數量 (左欄) + D/C (右欄) [FR-003, FR-004, FR-005, FR-007] ===
+                // [FIX] 移除 _LabelValue 欄位，避免長文字換行疊字問題
 
-                // T008: 數量標籤 (8pt) [FR-005, FR-007]
+                // 數量標籤 (8pt) [FR-005, FR-007]
                 new()
                 {
                     Name = "CSQTY_Label",
                     FieldType = FieldType.Text,
                     DataSource = "數量:",
                     IsConstant = true,
-                    X = 5, Y = 50, Width = 12, Height = 4,
+                    X = 5, Y = 50, Width = 45, Height = 4,
                     FontSize = 8, IsBold = false,
                     Alignment = TextAlignment.Left
                 },
-                // T008: 數量值 (8pt, UseDisplayValue=true 千分位) [FR-007]
-                new()
-                {
-                    Name = "CSQTY_LabelValue",
-                    FieldType = FieldType.Text,
-                    DataSource = "ogd09",
-                    IsConstant = false,
-                    UseDisplayValue = true,  // [FR-007] 千分位
-                    X = 17, Y = 50, Width = 33, Height = 4,
-                    FontSize = 8, IsBold = false,
-                    Alignment = TextAlignment.Left,
-                    AutoShrinkFont = true
-                },
-                // T008: 數量大字 (11pt Bold, UseDisplayValue=true 千分位) [FR-007]
+                // 數量大字 (11pt Bold, UseDisplayValue=true 千分位) [FR-007]
                 new()
                 {
                     Name = "CSQTY",
@@ -491,30 +435,18 @@ public static class BuiltInTemplates
                     AutoShrinkFont = true
                 },
 
-                // T009: D/C標籤 (8pt) [FR-005]
+                // D/C標籤 (8pt) [FR-005]
                 new()
                 {
                     Name = "CSREMARK_Label",
                     FieldType = FieldType.Text,
                     DataSource = "D/C (LOT NO. ):",
                     IsConstant = true,
-                    X = 55, Y = 50, Width = 30, Height = 4,
+                    X = 55, Y = 50, Width = 40, Height = 4,
                     FontSize = 8, IsBold = false,
                     Alignment = TextAlignment.Left
                 },
-                // T009: D/C值 (8pt)
-                new()
-                {
-                    Name = "CSREMARK_LabelValue",
-                    FieldType = FieldType.Text,
-                    DataSource = "nvr_remark10",
-                    IsConstant = false,
-                    X = 85, Y = 50, Width = 10, Height = 4,
-                    FontSize = 8, IsBold = false,
-                    Alignment = TextAlignment.Left,
-                    AutoShrinkFont = true
-                },
-                // T009: D/C大字 (11pt Bold)
+                // D/C大字 (11pt Bold)
                 new()
                 {
                     Name = "CSREMARK",

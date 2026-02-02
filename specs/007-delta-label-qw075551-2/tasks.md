@@ -78,10 +78,10 @@ NanmaoLabelPOC.Tests/
 
 ### Implementation for User Story 2
 
-- [ ] T012 [US2] 驗證小字行欄位名稱前綴正確：單號:、代碼:、ERP料號:、規格型號:、數量:、D/C (LOT NO. ): in `NanmaoLabelPOC/Templates/BuiltInTemplates.cs` [FR-005]
-- [ ] T013 [US2] 驗證小字行字型 8pt、大字行字型 11pt Bold 設定正確 in `NanmaoLabelPOC/Templates/BuiltInTemplates.cs` [FR-004]
-- [ ] T014 [US2] 調整小字行與大字行垂直間距 (Y 座標差 5mm) in `NanmaoLabelPOC/Templates/BuiltInTemplates.cs` [FR-004]
-- [ ] T015 [US2] PDF 輸出驗證：確認六個欄位皆顯示雙行格式 [SC-003]
+- [X] T012 [US2] 驗證小字行欄位名稱前綴正確：單號:、代碼:、ERP料號:、規格型號:、數量:、D/C (LOT NO. ): in `NanmaoLabelPOC/Templates/BuiltInTemplates.cs` [FR-005]
+- [X] T013 [US2] 驗證小字行字型 8pt、大字行字型 11pt Bold 設定正確 in `NanmaoLabelPOC/Templates/BuiltInTemplates.cs` [FR-004]
+- [X] T014 [US2] 調整小字行與大字行垂直間距 (Y 座標差 5mm) in `NanmaoLabelPOC/Templates/BuiltInTemplates.cs` [FR-004]
+- [X] T015 [US2] PDF 輸出驗證：確認六個欄位皆顯示雙行格式 [SC-003]
 
 **Checkpoint**: User Story 2 完成，所有欄位正確顯示雙行格式
 
