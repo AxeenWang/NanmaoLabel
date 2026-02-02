@@ -238,18 +238,37 @@ public partial class LabelPrintView : UserControl
     /// </summary>
     private void RenderTextCommand(RenderCommand command)
     {
+        // 計算字體大小
+        var fontSize = (command.FontSize ?? 10) * PtToPxFactor;
+
+        // 判斷是否為多行文字
+        var isMultiLine = command.Content?.Contains('\n') ?? false;
+
         // 建立 TextBlock 元素
         var textBlock = new TextBlock
         {
-            Text = command.Content,
+            // 處理換行符：將 \n 轉換為 Environment.NewLine 讓 WPF 正確顯示多行
+            Text = command.Content?.Replace("\n", Environment.NewLine) ?? string.Empty,
             FontFamily = new FontFamily(PreviewFontFamily),
-            FontSize = (command.FontSize ?? 10) * PtToPxFactor,
+            FontSize = fontSize,
             FontWeight = command.IsBold ? FontWeights.Bold : FontWeights.Normal,
             TextAlignment = ConvertAlignment(command.Alignment),
             TextTrimming = TextTrimming.CharacterEllipsis,
-            Width = command.Width * ScaleFactor,
-            Height = command.Height * ScaleFactor
+            TextWrapping = TextWrapping.Wrap,  // 啟用換行
+            Width = command.Width * ScaleFactor
         };
+
+        // 多行文字設定較緊密的行高，避免超出邊界
+        if (isMultiLine)
+        {
+            textBlock.LineHeight = fontSize * 1.15;  // 行高為字體大小的 1.15 倍
+            textBlock.LineStackingStrategy = LineStackingStrategy.BlockLineHeight;
+        }
+        else
+        {
+            // 單行文字設定固定高度
+            textBlock.Height = command.Height * ScaleFactor;
+        }
 
         // 設定座標 [ref: spec FR-007] px = mm × 4
         Canvas.SetLeft(textBlock, command.X * ScaleFactor);

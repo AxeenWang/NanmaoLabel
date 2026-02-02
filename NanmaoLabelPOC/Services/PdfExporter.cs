@@ -116,6 +116,7 @@ public class PdfExporter : IPdfExporter
 
     /// <summary>
     /// 建立 PDF 文件
+    /// 使用 Unconstrained + Translate 方式進行絕對定位
     /// </summary>
     private IDocument CreateDocument(LabelTemplate template, IReadOnlyList<RenderCommand> commands)
     {
@@ -123,73 +124,59 @@ public class PdfExporter : IPdfExporter
         {
             container.Page(page =>
             {
-                // 頁面尺寸: 100mm × 60mm [ref: raw_spec 5.1]
+                // 頁面尺寸: 100mm × HeightMm [ref: raw_spec 5.1, FR-001]
                 page.Size((float)template.WidthMm, (float)template.HeightMm, Unit.Millimetre);
                 page.Margin(0);
 
-                // 使用 Layers 來定位元素
                 page.Content().Layers(layers =>
                 {
-                    // 底層：白色背景
-                    layers.Layer().Background(Colors.White);
+                    // 主要層：白色背景
+                    layers.PrimaryLayer().Background(Colors.White);
 
                     // 標籤外框 [FR-003]
-                    // 單線矩形邊框，0.5pt，無分隔線
                     if (template.HasBorder)
                     {
                         layers.Layer().Border(BorderThickness).BorderColor(Colors.Black);
                     }
 
-                    // 渲染每個指令
+                    // 渲染每個指令 - 使用 Unconstrained + Translate 進行絕對定位
                     foreach (var command in commands)
                     {
                         if (command.Skip)
                             continue;
 
-                        layers.Layer().Element(element =>
-                        {
-                            RenderCommand(element, command, template);
-                        });
+                        var x = (float)command.X;
+                        var y = (float)command.Y;
+                        var width = (float)command.Width;
+                        var height = (float)command.Height;
+
+                        layers.Layer()
+                            .Unconstrained()
+                            .TranslateX(x, Unit.Millimetre)
+                            .TranslateY(y, Unit.Millimetre)
+                            .Width(width, Unit.Millimetre)
+                            .MinHeight(height, Unit.Millimetre)
+                            .Element(inner =>
+                            {
+                                switch (command.CommandType)
+                                {
+                                    case RenderCommandType.Text:
+                                        RenderText(inner, command);
+                                        break;
+
+                                    case RenderCommandType.Barcode:
+                                        RenderBarcode(inner, command);
+                                        break;
+
+                                    case RenderCommandType.QRCode:
+                                        RenderQRCode(inner, command);
+                                        break;
+                                }
+                            });
                     }
                 });
             });
         });
-    }
-
-    /// <summary>
-    /// 渲染單一指令
-    /// </summary>
-    private void RenderCommand(IContainer container, RenderCommand command, LabelTemplate template)
-    {
-        // 座標和尺寸使用 mm [ref: raw_spec 13.1]
-        var x = (float)command.X;
-        var y = (float)command.Y;
-        var width = (float)command.Width;
-        var height = (float)command.Height;
-
-        // 使用 Padding 來定位元素
-        container
-            .PaddingLeft(x, Unit.Millimetre)
-            .PaddingTop(y, Unit.Millimetre)
-            .Width(width, Unit.Millimetre)
-            .Height(height, Unit.Millimetre)
-            .Element(inner =>
-            {
-                switch (command.CommandType)
-                {
-                    case RenderCommandType.Text:
-                        RenderText(inner, command);
-                        break;
-
-                    case RenderCommandType.Barcode:
-                        RenderBarcode(inner, command);
-                        break;
-
-                    case RenderCommandType.QRCode:
-                        RenderQRCode(inner, command);
-                        break;
-                }
-            });
     }
 
     /// <summary>
@@ -199,6 +186,7 @@ public class PdfExporter : IPdfExporter
     /// 支援長文字縮小字體處理：
     /// - 使用 ActualFontSize（若有計算結果）
     /// - RequiresWrap = true 時允許換行或截斷加省略號
+    /// - 支援明確換行符號 \n 的多行文字
     /// </summary>
     private static void RenderText(IContainer container, RenderCommand command)
     {
@@ -209,7 +197,6 @@ public class PdfExporter : IPdfExporter
         var fontSize = (float)(command.ActualFontSize ?? command.FontSize ?? 10);
 
         container
-            .AlignMiddle()
             .Text(text =>
             {
                 text.DefaultTextStyle(style =>
@@ -238,20 +225,16 @@ public class PdfExporter : IPdfExporter
                         break;
                 }
 
-                // 處理溢出 [FR-008]
-                // RequiresWrap = true: 允許換行，最多兩行，超過時截斷加省略號
-                // RequiresWrap = false: 單行，超過時裁切並加 Ellipsis [ref: raw_spec 13.2]
-                if (command.RequiresWrap)
+                // 統一處理：支援換行符
+                var lines = command.Content.Split('\n');
+                for (var i = 0; i < lines.Length; i++)
                 {
-                    // 允許換行，最多兩行
-                    text.ClampLines(2, "...");
+                    text.Span(lines[i]);
+                    if (i < lines.Length - 1)
+                    {
+                        text.Span("\n");
+                    }
                 }
-                else
-                {
-                    text.ClampLines(1, "...");
-                }
-
-                text.Span(command.Content);
             });
     }
 
@@ -398,33 +381,55 @@ public class PdfExporter : IPdfExporter
 
                 container.Page(page =>
                 {
-                    // 頁面尺寸: 100mm × 60mm [ref: raw_spec 5.1]
+                    // 頁面尺寸: 100mm × HeightMm [ref: raw_spec 5.1, FR-001]
                     page.Size((float)template.WidthMm, (float)template.HeightMm, Unit.Millimetre);
                     page.Margin(0);
 
-                    // 使用 Layers 來定位元素
                     page.Content().Layers(layers =>
                     {
-                        // 底層：白色背景
-                        layers.Layer().Background(Colors.White);
+                        // 主要層：白色背景
+                        layers.PrimaryLayer().Background(Colors.White);
 
                         // 標籤外框 [FR-003]
-                        // 單線矩形邊框，0.5pt，無分隔線
                         if (template.HasBorder)
                         {
                             layers.Layer().Border(BorderThickness).BorderColor(Colors.Black);
                         }
 
-                        // 渲染每個指令
+                        // 渲染每個指令 - 使用 Unconstrained + Translate 進行絕對定位
                         foreach (var command in commands)
                         {
                             if (command.Skip)
                                 continue;
 
-                            layers.Layer().Element(element =>
-                            {
-                                RenderCommand(element, command, template);
-                            });
+                            var x = (float)command.X;
+                            var y = (float)command.Y;
+                            var width = (float)command.Width;
+                            var height = (float)command.Height;
+
+                            layers.Layer()
+                                .Unconstrained()
+                                .TranslateX(x, Unit.Millimetre)
+                                .TranslateY(y, Unit.Millimetre)
+                                .Width(width, Unit.Millimetre)
+                                .MinHeight(height, Unit.Millimetre)
+                                .Element(inner =>
+                                {
+                                    switch (command.CommandType)
+                                    {
+                                        case RenderCommandType.Text:
+                                            RenderText(inner, command);
+                                            break;
+
+                                        case RenderCommandType.Barcode:
+                                            RenderBarcode(inner, command);
+                                            break;
+
+                                        case RenderCommandType.QRCode:
+                                            RenderQRCode(inner, command);
+                                            break;
+                                    }
+                                });
                         }
                     });
                 });

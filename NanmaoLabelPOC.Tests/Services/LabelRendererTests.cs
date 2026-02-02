@@ -540,12 +540,13 @@ public class LabelRendererTests
         // Act
         var commands = _sut.Render(template, record);
 
-        // Assert - QRCODE 位置應在左下角 (X=5, Y=55), 尺寸 20x20
+        // Assert - QRCODE 位置應在左下角 (X=5, Y=57), 尺寸 20x20
+        // Y 座標配合標題分行調整
         var qrCodeCommand = commands.FirstOrDefault(c => c.FieldName == "QRCODE");
         Assert.NotNull(qrCodeCommand);
         Assert.Equal(RenderCommandType.QRCode, qrCodeCommand.CommandType);
         Assert.Equal(5, qrCodeCommand.X);   // [FR-012] 左下角 X=5
-        Assert.Equal(55, qrCodeCommand.Y);  // [FR-012] 左下角 Y=55
+        Assert.Equal(57, qrCodeCommand.Y);  // [FR-012] 左下角 Y=57 (配合標題分行調整)
         Assert.Equal(20, qrCodeCommand.Width);   // 尺寸 20mm
         Assert.Equal(20, qrCodeCommand.Height);  // 尺寸 20mm
     }
