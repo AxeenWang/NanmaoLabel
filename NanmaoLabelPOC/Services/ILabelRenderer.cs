@@ -121,4 +121,16 @@ public class RenderCommand
     /// [ref: raw_spec 13.15]
     /// </summary>
     public bool Skip { get; init; }
+
+    /// <summary>
+    /// 計算後的實際字體大小（經過縮小處理）
+    /// [ref: FR-008]
+    /// </summary>
+    public double? ActualFontSize { get; init; }
+
+    /// <summary>
+    /// 是否需要換行
+    /// [ref: FR-008]
+    /// </summary>
+    public bool RequiresWrap { get; init; }
 }

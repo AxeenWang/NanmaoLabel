@@ -24,10 +24,10 @@
 
 **Purpose**: 擴充 LabelField 模型以支援長文字處理功能
 
-- [ ] T001 [P] 擴充 LabelField 模型，新增 MinFontSize 屬性 (預設 6) 於 NanmaoLabelPOC/Models/LabelField.cs [FR-008]
-- [ ] T002 [P] 擴充 LabelField 模型，新增 AutoShrinkFont 屬性 (預設 false) 於 NanmaoLabelPOC/Models/LabelField.cs [FR-008]
-- [ ] T003 [P] 擴充 RenderCommand 類別，新增 ActualFontSize 屬性於 NanmaoLabelPOC/Services/ILabelRenderer.cs [FR-008]
-- [ ] T004 [P] 擴充 RenderCommand 類別，新增 RequiresWrap 屬性於 NanmaoLabelPOC/Services/ILabelRenderer.cs [FR-008]
+- [x] T001 [P] 擴充 LabelField 模型，新增 MinFontSize 屬性 (預設 6) 於 NanmaoLabelPOC/Models/LabelField.cs [FR-008]
+- [x] T002 [P] 擴充 LabelField 模型，新增 AutoShrinkFont 屬性 (預設 false) 於 NanmaoLabelPOC/Models/LabelField.cs [FR-008]
+- [x] T003 [P] 擴充 RenderCommand 類別，新增 ActualFontSize 屬性於 NanmaoLabelPOC/Services/ILabelRenderer.cs [FR-008]
+- [x] T004 [P] 擴充 RenderCommand 類別，新增 RequiresWrap 屬性於 NanmaoLabelPOC/Services/ILabelRenderer.cs [FR-008]
 
 ---
 

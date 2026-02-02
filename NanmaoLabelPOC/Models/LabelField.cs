@@ -105,4 +105,16 @@ public class LabelField
     /// 對齊方式
     /// </summary>
     public TextAlignment Alignment { get; set; } = TextAlignment.Left;
+
+    /// <summary>
+    /// 最小字體大小 (pt) - 長文字縮小時的下限
+    /// [ref: FR-008, spec.md Clarification 2026-02-02]
+    /// </summary>
+    public double MinFontSize { get; set; } = 6;
+
+    /// <summary>
+    /// 是否啟用自動縮小字體
+    /// [ref: FR-008]
+    /// </summary>
+    public bool AutoShrinkFont { get; set; } = false;
 }
