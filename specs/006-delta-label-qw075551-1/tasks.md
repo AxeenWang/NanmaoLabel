@@ -116,8 +116,8 @@
 
 ### Tests for User Story 4
 
-- [ ] T026 [P] [US4] 新增測試 Export_QW075551_1_PageSize_100x80mm 於 NanmaoLabelPOC.Tests/Services/LabelRendererTests.cs [FR-001, FR-017]
-- [ ] T027 [P] [US4] 新增測試 Export_QW075551_1_HasBorder_NoSeparator 於 NanmaoLabelPOC.Tests/Services/LabelRendererTests.cs [FR-003]
+- [x] T026 [P] [US4] 新增測試 Export_QW075551_1_PageSize_100x80mm 於 NanmaoLabelPOC.Tests/Services/LabelRendererTests.cs [FR-001, FR-017]
+- [x] T027 [P] [US4] 新增測試 Export_QW075551_1_HasBorder_NoSeparator 於 NanmaoLabelPOC.Tests/Services/LabelRendererTests.cs [FR-003]
 
 ### Implementation for User Story 4
 

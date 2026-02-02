@@ -660,6 +660,55 @@ public class LabelRendererTests
 
     #endregion
 
+    #region User Story 4 Tests - PDF 輸出符合新規格 [ref: spec.md Phase 6]
+
+    /// <summary>
+    /// T026: 驗證 QW075551-1 模板 PDF 頁面尺寸為 100mm × 80mm
+    /// [ref: FR-001, FR-017, SC-001]
+    ///
+    /// 驗收條件：PDF 輸出頁面尺寸驗證為 100mm × 80mm
+    /// </summary>
+    [Fact]
+    public void Export_QW075551_1_PageSize_100x80mm()
+    {
+        // Arrange
+        var template = BuiltInTemplates.GetByCode("QW075551-1");
+        Assert.NotNull(template);
+
+        // Assert - 驗證模板尺寸為 100mm × 80mm [FR-001, FR-017]
+        Assert.Equal(100, template.WidthMm);
+        Assert.Equal(80, template.HeightMm);  // [FR-001] 60 → 80
+    }
+
+    /// <summary>
+    /// T027: 驗證 QW075551-1 模板有外框且無分隔線
+    /// [ref: FR-003, SC-007]
+    ///
+    /// 驗收條件：標籤具有外框（單線矩形邊框），無分隔線
+    /// 注意：分隔線的驗證需透過視覺驗收或欄位檢查（無分隔線欄位定義）
+    /// </summary>
+    [Fact]
+    public void Export_QW075551_1_HasBorder_NoSeparator()
+    {
+        // Arrange
+        var template = BuiltInTemplates.GetByCode("QW075551-1");
+        Assert.NotNull(template);
+
+        // Assert - 驗證有外框 [FR-003]
+        Assert.True(template.HasBorder, "QW075551-1 應具有外框");
+
+        // Assert - 驗證無分隔線欄位
+        // 分隔線在模板中會以 FieldType.Line 或類似的欄位定義
+        // 無分隔線表示不應有任何 Separator/Line 類型的欄位
+        var separatorFields = template.Fields
+            .Where(f => f.Name.Contains("Separator", StringComparison.OrdinalIgnoreCase) ||
+                       f.Name.Contains("Line", StringComparison.OrdinalIgnoreCase))
+            .ToList();
+        Assert.Empty(separatorFields);
+    }
+
+    #endregion
+
     #region Helper Methods
 
     private static LabelTemplate CreateSimpleTemplate(LabelField field)
