@@ -112,7 +112,7 @@ public class LabelRendererTests
         Assert.Equal("17008", commands[0].Content);
     }
 
-    [Fact(Skip = "QW075551-2 模板正在重構中 (Phase 2)，將於 Phase 7 (T022-T025) 恢復並擴充此測試")]
+    [Fact]
     public void Render_QW075551_2_CSNUMBER_ShouldBeConstant17008()
     {
         // Arrange - 使用 QW075551-2 模板

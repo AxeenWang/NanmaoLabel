@@ -57,14 +57,14 @@ NanmaoLabelPOC.Tests/
 
 ### Implementation for User Story 1
 
-- [ ] T004 [P] [US1] 新增第一列左欄欄位：單號標籤 (8pt) + 單號值 (8pt) + 單號大字 (11pt Bold) in `NanmaoLabelPOC/Templates/BuiltInTemplates.cs` [FR-004, FR-005]
-- [ ] T005 [P] [US1] 新增第一列右欄欄位：代碼標籤 (8pt) + 代碼值 (8pt, 固定 "17008") + 代碼大字 (11pt Bold, 固定 "17008") in `NanmaoLabelPOC/Templates/BuiltInTemplates.cs` [FR-004, FR-005, FR-006]
-- [ ] T006 [P] [US1] 新增第二列左欄欄位：ERP料號標籤 (8pt) + ERP料號值 (8pt) + ERP料號大字 (11pt Bold) in `NanmaoLabelPOC/Templates/BuiltInTemplates.cs` [FR-004, FR-005, FR-011]
-- [ ] T007 [P] [US1] 新增第二列右欄欄位：規格型號標籤 (8pt) + 規格型號值 (8pt) + 規格型號大字 (11pt Bold) in `NanmaoLabelPOC/Templates/BuiltInTemplates.cs` [FR-004, FR-005]
-- [ ] T008 [P] [US1] 新增第三列左欄欄位：數量標籤 (8pt) + 數量值 (8pt, UseDisplayValue=true) + 數量大字 (11pt Bold, UseDisplayValue=true) in `NanmaoLabelPOC/Templates/BuiltInTemplates.cs` [FR-004, FR-005, FR-007]
-- [ ] T009 [P] [US1] 新增第三列右欄欄位：D/C標籤 (8pt) + D/C值 (8pt) + D/C大字 (11pt Bold) in `NanmaoLabelPOC/Templates/BuiltInTemplates.cs` [FR-004, FR-005]
-- [ ] T010 [US1] 調整所有座標：左欄 X=5mm 起始，右欄 X=55mm 起始，列間距約 18mm in `NanmaoLabelPOC/Templates/BuiltInTemplates.cs` [FR-003]
-- [ ] T011 [US1] PDF 輸出驗證：手動測試產生 PDF，確認尺寸 100mm × 80mm、標題「物料標籤」、無條碼/QR Code [SC-002, SC-006, SC-007]
+- [X] T004 [P] [US1] 新增第一列左欄欄位：單號標籤 (8pt) + 單號值 (8pt) + 單號大字 (11pt Bold) in `NanmaoLabelPOC/Templates/BuiltInTemplates.cs` [FR-004, FR-005]
+- [X] T005 [P] [US1] 新增第一列右欄欄位：代碼標籤 (8pt) + 代碼值 (8pt, 固定 "17008") + 代碼大字 (11pt Bold, 固定 "17008") in `NanmaoLabelPOC/Templates/BuiltInTemplates.cs` [FR-004, FR-005, FR-006]
+- [X] T006 [P] [US1] 新增第二列左欄欄位：ERP料號標籤 (8pt) + ERP料號值 (8pt) + ERP料號大字 (11pt Bold) in `NanmaoLabelPOC/Templates/BuiltInTemplates.cs` [FR-004, FR-005, FR-011]
+- [X] T007 [P] [US1] 新增第二列右欄欄位：規格型號標籤 (8pt) + 規格型號值 (8pt) + 規格型號大字 (11pt Bold) in `NanmaoLabelPOC/Templates/BuiltInTemplates.cs` [FR-004, FR-005]
+- [X] T008 [P] [US1] 新增第三列左欄欄位：數量標籤 (8pt) + 數量值 (8pt, UseDisplayValue=true) + 數量大字 (11pt Bold, UseDisplayValue=true) in `NanmaoLabelPOC/Templates/BuiltInTemplates.cs` [FR-004, FR-005, FR-007]
+- [X] T009 [P] [US1] 新增第三列右欄欄位：D/C標籤 (8pt) + D/C值 (8pt) + D/C大字 (11pt Bold) in `NanmaoLabelPOC/Templates/BuiltInTemplates.cs` [FR-004, FR-005]
+- [X] T010 [US1] 調整所有座標：左欄 X=5mm 起始，右欄 X=55mm 起始，列間距約 18mm in `NanmaoLabelPOC/Templates/BuiltInTemplates.cs` [FR-003]
+- [X] T011 [US1] PDF 輸出驗證：手動測試產生 PDF，確認尺寸 100mm × 80mm、標題「物料標籤」、無條碼/QR Code [SC-002, SC-006, SC-007]
 
 **Checkpoint**: User Story 1 完成，可產生完整的物料標籤 PDF，包含所有六個欄位的雙行顯示
 
