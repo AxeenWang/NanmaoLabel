@@ -41,9 +41,9 @@ NanmaoLabelPOC.Tests/
 
 **⚠️ CRITICAL**: 此階段建立模板框架，後續 User Story 在此基礎上增加欄位
 
-- [ ] T001 更新 LabelTemplate 基本屬性：Code="QW075551-2", Name="物料標籤", WidthMm=100, HeightMm=80, HasBorder=true in `NanmaoLabelPOC/Templates/BuiltInTemplates.cs` [FR-001, FR-002, FR-010]
-- [ ] T002 移除現有 QW075551-2 所有欄位定義，清空 Fields 集合 in `NanmaoLabelPOC/Templates/BuiltInTemplates.cs` [FR-011]
-- [ ] T003 新增標題欄位 "物料標籤" (14pt Bold, 置中) in `NanmaoLabelPOC/Templates/BuiltInTemplates.cs` [FR-002]
+- [X] T001 更新 LabelTemplate 基本屬性：Code="QW075551-2", Name="物料標籤", WidthMm=100, HeightMm=80, HasBorder=true in `NanmaoLabelPOC/Templates/BuiltInTemplates.cs` [FR-001, FR-002, FR-010]
+- [X] T002 移除現有 QW075551-2 所有欄位定義，清空 Fields 集合 in `NanmaoLabelPOC/Templates/BuiltInTemplates.cs` [FR-011]
+- [X] T003 新增標題欄位 "物料標籤" (14pt Bold, 置中) in `NanmaoLabelPOC/Templates/BuiltInTemplates.cs` [FR-002]
 
 **Checkpoint**: 模板框架完成（僅標題，無資料欄位），可執行但 PDF 只顯示標題
 
