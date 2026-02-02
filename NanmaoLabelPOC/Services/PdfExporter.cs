@@ -29,6 +29,11 @@ public class PdfExporter : IPdfExporter
     private const float BarcodeTextFontSize = 8f;
 
     /// <summary>
+    /// 標籤外框線條粗細 (pt) [ref: FR-003]
+    /// </summary>
+    private const float BorderThickness = 0.5f;
+
+    /// <summary>
     /// 預設輸出目錄 [ref: raw_spec 2.3]
     /// </summary>
     public string OutputDirectory => Path.Combine(".", "output");
@@ -128,6 +133,13 @@ public class PdfExporter : IPdfExporter
                     // 底層：白色背景
                     layers.Layer().Background(Colors.White);
 
+                    // 標籤外框 [FR-003]
+                    // 單線矩形邊框，0.5pt，無分隔線
+                    if (template.HasBorder)
+                    {
+                        layers.Layer().Border(BorderThickness).BorderColor(Colors.Black);
+                    }
+
                     // 渲染每個指令
                     foreach (var command in commands)
                     {
@@ -182,14 +194,19 @@ public class PdfExporter : IPdfExporter
 
     /// <summary>
     /// 渲染文字
-    /// [ref: raw_spec 5.3, 13.2]
+    /// [ref: raw_spec 5.3, 13.2, FR-008]
+    ///
+    /// 支援長文字縮小字體處理：
+    /// - 使用 ActualFontSize（若有計算結果）
+    /// - RequiresWrap = true 時允許換行或截斷加省略號
     /// </summary>
     private static void RenderText(IContainer container, RenderCommand command)
     {
         if (string.IsNullOrEmpty(command.Content))
             return;
 
-        var fontSize = (float)(command.FontSize ?? 10);
+        // 優先使用計算後的 ActualFontSize [FR-008]
+        var fontSize = (float)(command.ActualFontSize ?? command.FontSize ?? 10);
 
         container
             .AlignMiddle()
@@ -221,8 +238,19 @@ public class PdfExporter : IPdfExporter
                         break;
                 }
 
-                // 處理溢出: 單行，超過時裁切並加 Ellipsis [ref: raw_spec 13.2]
-                text.ClampLines(1, "...");
+                // 處理溢出 [FR-008]
+                // RequiresWrap = true: 允許換行，最多兩行，超過時截斷加省略號
+                // RequiresWrap = false: 單行，超過時裁切並加 Ellipsis [ref: raw_spec 13.2]
+                if (command.RequiresWrap)
+                {
+                    // 允許換行，最多兩行
+                    text.ClampLines(2, "...");
+                }
+                else
+                {
+                    text.ClampLines(1, "...");
+                }
+
                 text.Span(command.Content);
             });
     }
@@ -379,6 +407,13 @@ public class PdfExporter : IPdfExporter
                     {
                         // 底層：白色背景
                         layers.Layer().Background(Colors.White);
+
+                        // 標籤外框 [FR-003]
+                        // 單線矩形邊框，0.5pt，無分隔線
+                        if (template.HasBorder)
+                        {
+                            layers.Layer().Border(BorderThickness).BorderColor(Colors.Black);
+                        }
 
                         // 渲染每個指令
                         foreach (var command in commands)

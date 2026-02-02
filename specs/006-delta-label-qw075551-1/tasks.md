@@ -37,10 +37,10 @@
 
 **⚠️ CRITICAL**: User Story 實作需依賴此階段的渲染邏輯變更
 
-- [ ] T005 實作日期格式轉換邏輯 (yyyy-MM-dd → yyyy/MM/dd) 於 LabelRenderer.ResolveContent() 方法 NanmaoLabelPOC/Services/LabelRenderer.cs [FR-006]
-- [ ] T006 實作長文字縮小字體計算邏輯 (最小 6pt) 於 LabelRenderer.RenderField() 方法 NanmaoLabelPOC/Services/LabelRenderer.cs [FR-008]
-- [ ] T007 實作標籤外框渲染邏輯 (單線矩形邊框，0.5pt) 於 PdfExporter.CreateDocument() 方法 NanmaoLabelPOC/Services/PdfExporter.cs [FR-003]
-- [ ] T008 實作長文字縮小渲染邏輯 (根據 ActualFontSize) 於 PdfExporter.RenderText() 方法 NanmaoLabelPOC/Services/PdfExporter.cs [FR-008]
+- [x] T005 實作日期格式轉換邏輯 (yyyy-MM-dd → yyyy/MM/dd) 於 LabelRenderer.ResolveContent() 方法 NanmaoLabelPOC/Services/LabelRenderer.cs [FR-006]
+- [x] T006 實作長文字縮小字體計算邏輯 (最小 6pt) 於 LabelRenderer.RenderField() 方法 NanmaoLabelPOC/Services/LabelRenderer.cs [FR-008]
+- [x] T007 實作標籤外框渲染邏輯 (單線矩形邊框，0.5pt) 於 PdfExporter.CreateDocument() 方法 NanmaoLabelPOC/Services/PdfExporter.cs [FR-003]
+- [x] T008 實作長文字縮小渲染邏輯 (根據 ActualFontSize) 於 PdfExporter.RenderText() 方法 NanmaoLabelPOC/Services/PdfExporter.cs [FR-008]
 
 **Checkpoint**: 渲染基礎邏輯就緒，可開始 User Story 實作
 
