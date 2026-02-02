@@ -136,13 +136,13 @@
 
 ### Tests for User Story 5
 
-- [ ] T030 [P] [US5] 新增測試 Render_LongText_ShrinkFont_MinSize6pt 於 NanmaoLabelPOC.Tests/Services/LabelRendererTests.cs [FR-008]
-- [ ] T031 [P] [US5] 新增測試 Render_LongText_ExceedsMinFont_Truncate 於 NanmaoLabelPOC.Tests/Services/LabelRendererTests.cs [FR-008]
+- [x] T030 [P] [US5] 新增測試 Render_LongText_ShrinkFont_MinSize6pt 於 NanmaoLabelPOC.Tests/Services/LabelRendererTests.cs [FR-008]
+- [x] T031 [P] [US5] 新增測試 Render_LongText_ExceedsMinFont_Truncate 於 NanmaoLabelPOC.Tests/Services/LabelRendererTests.cs [FR-008]
 
 ### Implementation for User Story 5
 
-- [ ] T032 [US5] 驗證長文字縮小邏輯處理超長文字時正確截斷加省略號於 NanmaoLabelPOC/Services/LabelRenderer.cs [FR-008]
-- [ ] T033 [US5] 驗證多個欄位各自獨立縮小處理於 NanmaoLabelPOC/Services/PdfExporter.cs [FR-008]
+- [x] T032 [US5] 驗證長文字縮小邏輯處理超長文字時正確截斷加省略號於 NanmaoLabelPOC/Services/LabelRenderer.cs [FR-008]
+- [x] T033 [US5] 驗證多個欄位各自獨立縮小處理於 NanmaoLabelPOC/Services/PdfExporter.cs [FR-008]
 
 **Checkpoint**: User Story 5 完成 - 長文字處理正確
 
