@@ -121,8 +121,8 @@
 
 ### Implementation for User Story 4
 
-- [ ] T028 [US4] 確認 PdfExporter 使用 template.HeightMm 動態設定頁面尺寸於 NanmaoLabelPOC/Services/PdfExporter.cs [FR-017]
-- [ ] T029 [US4] 驗證 PDF 輸出無 Code 128 條碼（僅 QR Code）於 NanmaoLabelPOC/Services/PdfExporter.cs [FR-007]
+- [x] T028 [US4] 確認 PdfExporter 使用 template.HeightMm 動態設定頁面尺寸於 NanmaoLabelPOC/Services/PdfExporter.cs [FR-017]
+- [x] T029 [US4] 驗證 PDF 輸出無 Code 128 條碼（僅 QR Code）於 NanmaoLabelPOC/Services/PdfExporter.cs [FR-007]
 
 **Checkpoint**: User Story 4 完成 - PDF 輸出符合規格
 

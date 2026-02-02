@@ -45,8 +45,10 @@
                     <Viewbox Stretch="Uniform"
                              Margin="16"
                              Visibility="{Binding HasSelectedRecord, Converter={StaticResource BoolToVisibilityConverter}}">
-                        <!-- 標籤背景：100mm x 60mm 比例 [ref: raw_spec 8.4] -->
-                        <Border Width="400" Height="240"
+                        <!-- 標籤背景：依模板尺寸動態調整 [ref: Delta Spec FR-001, raw_spec 8.4] -->
+                        <!-- QW075551-1: 100mm × 80mm → 400px × 320px -->
+                        <!-- QW075551-2: 100mm × 60mm → 400px × 240px -->
+                        <Border Width="{Binding PreviewWidth}" Height="{Binding PreviewHeight}"
                                 Background="White"
                                 BorderBrush="#CCCCCC"
                                 BorderThickness="1">
@@ -55,7 +57,7 @@
                             </Border.Effect>
                             <!-- 預覽 Canvas：渲染標籤內容 -->
                             <Canvas x:Name="PreviewCanvas"
-                                    Width="400" Height="240"
+                                    Width="{Binding PreviewWidth}" Height="{Binding PreviewHeight}"
                                     ClipToBounds="True"/>
                         </Border>
                     </Viewbox>
