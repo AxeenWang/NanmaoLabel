@@ -34,6 +34,12 @@ public class LabelTemplate
     public List<LabelField> Fields { get; set; } = new();
 
     /// <summary>
+    /// 是否繪製標籤外框
+    /// [ref: FR-003]
+    /// </summary>
+    public bool HasBorder { get; set; } = false;
+
+    /// <summary>
     /// 取得顯示用名稱（代碼 + 名稱）
     /// </summary>
     public string DisplayName => $"{Code} - {Name}";

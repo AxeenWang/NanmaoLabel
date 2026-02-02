@@ -43,11 +43,13 @@ public static class BuiltInTemplates
 
     /// <summary>
     /// 建立 QW075551-1 出貨標籤格式
-    /// [ref: raw_spec 5.1, data-model.md 5. QW075551-1]
+    /// [ref: raw_spec 5.1, data-model.md 5. QW075551-1, Delta Spec FR-001]
     ///
-    /// 欄位數: 17
-    /// 尺寸: 100mm × 60mm
+    /// 欄位數: 14 (原 17，移除 MoLabel/DeviceLabel/RemarkLabel 獨立標籤 [FR-013])
+    /// 尺寸: 100mm × 80mm [FR-001]
+    /// 外框: 有 [FR-003]
     /// QR Code pattern: {pono};{ima902};{ogd09};{nvr_remark10}
+    /// Remarks 區段: QR Code 左側，CSMO/OUTDEVICENO/CSREMARK 右側並排 [FR-013, FR-014]
     /// </summary>
     private static LabelTemplate CreateQW075551_1()
     {
@@ -56,29 +58,32 @@ public static class BuiltInTemplates
             Code = "QW075551-1",
             Name = "出貨標籤",
             WidthMm = 100,
-            HeightMm = 60,
+            HeightMm = 80,  // [FR-001] 60 → 80
+            HasBorder = true,  // [FR-003] 標籤外框
             Fields = new List<LabelField>
             {
                 // Item 1: 標題 [ref: raw_spec 5.1]
+                // 分兩行顯示：出貨標籤 / Shipping Label (依據參考圖片)
                 new()
                 {
                     Name = "Title",
                     FieldType = FieldType.Text,
-                    DataSource = "出貨標籤 Shipping Label",
+                    DataSource = "出貨標籤\nShipping Label",  // 分兩行顯示
                     IsConstant = true,
-                    X = 5, Y = 2, Width = 90, Height = 6,
+                    X = 5, Y = 2, Width = 90, Height = 12,  // Height 調整為 12mm 容納兩行 (14pt × 2 行)
                     FontSize = 14, IsBold = true,
                     Alignment = TextAlignment.Center
                 },
 
-                // Item 2: 標籤 "Customer 客戶名稱"
+                // Item 2: 標籤 "Customer\n客戶名稱" (雙行顯示)
+                // [FR-019] 欄位前綴標籤中英文分行
                 new()
                 {
                     Name = "CustomerLabel",
                     FieldType = FieldType.Text,
-                    DataSource = "Customer 客戶名稱",
+                    DataSource = "Customer\n客戶名稱",  // [FR-019] 雙行顯示
                     IsConstant = true,
-                    X = 5, Y = 10, Width = 30, Height = 4,
+                    X = 5, Y = 16, Width = 22, Height = 10,  // Y=16 往下調整減少擁擠
                     FontSize = 9, IsBold = false,
                     Alignment = TextAlignment.Left
                 },
@@ -90,9 +95,10 @@ public static class BuiltInTemplates
                     FieldType = FieldType.Text,
                     DataSource = "nvr_cust",
                     IsConstant = false,
-                    X = 36, Y = 10, Width = 59, Height = 5,
+                    X = 28, Y = 17, Width = 67, Height = 5,  // Y=17 與 Customer 標籤第一行對齊
                     FontSize = 11, IsBold = true,
-                    Alignment = TextAlignment.Left
+                    Alignment = TextAlignment.Left,
+                    AutoShrinkFont = true  // [FR-008] 長文字縮小
                 },
 
                 // Item 4: 標籤 "Date"
@@ -102,21 +108,23 @@ public static class BuiltInTemplates
                     FieldType = FieldType.Text,
                     DataSource = "Date",
                     IsConstant = true,
-                    X = 5, Y = 17, Width = 10, Height = 4,
+                    X = 5, Y = 28, Width = 10, Height = 4,  // Y=28 往下調整
                     FontSize = 9, IsBold = false,
                     Alignment = TextAlignment.Left
                 },
 
                 // Item 5: FINDPRTDC (日期) <- obe25
+                // [FR-006] 日期格式 yyyy-MM-dd → yyyy/MM/dd (由 LabelRenderer 處理)
                 new()
                 {
                     Name = "FINDPRTDC",
                     FieldType = FieldType.Text,
                     DataSource = "obe25",
                     IsConstant = false,
-                    X = 16, Y = 17, Width = 25, Height = 5,
+                    X = 16, Y = 28, Width = 25, Height = 5,  // Y=28 往下調整
                     FontSize = 11, IsBold = false,
-                    Alignment = TextAlignment.Left
+                    Alignment = TextAlignment.Left,
+                    AutoShrinkFont = true  // [FR-008] 長文字縮小
                 },
 
                 // Item 6: 標籤 "Q'ty"
@@ -126,7 +134,7 @@ public static class BuiltInTemplates
                     FieldType = FieldType.Text,
                     DataSource = "Q'ty",
                     IsConstant = true,
-                    X = 55, Y = 17, Width = 10, Height = 4,
+                    X = 50, Y = 28, Width = 15, Height = 4,  // Y=28 往下調整
                     FontSize = 9, IsBold = false,
                     Alignment = TextAlignment.Left
                 },
@@ -139,120 +147,115 @@ public static class BuiltInTemplates
                     DataSource = "ogd09",
                     IsConstant = false,
                     UseDisplayValue = true,  // 使用千分位格式化 [ref: raw_spec 13.13]
-                    X = 66, Y = 17, Width = 29, Height = 5,
+                    X = 66, Y = 28, Width = 29, Height = 5,  // Y=28 往下調整
                     FontSize = 11, IsBold = true,
-                    Alignment = TextAlignment.Left
+                    Alignment = TextAlignment.Left,
+                    AutoShrinkFont = true  // [FR-008] 長文字縮小
                 },
 
-                // Item 8: 標籤 "Product NO. 產品型號"
+                // Item 8: 標籤 "Product NO.\n產品型號" (雙行顯示)
+                // [FR-004] 修正 "Peoduct" typo 為 "Product"
+                // [FR-019] 欄位前綴標籤中英文分行
                 new()
                 {
                     Name = "ProductNoLabel",
                     FieldType = FieldType.Text,
-                    DataSource = "Product NO. 產品型號",
+                    DataSource = "Product NO.\n產品型號",  // [FR-004, FR-019] 修正 typo + 雙行顯示
                     IsConstant = true,
-                    X = 5, Y = 24, Width = 40, Height = 4,
+                    X = 5, Y = 40, Width = 22, Height = 10,  // Y=40 (原 Y=35 往下移 5mm)
                     FontSize = 9, IsBold = false,
                     Alignment = TextAlignment.Left
                 },
 
                 // Item 9: CSCUSTITEMNO (客戶料號) <- nvr_cust_item_no
+                // 位於 Product NO. 標籤右側，與標籤上邊界對齊
                 new()
                 {
                     Name = "CSCUSTITEMNO",
                     FieldType = FieldType.Text,
                     DataSource = "nvr_cust_item_no",
                     IsConstant = false,
-                    X = 5, Y = 29, Width = 90, Height = 5,
+                    X = 28, Y = 40, Width = 67, Height = 5,  // Y=40 與 Product NO. 上邊界對齊 (原 Y=35 往下移 5mm)
                     FontSize = 11, IsBold = false,
-                    Alignment = TextAlignment.Left
+                    Alignment = TextAlignment.Left,
+                    AutoShrinkFont = true  // [FR-008] 長文字縮小
                 },
 
-                // Item 10: CSCUSTPN (客戶 P/N) <- nvr_cust_pn (Barcode, Raw Value)
+                // Item 10: CSCUSTPN (客戶 P/N) <- nvr_cust_pn (Text, 原為 Barcode)
+                // [FR-005, FR-007] 由 Barcode 改為 Text，移除 Code 128 條碼
+                // 位於 CSCUSTITEMNO 下方，與「產品型號」上邊界對齊
                 new()
                 {
                     Name = "CSCUSTPN",
-                    FieldType = FieldType.Barcode,
+                    FieldType = FieldType.Text,  // [FR-005] Barcode → Text
                     DataSource = "nvr_cust_pn",
                     IsConstant = false,
-                    UseDisplayValue = false,  // Barcode 必須使用 Raw Value [ref: raw_spec 13.13]
-                    X = 5, Y = 35, Width = 60, Height = 10,
-                    Alignment = TextAlignment.Left
+                    X = 28, Y = 45, Width = 67, Height = 5,  // Y=45 (原 Y=40 往下移 5mm)
+                    FontSize = 11, IsBold = false,
+                    Alignment = TextAlignment.Left,
+                    AutoShrinkFont = true  // [FR-008] 長文字縮小
                 },
 
-                // Item 11: 標籤 "MO:"
+                // Item 11: 標籤 "Remarks" (新增統一標籤)
+                // [FR-013] Remarks 區段統一標籤，取代原 MO:/Device:/Remark: 獨立標籤
                 new()
                 {
-                    Name = "MoLabel",
+                    Name = "RemarksLabel",
                     FieldType = FieldType.Text,
-                    DataSource = "MO:",
+                    DataSource = "Remarks",
                     IsConstant = true,
-                    X = 5, Y = 47, Width = 10, Height = 4,
+                    X = 5, Y = 52, Width = 20, Height = 4,  // Y=52 維持不變 (已接近底部)
                     FontSize = 9, IsBold = false,
                     Alignment = TextAlignment.Left
                 },
 
                 // Item 12: CSMO (製令單號) <- pono
+                // [FR-014] 位於 QR Code 右側，第一行
                 new()
                 {
                     Name = "CSMO",
                     FieldType = FieldType.Text,
                     DataSource = "pono",
                     IsConstant = false,
-                    X = 16, Y = 47, Width = 40, Height = 4,
+                    X = 28, Y = 57, Width = 67, Height = 5,  // Y=57 維持不變
                     FontSize = 10, IsBold = false,
-                    Alignment = TextAlignment.Left
+                    Alignment = TextAlignment.Left,
+                    AutoShrinkFont = true  // [FR-008] 長文字縮小
                 },
 
-                // Item 13: 標籤 "Device:"
-                new()
-                {
-                    Name = "DeviceLabel",
-                    FieldType = FieldType.Text,
-                    DataSource = "Device:",
-                    IsConstant = true,
-                    X = 5, Y = 51, Width = 15, Height = 4,
-                    FontSize = 9, IsBold = false,
-                    Alignment = TextAlignment.Left
-                },
-
-                // Item 14: OUTDEVICENO (裝置編號) <- ima902
+                // Item 13: OUTDEVICENO (裝置編號) <- ima902
+                // [FR-014] 位於 QR Code 右側，第二行
                 new()
                 {
                     Name = "OUTDEVICENO",
                     FieldType = FieldType.Text,
                     DataSource = "ima902",
                     IsConstant = false,
-                    X = 21, Y = 51, Width = 35, Height = 4,
+                    X = 28, Y = 63, Width = 67, Height = 5,  // Y=63 維持不變
                     FontSize = 10, IsBold = false,
-                    Alignment = TextAlignment.Left
+                    Alignment = TextAlignment.Left,
+                    AutoShrinkFont = true  // [FR-008] 長文字縮小
                 },
 
-                // Item 15: 標籤 "Remark:"
-                new()
-                {
-                    Name = "RemarkLabel",
-                    FieldType = FieldType.Text,
-                    DataSource = "Remark:",
-                    IsConstant = true,
-                    X = 5, Y = 55, Width = 15, Height = 4,
-                    FontSize = 9, IsBold = false,
-                    Alignment = TextAlignment.Left
-                },
-
-                // Item 16: CSREMARK (備註) <- nvr_remark10
+                // Item 14: CSREMARK (備註) <- nvr_remark10
+                // [FR-014] 位於 QR Code 右側，第三行
                 new()
                 {
                     Name = "CSREMARK",
                     FieldType = FieldType.Text,
                     DataSource = "nvr_remark10",
                     IsConstant = false,
-                    X = 21, Y = 55, Width = 35, Height = 4,
+                    X = 28, Y = 69, Width = 67, Height = 5,  // Y=69 維持不變
                     FontSize = 10, IsBold = false,
-                    Alignment = TextAlignment.Left
+                    Alignment = TextAlignment.Left,
+                    AutoShrinkFont = true  // [FR-008] 長文字縮小
                 },
 
-                // Item 17: QRCODE (組合欄位) <- {pono};{ima902};{ogd09};{nvr_remark10}
+                // Item 15: QRCODE (組合欄位) <- {pono};{ima902};{ogd09};{nvr_remark10}
+                // [FR-009] 內容格式: CSMO;OUTDEVICENO;CSQTY;CSREMARK
+                // [FR-010] 使用 Raw Value（無千分位）
+                // [FR-012] 位置移至左下角 (X=5, Y=57)
+                // [FR-013] 與 CSMO/OUTDEVICENO/CSREMARK 並排
                 // [ref: raw_spec 13.4, 13.15] - 空值保留位置 (A;;C)
                 new()
                 {
@@ -260,9 +263,9 @@ public static class BuiltInTemplates
                     FieldType = FieldType.QRCode,
                     DataSource = string.Empty,  // QR Code 使用 CombinePattern
                     IsConstant = false,
-                    UseDisplayValue = false,  // QR Code 必須使用 Raw Value [ref: raw_spec 13.13]
-                    CombinePattern = "{pono};{ima902};{ogd09};{nvr_remark10}",
-                    X = 75, Y = 40, Width = 20, Height = 20,
+                    UseDisplayValue = false,  // [FR-010] QR Code 必須使用 Raw Value（無千分位）
+                    CombinePattern = "{pono};{ima902};{ogd09};{nvr_remark10}",  // [FR-009] 使用 data source 欄位
+                    X = 5, Y = 57, Width = 20, Height = 20,  // Y=57 維持不變
                     Alignment = TextAlignment.Left
                 }
             }

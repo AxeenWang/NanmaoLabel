@@ -56,6 +56,9 @@ public partial class LabelRenderer : ILabelRenderer
         var content = ResolveContent(field, record);
         var skip = ShouldSkip(field, content);
 
+        // 計算長文字縮小字體 [FR-008]
+        var (actualFontSize, requiresWrap) = CalculateFontSize(field, content);
+
         return new RenderCommand
         {
             CommandType = commandType,
@@ -68,8 +71,95 @@ public partial class LabelRenderer : ILabelRenderer
             IsBold = field.IsBold,
             Alignment = field.Alignment,
             FieldName = field.Name,
-            Skip = skip
+            Skip = skip,
+            ActualFontSize = actualFontSize,
+            RequiresWrap = requiresWrap
         };
+    }
+
+    /// <summary>
+    /// 計算長文字縮小字體大小
+    /// [ref: FR-008, spec.md Clarification 2026-02-02]
+    ///
+    /// 規則：
+    /// - 僅對 Text 類型且啟用 AutoShrinkFont 的欄位進行縮小
+    /// - 逐步縮小 0.5pt 直到文字適合欄位寬度
+    /// - 最小字體下限為 MinFontSize (預設 6pt)
+    /// - 若縮至最小仍無法容納，標記 RequiresWrap = true
+    /// </summary>
+    private static (double? actualFontSize, bool requiresWrap) CalculateFontSize(LabelField field, string content)
+    {
+        // 僅處理 Text 類型且啟用 AutoShrinkFont 的欄位
+        if (field.FieldType != FieldType.Text || !field.AutoShrinkFont)
+        {
+            return (field.FontSize, false);
+        }
+
+        // 若內容為空，不需縮小
+        if (string.IsNullOrEmpty(content))
+        {
+            return (field.FontSize, false);
+        }
+
+        var baseFontSize = field.FontSize ?? 10;
+        var minFontSize = field.MinFontSize;
+        var widthMm = field.Width;
+
+        // 估算文字寬度 (使用字元數與字型大小的近似計算)
+        // 中文字約為 1 個全形字元寬度，英文/數字約為 0.5 個全形字元寬度
+        // 每 pt 字型大小約對應 0.35mm 的字元寬度
+        var estimatedCharWidth = EstimateTextWidth(content, baseFontSize);
+
+        // 若估算寬度不超過欄位寬度，不需縮小
+        if (estimatedCharWidth <= widthMm)
+        {
+            return (baseFontSize, false);
+        }
+
+        // 逐步縮小字體 (每次 0.5pt)
+        var currentFontSize = baseFontSize;
+        while (currentFontSize > minFontSize)
+        {
+            currentFontSize -= 0.5;
+            var newEstimatedWidth = EstimateTextWidth(content, currentFontSize);
+            if (newEstimatedWidth <= widthMm)
+            {
+                return (currentFontSize, false);
+            }
+        }
+
+        // 已達最小字體，標記需要換行或截斷
+        return (minFontSize, true);
+    }
+
+    /// <summary>
+    /// 估算文字渲染寬度 (mm)
+    /// [ref: FR-008]
+    ///
+    /// 使用近似計算：
+    /// - 中文字（Unicode > 0x4E00）: 1.0 × 字寬係數
+    /// - 英文/數字/符號: 0.5 × 字寬係數
+    /// - 字寬係數 = FontSize × 0.035 (經驗值，約等於 pt 轉 mm 並考慮字型比例)
+    /// </summary>
+    private static double EstimateTextWidth(string text, double fontSize)
+    {
+        var charWidthFactor = fontSize * 0.035;
+        double totalWidth = 0;
+
+        foreach (var c in text)
+        {
+            // 判斷是否為中文字元 (CJK Unified Ideographs 範圍)
+            if (c >= 0x4E00 && c <= 0x9FFF)
+            {
+                totalWidth += 1.0 * charWidthFactor;
+            }
+            else
+            {
+                totalWidth += 0.5 * charWidthFactor;
+            }
+        }
+
+        return totalWidth;
     }
 
     /// <summary>
@@ -108,9 +198,37 @@ public partial class LabelRenderer : ILabelRenderer
             return record.GetRawValue(dataSource);
         }
 
-        return field.UseDisplayValue
+        var value = field.UseDisplayValue
             ? record.GetDisplayValue(dataSource)
             : record.GetRawValue(dataSource);
+
+        // 日期格式轉換: yyyy-MM-dd → yyyy/MM/dd [FR-006]
+        // 適用於 FINDPRTDC 欄位
+        if (field.Name == "FINDPRTDC" && !string.IsNullOrEmpty(value))
+        {
+            value = ConvertDateFormat(value);
+        }
+
+        return value;
+    }
+
+    /// <summary>
+    /// 轉換日期格式 yyyy-MM-dd → yyyy/MM/dd
+    /// [ref: FR-006, spec.md SC-002]
+    /// </summary>
+    private static string ConvertDateFormat(string dateValue)
+    {
+        // 嘗試解析 yyyy-MM-dd 格式並轉換為 yyyy/MM/dd
+        if (DateTime.TryParseExact(dateValue, "yyyy-MM-dd",
+            System.Globalization.CultureInfo.InvariantCulture,
+            System.Globalization.DateTimeStyles.None,
+            out var parsedDate))
+        {
+            return parsedDate.ToString("yyyy/MM/dd");
+        }
+
+        // 若格式異常，返回原始值 [spec.md Edge Cases]
+        return dateValue;
     }
 
     /// <summary>

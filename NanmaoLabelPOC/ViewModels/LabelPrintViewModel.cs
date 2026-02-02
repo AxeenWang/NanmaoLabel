@@ -92,7 +92,25 @@ public partial class LabelPrintViewModel : ObservableObject
     /// </summary>
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(PreviewCommands))]
+    [NotifyPropertyChangedFor(nameof(PreviewWidth))]
+    [NotifyPropertyChangedFor(nameof(PreviewHeight))]
     private LabelTemplate? _selectedTemplate;
+
+    /// <summary>
+    /// 預覽區寬度 (px)
+    /// [ref: Delta Spec FR-001, raw_delta_label_display §3.3]
+    /// 計算方式: template.WidthMm × 4 (ScaleFactor)
+    /// </summary>
+    public double PreviewWidth => (SelectedTemplate?.WidthMm ?? 100) * 4.0;
+
+    /// <summary>
+    /// 預覽區高度 (px)
+    /// [ref: Delta Spec FR-001, raw_delta_label_display §3.3]
+    /// 計算方式: template.HeightMm × 4 (ScaleFactor)
+    /// QW075551-1: 80mm × 4 = 320px
+    /// QW075551-2: 60mm × 4 = 240px
+    /// </summary>
+    public double PreviewHeight => (SelectedTemplate?.HeightMm ?? 60) * 4.0;
 
     /// <summary>
     /// 是否有選取的資料紀錄

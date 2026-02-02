@@ -29,6 +29,11 @@ public class PdfExporter : IPdfExporter
     private const float BarcodeTextFontSize = 8f;
 
     /// <summary>
+    /// 標籤外框線條粗細 (pt) [ref: FR-003]
+    /// </summary>
+    private const float BorderThickness = 0.5f;
+
+    /// <summary>
     /// 預設輸出目錄 [ref: raw_spec 2.3]
     /// </summary>
     public string OutputDirectory => Path.Combine(".", "output");
@@ -111,6 +116,7 @@ public class PdfExporter : IPdfExporter
 
     /// <summary>
     /// 建立 PDF 文件
+    /// 使用 Unconstrained + Translate 方式進行絕對定位
     /// </summary>
     private IDocument CreateDocument(LabelTemplate template, IReadOnlyList<RenderCommand> commands)
     {
@@ -118,26 +124,55 @@ public class PdfExporter : IPdfExporter
         {
             container.Page(page =>
             {
-                // 頁面尺寸: 100mm × 60mm [ref: raw_spec 5.1]
+                // 頁面尺寸: 100mm × HeightMm [ref: raw_spec 5.1, FR-001]
                 page.Size((float)template.WidthMm, (float)template.HeightMm, Unit.Millimetre);
                 page.Margin(0);
 
-                // 使用 Layers 來定位元素
                 page.Content().Layers(layers =>
                 {
-                    // 底層：白色背景
-                    layers.Layer().Background(Colors.White);
+                    // 主要層：白色背景
+                    layers.PrimaryLayer().Background(Colors.White);
 
-                    // 渲染每個指令
+                    // 標籤外框 [FR-003]
+                    if (template.HasBorder)
+                    {
+                        layers.Layer().Border(BorderThickness).BorderColor(Colors.Black);
+                    }
+
+                    // 渲染每個指令 - 使用 Unconstrained + Translate 進行絕對定位
                     foreach (var command in commands)
                     {
                         if (command.Skip)
                             continue;
 
-                        layers.Layer().Element(element =>
-                        {
-                            RenderCommand(element, command, template);
-                        });
+                        var x = (float)command.X;
+                        var y = (float)command.Y;
+                        var width = (float)command.Width;
+                        var height = (float)command.Height;
+
+                        layers.Layer()
+                            .Unconstrained()
+                            .TranslateX(x, Unit.Millimetre)
+                            .TranslateY(y, Unit.Millimetre)
+                            .Width(width, Unit.Millimetre)
+                            .MinHeight(height, Unit.Millimetre)
+                            .Element(inner =>
+                            {
+                                switch (command.CommandType)
+                                {
+                                    case RenderCommandType.Text:
+                                        RenderText(inner, command);
+                                        break;
+
+                                    case RenderCommandType.Barcode:
+                                        RenderBarcode(inner, command);
+                                        break;
+
+                                    case RenderCommandType.QRCode:
+                                        RenderQRCode(inner, command);
+                                        break;
+                                }
+                            });
                     }
                 });
             });
@@ -145,54 +180,23 @@ public class PdfExporter : IPdfExporter
     }
 
     /// <summary>
-    /// 渲染單一指令
-    /// </summary>
-    private void RenderCommand(IContainer container, RenderCommand command, LabelTemplate template)
-    {
-        // 座標和尺寸使用 mm [ref: raw_spec 13.1]
-        var x = (float)command.X;
-        var y = (float)command.Y;
-        var width = (float)command.Width;
-        var height = (float)command.Height;
-
-        // 使用 Padding 來定位元素
-        container
-            .PaddingLeft(x, Unit.Millimetre)
-            .PaddingTop(y, Unit.Millimetre)
-            .Width(width, Unit.Millimetre)
-            .Height(height, Unit.Millimetre)
-            .Element(inner =>
-            {
-                switch (command.CommandType)
-                {
-                    case RenderCommandType.Text:
-                        RenderText(inner, command);
-                        break;
-
-                    case RenderCommandType.Barcode:
-                        RenderBarcode(inner, command);
-                        break;
-
-                    case RenderCommandType.QRCode:
-                        RenderQRCode(inner, command);
-                        break;
-                }
-            });
-    }
-
-    /// <summary>
     /// 渲染文字
-    /// [ref: raw_spec 5.3, 13.2]
+    /// [ref: raw_spec 5.3, 13.2, FR-008]
+    ///
+    /// 支援長文字縮小字體處理：
+    /// - 使用 ActualFontSize（若有計算結果）
+    /// - RequiresWrap = true 時允許換行或截斷加省略號
+    /// - 支援明確換行符號 \n 的多行文字
     /// </summary>
     private static void RenderText(IContainer container, RenderCommand command)
     {
         if (string.IsNullOrEmpty(command.Content))
             return;
 
-        var fontSize = (float)(command.FontSize ?? 10);
+        // 優先使用計算後的 ActualFontSize [FR-008]
+        var fontSize = (float)(command.ActualFontSize ?? command.FontSize ?? 10);
 
         container
-            .AlignMiddle()
             .Text(text =>
             {
                 text.DefaultTextStyle(style =>
@@ -221,9 +225,16 @@ public class PdfExporter : IPdfExporter
                         break;
                 }
 
-                // 處理溢出: 單行，超過時裁切並加 Ellipsis [ref: raw_spec 13.2]
-                text.ClampLines(1, "...");
-                text.Span(command.Content);
+                // 統一處理：支援換行符
+                var lines = command.Content.Split('\n');
+                for (var i = 0; i < lines.Length; i++)
+                {
+                    text.Span(lines[i]);
+                    if (i < lines.Length - 1)
+                    {
+                        text.Span("\n");
+                    }
+                }
             });
     }
 
@@ -370,26 +381,55 @@ public class PdfExporter : IPdfExporter
 
                 container.Page(page =>
                 {
-                    // 頁面尺寸: 100mm × 60mm [ref: raw_spec 5.1]
+                    // 頁面尺寸: 100mm × HeightMm [ref: raw_spec 5.1, FR-001]
                     page.Size((float)template.WidthMm, (float)template.HeightMm, Unit.Millimetre);
                     page.Margin(0);
 
-                    // 使用 Layers 來定位元素
                     page.Content().Layers(layers =>
                     {
-                        // 底層：白色背景
-                        layers.Layer().Background(Colors.White);
+                        // 主要層：白色背景
+                        layers.PrimaryLayer().Background(Colors.White);
 
-                        // 渲染每個指令
+                        // 標籤外框 [FR-003]
+                        if (template.HasBorder)
+                        {
+                            layers.Layer().Border(BorderThickness).BorderColor(Colors.Black);
+                        }
+
+                        // 渲染每個指令 - 使用 Unconstrained + Translate 進行絕對定位
                         foreach (var command in commands)
                         {
                             if (command.Skip)
                                 continue;
 
-                            layers.Layer().Element(element =>
-                            {
-                                RenderCommand(element, command, template);
-                            });
+                            var x = (float)command.X;
+                            var y = (float)command.Y;
+                            var width = (float)command.Width;
+                            var height = (float)command.Height;
+
+                            layers.Layer()
+                                .Unconstrained()
+                                .TranslateX(x, Unit.Millimetre)
+                                .TranslateY(y, Unit.Millimetre)
+                                .Width(width, Unit.Millimetre)
+                                .MinHeight(height, Unit.Millimetre)
+                                .Element(inner =>
+                                {
+                                    switch (command.CommandType)
+                                    {
+                                        case RenderCommandType.Text:
+                                            RenderText(inner, command);
+                                            break;
+
+                                        case RenderCommandType.Barcode:
+                                            RenderBarcode(inner, command);
+                                            break;
+
+                                        case RenderCommandType.QRCode:
+                                            RenderQRCode(inner, command);
+                                            break;
+                                    }
+                                });
                         }
                     });
                 });
