@@ -378,8 +378,148 @@ public class LabelRendererTests
 
     #endregion
 
+    #region Delta Spec QW075551-1 Tests [ref: spec.md 006-delta-label-qw075551-1]
+
+    /// <summary>
+    /// T009: 驗證日期格式轉換 yyyy-MM-dd → yyyy/MM/dd
+    /// [ref: FR-006, SC-002]
+    /// </summary>
+    [Fact]
+    public void Render_QW075551_1_DateFormat_ReturnsSlashFormat()
+    {
+        // Arrange
+        var template = BuiltInTemplates.GetByCode("QW075551-1");
+        Assert.NotNull(template);
+
+        var record = new DataRecord
+        {
+            NvrCust = "TestCustomer",
+            Obe25 = "2025-11-14", // 輸入格式: yyyy-MM-dd
+            Ogd09 = "1000",
+            NvrCustItemNo = "ITEM001",
+            NvrCustPn = "PN001",
+            Pono = "PO001",
+            Ima902 = "DEV001",
+            NvrRemark10 = "REMARK"
+        };
+
+        // Act
+        var commands = _sut.Render(template, record);
+
+        // Assert - FINDPRTDC 日期格式應為 yyyy/MM/dd
+        var dateCommand = commands.FirstOrDefault(c => c.FieldName == "FINDPRTDC");
+        Assert.NotNull(dateCommand);
+        Assert.Equal("2025/11/14", dateCommand.Content);
+    }
+
+    /// <summary>
+    /// T009: 驗證日期格式異常時返回原始值
+    /// [ref: FR-006, spec.md Edge Cases]
+    /// </summary>
+    [Fact]
+    public void Render_QW075551_1_DateFormat_InvalidFormat_ReturnsOriginalValue()
+    {
+        // Arrange
+        var template = CreateSimpleTemplate(new LabelField
+        {
+            Name = "FINDPRTDC",
+            FieldType = FieldType.Text,
+            DataSource = "obe25",
+            IsConstant = false,
+            X = 10, Y = 10, Width = 50, Height = 10
+        });
+
+        var record = new DataRecord
+        {
+            Obe25 = "invalid-date-format"
+        };
+
+        // Act
+        var commands = _sut.Render(template, record);
+
+        // Assert - 格式異常時返回原始值
+        Assert.Single(commands);
+        Assert.Equal("invalid-date-format", commands[0].Content);
+    }
+
+    /// <summary>
+    /// T010: 驗證 CSCUSTPN 欄位為 Text 類型
+    /// [ref: FR-005, FR-007, SC-003, SC-010]
+    ///
+    /// 注意：此測試目前會 FAIL，因為模板尚未更新
+    /// 等待 T012 實作後會 PASS
+    /// </summary>
+    [Fact]
+    public void Render_QW075551_1_CSCUSTPN_ReturnsText()
+    {
+        // Arrange
+        var template = BuiltInTemplates.GetByCode("QW075551-1");
+        Assert.NotNull(template);
+
+        var record = new DataRecord
+        {
+            NvrCust = "TestCustomer",
+            Obe25 = "2025-11-14",
+            Ogd09 = "1000",
+            NvrCustItemNo = "ITEM001",
+            NvrCustPn = "E110-X0",
+            Pono = "PO001",
+            Ima902 = "DEV001",
+            NvrRemark10 = "REMARK"
+        };
+
+        // Act
+        var commands = _sut.Render(template, record);
+
+        // Assert - CSCUSTPN 應為 Text 類型，不是 Barcode
+        var cscustpnCommand = commands.FirstOrDefault(c => c.FieldName == "CSCUSTPN");
+        Assert.NotNull(cscustpnCommand);
+        Assert.Equal(RenderCommandType.Text, cscustpnCommand.CommandType);
+        Assert.Equal("E110-X0", cscustpnCommand.Content);
+    }
+
+    /// <summary>
+    /// T010: 驗證 QW075551-1 模板無 Code 128 條碼
+    /// [ref: FR-007, SC-010]
+    ///
+    /// 注意：此測試目前會 FAIL，因為模板尚未更新
+    /// 等待 T012 實作後會 PASS
+    /// </summary>
+    [Fact]
+    public void Render_QW075551_1_NoCode128Barcode()
+    {
+        // Arrange
+        var template = BuiltInTemplates.GetByCode("QW075551-1");
+        Assert.NotNull(template);
+
+        var record = new DataRecord
+        {
+            NvrCust = "TestCustomer",
+            Obe25 = "2025-11-14",
+            Ogd09 = "1000",
+            NvrCustItemNo = "ITEM001",
+            NvrCustPn = "E110-X0",
+            Pono = "PO001",
+            Ima902 = "DEV001",
+            NvrRemark10 = "REMARK"
+        };
+
+        // Act
+        var commands = _sut.Render(template, record);
+
+        // Assert - 不應有任何 Barcode 類型的指令
+        var barcodeCommands = commands.Where(c => c.CommandType == RenderCommandType.Barcode).ToList();
+        Assert.Empty(barcodeCommands);
+    }
+
+    #endregion
+
     #region Full Template Tests
 
+    /// <summary>
+    /// 整合測試：驗證 QW075551-1 模板渲染正確
+    /// [更新] 依據 Delta Spec 修改：CSCUSTPN 由 Barcode 改為 Text，日期格式改為 yyyy/MM/dd
+    /// </summary>
     [Fact]
     public void Render_QW075551_1_ShouldProduceCorrectCommands()
     {
@@ -412,9 +552,14 @@ public class LabelRendererTests
         var qtyCommand = commands.First(c => c.FieldName == "CSQTY");
         Assert.Equal("6,733", qtyCommand.Content); // Display Value
 
-        var barcodeCommand = commands.First(c => c.FieldName == "CSCUSTPN");
-        Assert.Equal(RenderCommandType.Barcode, barcodeCommand.CommandType);
-        Assert.Equal("E110-X0", barcodeCommand.Content); // Raw Value
+        // [Delta Spec FR-005, FR-007] CSCUSTPN 現在是 Text 類型
+        var cscustpnCommand = commands.First(c => c.FieldName == "CSCUSTPN");
+        Assert.Equal(RenderCommandType.Text, cscustpnCommand.CommandType);
+        Assert.Equal("E110-X0", cscustpnCommand.Content);
+
+        // [Delta Spec FR-006] 日期格式 yyyy/MM/dd
+        var dateCommand = commands.First(c => c.FieldName == "FINDPRTDC");
+        Assert.Equal("2025/11/14", dateCommand.Content);
 
         var qrCommand = commands.First(c => c.FieldName == "QRCODE");
         Assert.Equal(RenderCommandType.QRCode, qrCommand.CommandType);

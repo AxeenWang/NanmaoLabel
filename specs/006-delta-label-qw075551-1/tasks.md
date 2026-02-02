@@ -54,17 +54,17 @@
 
 ### Tests for User Story 1
 
-- [ ] T009 [P] [US1] 新增測試 Render_QW075551_1_DateFormat_ReturnsSlashFormat 於 NanmaoLabelPOC.Tests/Services/LabelRendererTests.cs [FR-006]
-- [ ] T010 [P] [US1] 新增測試 Render_QW075551_1_CSCUSTPN_ReturnsText 於 NanmaoLabelPOC.Tests/Services/LabelRendererTests.cs [FR-005, FR-007]
+- [x] T009 [P] [US1] 新增測試 Render_QW075551_1_DateFormat_ReturnsSlashFormat 於 NanmaoLabelPOC.Tests/Services/LabelRendererTests.cs [FR-006]
+- [x] T010 [P] [US1] 新增測試 Render_QW075551_1_CSCUSTPN_ReturnsText 於 NanmaoLabelPOC.Tests/Services/LabelRendererTests.cs [FR-005, FR-007]
 
 ### Implementation for User Story 1
 
-- [ ] T011 [US1] 更新 QW075551-1 模板 HeightMm 由 60 改為 80 於 NanmaoLabelPOC/Templates/BuiltInTemplates.cs [FR-001]
-- [ ] T012 [US1] 更新 CSCUSTPN 欄位 FieldType 由 Barcode 改為 Text 於 NanmaoLabelPOC/Templates/BuiltInTemplates.cs [FR-005, FR-007]
-- [ ] T013 [US1] 更新 CSCUSTPN 欄位座標 (Y=41, Height=5) 於 NanmaoLabelPOC/Templates/BuiltInTemplates.cs [FR-002]
-- [ ] T014 [US1] 更新 CustomerLabel 為雙行顯示 ("Customer\n客戶名稱", Height=8) 於 NanmaoLabelPOC/Templates/BuiltInTemplates.cs [FR-019]
-- [ ] T015 [US1] 更新 ProductNoLabel 為雙行顯示 ("Product NO.\n產品型號", Height=8) 並修正 typo 於 NanmaoLabelPOC/Templates/BuiltInTemplates.cs [FR-004, FR-019]
-- [ ] T016 [US1] 為所有變數 Text 欄位設定 AutoShrinkFont = true 於 NanmaoLabelPOC/Templates/BuiltInTemplates.cs [FR-008]
+- [x] T011 [US1] 更新 QW075551-1 模板 HeightMm 由 60 改為 80 於 NanmaoLabelPOC/Templates/BuiltInTemplates.cs [FR-001]
+- [x] T012 [US1] 更新 CSCUSTPN 欄位 FieldType 由 Barcode 改為 Text 於 NanmaoLabelPOC/Templates/BuiltInTemplates.cs [FR-005, FR-007]
+- [x] T013 [US1] 更新 CSCUSTPN 欄位座標 (Y=41, Height=5) 於 NanmaoLabelPOC/Templates/BuiltInTemplates.cs [FR-002]
+- [x] T014 [US1] 更新 CustomerLabel 為雙行顯示 ("Customer\n客戶名稱", Height=8) 於 NanmaoLabelPOC/Templates/BuiltInTemplates.cs [FR-019]
+- [x] T015 [US1] 更新 ProductNoLabel 為雙行顯示 ("Product NO.\n產品型號", Height=8) 並修正 typo 於 NanmaoLabelPOC/Templates/BuiltInTemplates.cs [FR-004, FR-019]
+- [x] T016 [US1] 為所有變數 Text 欄位設定 AutoShrinkFont = true 於 NanmaoLabelPOC/Templates/BuiltInTemplates.cs [FR-008]
 
 **Checkpoint**: User Story 1 完成 - 基本標籤渲染正確（尺寸、欄位類型、欄位標籤）
 
