@@ -45,10 +45,11 @@ public static class BuiltInTemplates
     /// 建立 QW075551-1 出貨標籤格式
     /// [ref: raw_spec 5.1, data-model.md 5. QW075551-1, Delta Spec FR-001]
     ///
-    /// 欄位數: 17
+    /// 欄位數: 14 (原 17，移除 MoLabel/DeviceLabel/RemarkLabel 獨立標籤 [FR-013])
     /// 尺寸: 100mm × 80mm [FR-001]
     /// 外框: 有 [FR-003]
     /// QR Code pattern: {pono};{ima902};{ogd09};{nvr_remark10}
+    /// Remarks 區段: QR Code 左側，CSMO/OUTDEVICENO/CSREMARK 右側並排 [FR-013, FR-014]
     /// </summary>
     private static LabelTemplate CreateQW075551_1()
     {
@@ -192,85 +193,66 @@ public static class BuiltInTemplates
                     AutoShrinkFont = true  // [FR-008] 長文字縮小
                 },
 
-                // Item 11: 標籤 "MO:"
+                // Item 11: 標籤 "Remarks" (新增統一標籤)
+                // [FR-013] Remarks 區段統一標籤，取代原 MO:/Device:/Remark: 獨立標籤
                 new()
                 {
-                    Name = "MoLabel",
+                    Name = "RemarksLabel",
                     FieldType = FieldType.Text,
-                    DataSource = "MO:",
+                    DataSource = "Remarks",
                     IsConstant = true,
-                    X = 5, Y = 47, Width = 10, Height = 4,
+                    X = 5, Y = 50, Width = 20, Height = 4,
                     FontSize = 9, IsBold = false,
                     Alignment = TextAlignment.Left
                 },
 
                 // Item 12: CSMO (製令單號) <- pono
+                // [FR-014] 位於 QR Code 右側
                 new()
                 {
                     Name = "CSMO",
                     FieldType = FieldType.Text,
                     DataSource = "pono",
                     IsConstant = false,
-                    X = 16, Y = 47, Width = 40, Height = 4,
+                    X = 28, Y = 55, Width = 67, Height = 4,  // [FR-014] QR Code 右側
                     FontSize = 10, IsBold = false,
                     Alignment = TextAlignment.Left,
                     AutoShrinkFont = true  // [FR-008] 長文字縮小
                 },
 
-                // Item 13: 標籤 "Device:"
-                new()
-                {
-                    Name = "DeviceLabel",
-                    FieldType = FieldType.Text,
-                    DataSource = "Device:",
-                    IsConstant = true,
-                    X = 5, Y = 51, Width = 15, Height = 4,
-                    FontSize = 9, IsBold = false,
-                    Alignment = TextAlignment.Left
-                },
-
-                // Item 14: OUTDEVICENO (裝置編號) <- ima902
+                // Item 13: OUTDEVICENO (裝置編號) <- ima902
+                // [FR-014] 位於 QR Code 右側
                 new()
                 {
                     Name = "OUTDEVICENO",
                     FieldType = FieldType.Text,
                     DataSource = "ima902",
                     IsConstant = false,
-                    X = 21, Y = 51, Width = 35, Height = 4,
+                    X = 28, Y = 60, Width = 67, Height = 4,  // [FR-014] QR Code 右側
                     FontSize = 10, IsBold = false,
                     Alignment = TextAlignment.Left,
                     AutoShrinkFont = true  // [FR-008] 長文字縮小
                 },
 
-                // Item 15: 標籤 "Remark:"
-                new()
-                {
-                    Name = "RemarkLabel",
-                    FieldType = FieldType.Text,
-                    DataSource = "Remark:",
-                    IsConstant = true,
-                    X = 5, Y = 55, Width = 15, Height = 4,
-                    FontSize = 9, IsBold = false,
-                    Alignment = TextAlignment.Left
-                },
-
-                // Item 16: CSREMARK (備註) <- nvr_remark10
+                // Item 14: CSREMARK (備註) <- nvr_remark10
+                // [FR-014] 位於 QR Code 右側
                 new()
                 {
                     Name = "CSREMARK",
                     FieldType = FieldType.Text,
                     DataSource = "nvr_remark10",
                     IsConstant = false,
-                    X = 21, Y = 55, Width = 35, Height = 4,
+                    X = 28, Y = 65, Width = 67, Height = 4,  // [FR-014] QR Code 右側
                     FontSize = 10, IsBold = false,
                     Alignment = TextAlignment.Left,
                     AutoShrinkFont = true  // [FR-008] 長文字縮小
                 },
 
-                // Item 17: QRCODE (組合欄位) <- {pono};{ima902};{ogd09};{nvr_remark10}
+                // Item 15: QRCODE (組合欄位) <- {pono};{ima902};{ogd09};{nvr_remark10}
                 // [FR-009] 內容格式: CSMO;OUTDEVICENO;CSQTY;CSREMARK
                 // [FR-010] 使用 Raw Value（無千分位）
                 // [FR-012] 位置移至左下角 (X=5, Y=55)
+                // [FR-013] 與 CSMO/OUTDEVICENO/CSREMARK 並排
                 // [ref: raw_spec 13.4, 13.15] - 空值保留位置 (A;;C)
                 new()
                 {

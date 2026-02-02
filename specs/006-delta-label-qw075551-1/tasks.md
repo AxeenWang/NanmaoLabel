@@ -98,11 +98,11 @@
 
 ### Implementation for User Story 3
 
-- [ ] T021 [US3] 新增 RemarksLabel 欄位 ("Remarks", X=5, Y=50) 於 NanmaoLabelPOC/Templates/BuiltInTemplates.cs [FR-013]
-- [ ] T022 [US3] 移除 MoLabel, DeviceLabel, RemarkLabel 獨立標籤於 NanmaoLabelPOC/Templates/BuiltInTemplates.cs [FR-013]
-- [ ] T023 [US3] 更新 CSMO 座標 (X=28, Y=55, Width=67) 至 QR Code 右側於 NanmaoLabelPOC/Templates/BuiltInTemplates.cs [FR-014]
-- [ ] T024 [US3] 更新 OUTDEVICENO 座標 (X=28, Y=60, Width=67) 至 QR Code 右側於 NanmaoLabelPOC/Templates/BuiltInTemplates.cs [FR-014]
-- [ ] T025 [US3] 更新 CSREMARK 座標 (X=28, Y=65, Width=67) 至 QR Code 右側於 NanmaoLabelPOC/Templates/BuiltInTemplates.cs [FR-014]
+- [x] T021 [US3] 新增 RemarksLabel 欄位 ("Remarks", X=5, Y=50) 於 NanmaoLabelPOC/Templates/BuiltInTemplates.cs [FR-013]
+- [x] T022 [US3] 移除 MoLabel, DeviceLabel, RemarkLabel 獨立標籤於 NanmaoLabelPOC/Templates/BuiltInTemplates.cs [FR-013]
+- [x] T023 [US3] 更新 CSMO 座標 (X=28, Y=55, Width=67) 至 QR Code 右側於 NanmaoLabelPOC/Templates/BuiltInTemplates.cs [FR-014]
+- [x] T024 [US3] 更新 OUTDEVICENO 座標 (X=28, Y=60, Width=67) 至 QR Code 右側於 NanmaoLabelPOC/Templates/BuiltInTemplates.cs [FR-014]
+- [x] T025 [US3] 更新 CSREMARK 座標 (X=28, Y=65, Width=67) 至 QR Code 右側於 NanmaoLabelPOC/Templates/BuiltInTemplates.cs [FR-014]
 
 **Checkpoint**: User Story 3 完成 - Remarks 區段版面正確
 

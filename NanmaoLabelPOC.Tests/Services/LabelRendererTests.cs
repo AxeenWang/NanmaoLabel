@@ -597,7 +597,11 @@ public class LabelRendererTests
 
     /// <summary>
     /// 整合測試：驗證 QW075551-1 模板渲染正確
-    /// [更新] 依據 Delta Spec 修改：CSCUSTPN 由 Barcode 改為 Text，日期格式改為 yyyy/MM/dd
+    /// [更新] 依據 Delta Spec 修改：
+    /// - CSCUSTPN 由 Barcode 改為 Text [FR-005, FR-007]
+    /// - 日期格式改為 yyyy/MM/dd [FR-006]
+    /// - 移除 MoLabel/DeviceLabel/RemarkLabel，新增 RemarksLabel [FR-013]
+    /// - 欄位數由 17 改為 15 (17 - 3 + 1 = 15)
     /// </summary>
     [Fact]
     public void Render_QW075551_1_ShouldProduceCorrectCommands()
@@ -621,8 +625,8 @@ public class LabelRendererTests
         // Act
         var commands = _sut.Render(template, record);
 
-        // Assert - 應有 17 個欄位
-        Assert.Equal(17, commands.Count);
+        // Assert - 應有 15 個欄位 (原 17 - 3 獨立標籤 + 1 統一標籤) [FR-013]
+        Assert.Equal(15, commands.Count);
 
         // 驗證關鍵欄位
         var customerCommand = commands.First(c => c.FieldName == "CSCUSTOMER");
@@ -639,6 +643,15 @@ public class LabelRendererTests
         // [Delta Spec FR-006] 日期格式 yyyy/MM/dd
         var dateCommand = commands.First(c => c.FieldName == "FINDPRTDC");
         Assert.Equal("2025/11/14", dateCommand.Content);
+
+        // [Delta Spec FR-013] RemarksLabel 應存在
+        var remarksLabelCommand = commands.First(c => c.FieldName == "RemarksLabel");
+        Assert.Equal("Remarks", remarksLabelCommand.Content);
+
+        // [Delta Spec FR-013] MoLabel, DeviceLabel, RemarkLabel 應不存在
+        Assert.DoesNotContain(commands, c => c.FieldName == "MoLabel");
+        Assert.DoesNotContain(commands, c => c.FieldName == "DeviceLabel");
+        Assert.DoesNotContain(commands, c => c.FieldName == "RemarkLabel");
 
         var qrCommand = commands.First(c => c.FieldName == "QRCODE");
         Assert.Equal(RenderCommandType.QRCode, qrCommand.CommandType);
