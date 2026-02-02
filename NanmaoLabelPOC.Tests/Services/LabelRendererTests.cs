@@ -992,6 +992,431 @@ public class LabelRendererTests
 
     #endregion
 
+    #region User Story 4 Tests - 空值欄位處理 [ref: spec.md Phase 6, FR-009]
+
+    /// <summary>
+    /// T020: 驗證 Text 欄位空值時保留版面位置
+    /// [ref: FR-009, spec.md User Story 4]
+    ///
+    /// 驗收條件：
+    /// 1. Text 類型欄位空值時不跳過 (Skip = false)
+    /// 2. 內容為空字串
+    /// 3. 座標位置保留不變
+    /// </summary>
+    [Fact]
+    public void Render_TextFieldWithEmptyValue_ShouldNotSkip()
+    {
+        // Arrange - Text 類型欄位
+        var template = CreateSimpleTemplate(new LabelField
+        {
+            Name = "CSREMARK",
+            FieldType = FieldType.Text,
+            DataSource = "nvr_remark10",
+            IsConstant = false,
+            X = 55, Y = 55, Width = 40, Height = 6,
+            FontSize = 11, IsBold = true,
+            Alignment = TextAlignment.Left
+        });
+
+        var record = new DataRecord
+        {
+            NvrRemark10 = ""  // 空值
+        };
+
+        // Act
+        var commands = _sut.Render(template, record);
+
+        // Assert
+        Assert.Single(commands);
+        var command = commands[0];
+
+        // Text 類型空值不應跳過 [FR-009]
+        Assert.False(command.Skip, "Text 欄位空值應保留版面位置，不跳過");
+        Assert.Equal(string.Empty, command.Content);
+
+        // 座標應保留原位置
+        Assert.Equal(55, command.X);
+        Assert.Equal(55, command.Y);
+        Assert.Equal(40, command.Width);
+        Assert.Equal(6, command.Height);
+    }
+
+    /// <summary>
+    /// T020: 驗證 QW075551-2 多個空值欄位版面不變
+    /// [ref: FR-009, spec.md User Story 4 Acceptance Scenario 2]
+    ///
+    /// 驗收條件：多個欄位為空時，所有欄位位置維持不變
+    /// </summary>
+    [Fact]
+    public void Render_QW075551_2_MultipleEmptyFields_LayoutPreserved()
+    {
+        // Arrange - 使用 QW075551-2 模板
+        var template = BuiltInTemplates.GetByCode("QW075551-2");
+        Assert.NotNull(template);
+
+        var record = new DataRecord
+        {
+            Cscustpo = "",           // 空值
+            Erpmat = "",             // 空值
+            NvrCustItemNo = "",      // 空值
+            Ogd09 = "",              // 空值
+            NvrRemark10 = ""         // 空值
+        };
+
+        // Act
+        var commands = _sut.Render(template, record);
+
+        // Assert - 應有 13 個欄位 (標題 1 + 標籤 6 + 大字 6)
+        Assert.Equal(13, commands.Count);
+
+        // 所有欄位都不應被跳過 (QW075551-2 無 Barcode/QRCode)
+        Assert.All(commands, c => Assert.False(c.Skip, $"欄位 {c.FieldName} 不應被跳過"));
+
+        // 驗證特定欄位座標保留
+        var csremarkCommand = commands.FirstOrDefault(c => c.FieldName == "CSREMARK");
+        Assert.NotNull(csremarkCommand);
+        Assert.Equal(55, csremarkCommand.X);  // 右欄 X=55
+        Assert.Equal(string.Empty, csremarkCommand.Content);
+    }
+
+    /// <summary>
+    /// T021: 驗證常數標籤欄位不受空值影響
+    /// [ref: FR-009, spec.md Edge Case]
+    ///
+    /// 驗收條件：即使動態欄位為空，標籤前綴（如「D/C (LOT NO. ):」）仍正常顯示
+    /// </summary>
+    [Fact]
+    public void Render_QW075551_2_EmptyValue_LabelPrefixPreserved()
+    {
+        // Arrange - 使用 QW075551-2 模板
+        var template = BuiltInTemplates.GetByCode("QW075551-2");
+        Assert.NotNull(template);
+
+        var record = new DataRecord
+        {
+            Cscustpo = "PO123",
+            Erpmat = "ERP456",
+            NvrCustItemNo = "ITEM789",
+            Ogd09 = "1000",
+            NvrRemark10 = ""  // 只有 D/C 為空
+        };
+
+        // Act
+        var commands = _sut.Render(template, record);
+
+        // Assert - D/C 標籤應正常顯示
+        var dcLabelCommand = commands.FirstOrDefault(c => c.FieldName == "CSREMARK_Label");
+        Assert.NotNull(dcLabelCommand);
+        Assert.Equal("D/C (LOT NO. ):", dcLabelCommand.Content);
+
+        // D/C 大字為空但不跳過
+        var dcValueCommand = commands.FirstOrDefault(c => c.FieldName == "CSREMARK");
+        Assert.NotNull(dcValueCommand);
+        Assert.False(dcValueCommand.Skip);
+        Assert.Equal(string.Empty, dcValueCommand.Content);
+    }
+
+    /// <summary>
+    /// T021: 驗證數量欄位為 0 時顯示 "0" 而非空白
+    /// [ref: spec.md Edge Case]
+    ///
+    /// 驗收條件：CSQTY 值為 "0" 時應顯示 "0"，不應視為空值
+    /// </summary>
+    [Fact]
+    public void Render_QW075551_2_ZeroQuantity_DisplaysZero()
+    {
+        // Arrange - 使用 QW075551-2 模板
+        var template = BuiltInTemplates.GetByCode("QW075551-2");
+        Assert.NotNull(template);
+
+        var record = new DataRecord
+        {
+            Cscustpo = "PO123",
+            Erpmat = "ERP456",
+            NvrCustItemNo = "ITEM789",
+            Ogd09 = "0",  // 數量為 0
+            NvrRemark10 = "REMARK"
+        };
+
+        // Act
+        var commands = _sut.Render(template, record);
+
+        // Assert - CSQTY 應顯示 "0"
+        var qtyCommand = commands.FirstOrDefault(c => c.FieldName == "CSQTY");
+        Assert.NotNull(qtyCommand);
+        Assert.Equal("0", qtyCommand.Content);  // 不應為空
+        Assert.False(qtyCommand.Skip);
+    }
+
+    #endregion
+
+    #region Phase 7 Tests - QW075551-2 模板驗證 [ref: spec.md, tasks.md T022-T025]
+
+    /// <summary>
+    /// T022: 驗證 QW075551-2 模板欄位數量為 13 個
+    /// [ref: spec.md FR-004, BuiltInTemplates.cs]
+    ///
+    /// 欄位組成：
+    /// - 標題: 1 個
+    /// - 小字行標籤: 6 個 (單號/代碼/ERP料號/規格型號/數量/D/C)
+    /// - 大字行數值: 6 個 (對應上述欄位)
+    /// 總計: 13 個
+    ///
+    /// [FIX] 原規格為 19 個，移除 6 個小字行數值欄位避免疊字問題
+    /// </summary>
+    [Fact]
+    public void Template_QW075551_2_FieldCount_Returns13()
+    {
+        // Arrange
+        var template = BuiltInTemplates.GetByCode("QW075551-2");
+
+        // Assert
+        Assert.NotNull(template);
+        Assert.Equal(13, template.Fields.Count);
+
+        // 驗證欄位名稱組成
+        var fieldNames = template.Fields.Select(f => f.Name).ToList();
+
+        // 標題
+        Assert.Contains("Title", fieldNames);
+
+        // 小字行標籤 (6 個)
+        Assert.Contains("CSCUSTPO_Label", fieldNames);
+        Assert.Contains("CSNUMBER_Label", fieldNames);
+        Assert.Contains("ERPPARTNO_Label", fieldNames);
+        Assert.Contains("CSCUSTITEMNO_Label", fieldNames);
+        Assert.Contains("CSQTY_Label", fieldNames);
+        Assert.Contains("CSREMARK_Label", fieldNames);
+
+        // 大字行數值 (6 個)
+        Assert.Contains("CSCUSTPO", fieldNames);
+        Assert.Contains("CSNUMBER", fieldNames);
+        Assert.Contains("ERPPARTNO", fieldNames);
+        Assert.Contains("CSCUSTITEMNO", fieldNames);
+        Assert.Contains("CSQTY", fieldNames);
+        Assert.Contains("CSREMARK", fieldNames);
+    }
+
+    /// <summary>
+    /// T023: 驗證 QW075551-2 模板標籤尺寸為 100mm × 80mm
+    /// [ref: spec.md FR-001, SC-002]
+    ///
+    /// 驗收條件：PDF 標籤尺寸精確為 100mm × 80mm
+    /// </summary>
+    [Fact]
+    public void Template_QW075551_2_Size_Returns100x80mm()
+    {
+        // Arrange
+        var template = BuiltInTemplates.GetByCode("QW075551-2");
+
+        // Assert
+        Assert.NotNull(template);
+        Assert.Equal(100, template.WidthMm);
+        Assert.Equal(80, template.HeightMm);
+    }
+
+    /// <summary>
+    /// T023: 驗證 QW075551-2 模板標題為「物料標籤」
+    /// [ref: spec.md FR-002, SC-007]
+    ///
+    /// 驗收條件：標籤標題顯示「物料標籤」，非「出貨標籤 Shipping Label」
+    /// </summary>
+    [Fact]
+    public void Template_QW075551_2_Title_Returns物料標籤()
+    {
+        // Arrange
+        var template = BuiltInTemplates.GetByCode("QW075551-2");
+
+        // Assert
+        Assert.NotNull(template);
+        Assert.Equal("物料標籤", template.Name);
+
+        // 驗證 Title 欄位內容
+        var titleField = template.Fields.FirstOrDefault(f => f.Name == "Title");
+        Assert.NotNull(titleField);
+        Assert.Equal("物料標籤", titleField.DataSource);
+    }
+
+    /// <summary>
+    /// T023: 驗證 QW075551-2 模板具有外框
+    /// [ref: spec.md FR-010, SC-008]
+    ///
+    /// 驗收條件：標籤具有外框（單線矩形邊框）
+    /// </summary>
+    [Fact]
+    public void Template_QW075551_2_HasBorder_ReturnsTrue()
+    {
+        // Arrange
+        var template = BuiltInTemplates.GetByCode("QW075551-2");
+
+        // Assert
+        Assert.NotNull(template);
+        Assert.True(template.HasBorder, "QW075551-2 應具有外框");
+    }
+
+    /// <summary>
+    /// T024: 驗證 QW075551-2 模板無任何 Barcode 欄位
+    /// [ref: spec.md FR-011, SC-006]
+    ///
+    /// 驗收條件：標籤無 Barcode 元素
+    /// </summary>
+    [Fact]
+    public void Template_QW075551_2_NoBarcode()
+    {
+        // Arrange
+        var template = BuiltInTemplates.GetByCode("QW075551-2");
+        Assert.NotNull(template);
+
+        // Act
+        var barcodeFields = template.Fields
+            .Where(f => f.FieldType == FieldType.Barcode)
+            .ToList();
+
+        // Assert
+        Assert.Empty(barcodeFields);
+    }
+
+    /// <summary>
+    /// T024: 驗證 QW075551-2 模板無任何 QRCode 欄位
+    /// [ref: spec.md FR-011, SC-006]
+    ///
+    /// 驗收條件：標籤無 QR Code 元素
+    /// </summary>
+    [Fact]
+    public void Template_QW075551_2_NoQRCode()
+    {
+        // Arrange
+        var template = BuiltInTemplates.GetByCode("QW075551-2");
+        Assert.NotNull(template);
+
+        // Act
+        var qrCodeFields = template.Fields
+            .Where(f => f.FieldType == FieldType.QRCode)
+            .ToList();
+
+        // Assert
+        Assert.Empty(qrCodeFields);
+    }
+
+    /// <summary>
+    /// T024: 驗證 QW075551-2 渲染結果無任何 Barcode/QRCode 指令
+    /// [ref: spec.md FR-011, SC-006]
+    ///
+    /// 驗收條件：渲染後不應有 Barcode 或 QRCode 類型的 RenderCommand
+    /// </summary>
+    [Fact]
+    public void Render_QW075551_2_NoBarcodeOrQRCodeCommands()
+    {
+        // Arrange
+        var template = BuiltInTemplates.GetByCode("QW075551-2");
+        Assert.NotNull(template);
+
+        var record = new DataRecord
+        {
+            Cscustpo = "PO123",
+            Erpmat = "ERP456",
+            NvrCustItemNo = "ITEM789",
+            Ogd09 = "1000",
+            NvrRemark10 = "REMARK"
+        };
+
+        // Act
+        var commands = _sut.Render(template, record);
+
+        // Assert - 不應有任何 Barcode 或 QRCode 指令
+        var barcodeOrQRCodeCommands = commands
+            .Where(c => c.CommandType == RenderCommandType.Barcode ||
+                       c.CommandType == RenderCommandType.QRCode)
+            .ToList();
+
+        Assert.Empty(barcodeOrQRCodeCommands);
+    }
+
+    /// <summary>
+    /// T025: 驗證 QW075551-2 CSQTY 欄位設定 UseDisplayValue = true
+    /// [ref: spec.md FR-007]
+    ///
+    /// 驗收條件：CSQTY 欄位使用千分位格式化
+    /// </summary>
+    [Fact]
+    public void Template_QW075551_2_CSQTY_UseDisplayValue_ReturnsTrue()
+    {
+        // Arrange
+        var template = BuiltInTemplates.GetByCode("QW075551-2");
+        Assert.NotNull(template);
+
+        // Act
+        var csqtyField = template.Fields.FirstOrDefault(f => f.Name == "CSQTY");
+
+        // Assert
+        Assert.NotNull(csqtyField);
+        Assert.True(csqtyField.UseDisplayValue, "CSQTY 應使用 DisplayValue (千分位)");
+    }
+
+    /// <summary>
+    /// T025: 驗證 QW075551-2 CSQTY 千分位渲染結果
+    /// [ref: spec.md FR-007, SC-004]
+    ///
+    /// 驗收條件：數量欄位正確顯示千分位格式（如 6733 → 6,733）
+    /// </summary>
+    [Fact]
+    public void Render_QW075551_2_CSQTY_ThousandSeparator()
+    {
+        // Arrange
+        var template = BuiltInTemplates.GetByCode("QW075551-2");
+        Assert.NotNull(template);
+
+        var record = new DataRecord
+        {
+            Cscustpo = "PO123",
+            Erpmat = "ERP456",
+            NvrCustItemNo = "ITEM789",
+            Ogd09 = "6733",  // 原始值
+            NvrRemark10 = "REMARK"
+        };
+
+        // Act
+        var commands = _sut.Render(template, record);
+
+        // Assert - CSQTY 應顯示千分位格式
+        var qtyCommand = commands.FirstOrDefault(c => c.FieldName == "CSQTY");
+        Assert.NotNull(qtyCommand);
+        Assert.Equal("6,733", qtyCommand.Content);  // 千分位格式
+    }
+
+    /// <summary>
+    /// T025: 驗證 QW075551-2 大數量千分位格式
+    /// [ref: spec.md FR-007]
+    ///
+    /// 驗收條件：大數量（如 1234567）正確顯示為 1,234,567
+    /// </summary>
+    [Fact]
+    public void Render_QW075551_2_CSQTY_LargeNumber_ThousandSeparator()
+    {
+        // Arrange
+        var template = BuiltInTemplates.GetByCode("QW075551-2");
+        Assert.NotNull(template);
+
+        var record = new DataRecord
+        {
+            Cscustpo = "PO123",
+            Erpmat = "ERP456",
+            NvrCustItemNo = "ITEM789",
+            Ogd09 = "1234567",
+            NvrRemark10 = "REMARK"
+        };
+
+        // Act
+        var commands = _sut.Render(template, record);
+
+        // Assert
+        var qtyCommand = commands.FirstOrDefault(c => c.FieldName == "CSQTY");
+        Assert.NotNull(qtyCommand);
+        Assert.Equal("1,234,567", qtyCommand.Content);
+    }
+
+    #endregion
+
     #region Helper Methods
 
     private static LabelTemplate CreateSimpleTemplate(LabelField field)

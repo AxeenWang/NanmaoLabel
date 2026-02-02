@@ -8,7 +8,7 @@ namespace NanmaoLabelPOC.Templates;
 ///
 /// POC 階段內建兩種標籤格式：
 /// - QW075551-1: 出貨標籤（15 欄位）[ref: raw_delta_label_QW075551-1.md]
-/// - QW075551-2: 物料標籤（19 欄位）[ref: raw_delta_label_QW075551-2.md]
+/// - QW075551-2: 物料標籤（13 欄位）[ref: raw_delta_label_QW075551-2.md, spec.md]
 ///
 /// 所有座標單位為 mm [ref: raw_spec 13.1]
 /// </summary>
@@ -274,14 +274,22 @@ public static class BuiltInTemplates
 
     /// <summary>
     /// 建立 QW075551-2 物料標籤格式
-    /// [ref: raw_delta_label_QW075551-2.md, data-model.md]
+    /// [ref: raw_delta_label_QW075551-2.md, spec.md, data-model.md]
+    ///
+    /// Delta Spec 變更摘要：
+    /// - 標題: 「出貨標籤 Shipping Label」→「物料標籤」[FR-002]
+    /// - 尺寸: 100mm × 60mm → 100mm × 80mm [FR-001, Clarification 2026-02-02]
+    /// - ERPPARTNO: Barcode → Text [FR-011]
+    /// - 新增外框，無分隔線 [FR-010]
+    /// - 移除所有 Barcode/QR Code [FR-011]
+    /// - 欄位前綴由英文改為中文 [FR-005]
     ///
     /// 欄位數: 13 (標題 1 + 小字行標籤 6 + 大字行數值 6)
     /// [FIX] 移除小字行數值欄位 (_LabelValue)，避免長文字換行疊字問題
-    /// 尺寸: 100mm × 80mm [FR-001, Clarification]
-    /// 外框: 有 [FR-010]
     /// 版面: 左右兩欄式佈局 [FR-003]
-    /// 條碼/QR Code: 無 [FR-011]
+    /// 千分位: CSQTY 使用 UseDisplayValue=true [FR-007]
+    /// 長文字: AutoShrinkFont=true, MinFontSize=6pt [FR-008]
+    /// 空值: 保留版面位置 [FR-009]
     /// </summary>
     private static LabelTemplate CreateQW075551_2()
     {

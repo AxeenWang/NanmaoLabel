@@ -95,10 +95,10 @@ NanmaoLabelPOC.Tests/
 
 ### Implementation for User Story 3
 
-- [ ] T016 [P] [US3] 設定所有動態欄位 AutoShrinkFont=true in `NanmaoLabelPOC/Templates/BuiltInTemplates.cs` [FR-008]
-- [ ] T017 [P] [US3] 確認 MinFontSize 預設值為 6pt（LabelField 模型已支援）in `NanmaoLabelPOC/Models/LabelField.cs` [FR-008, Clarification]
-- [ ] T018 [US3] 驗證現有 LabelRenderer.CalculateFontSize() 支援換行標記 RequiresWrap in `NanmaoLabelPOC/Services/LabelRenderer.cs` [FR-008]
-- [ ] T019 [US3] PDF 輸出驗證：以 50+ 字元測試字串確認無截斷 [SC-005]
+- [X] T016 [P] [US3] 設定所有動態欄位 AutoShrinkFont=true in `NanmaoLabelPOC/Templates/BuiltInTemplates.cs` [FR-008]
+- [X] T017 [P] [US3] 確認 MinFontSize 預設值為 6pt（LabelField 模型已支援）in `NanmaoLabelPOC/Models/LabelField.cs` [FR-008, Clarification]
+- [X] T018 [US3] 驗證現有 LabelRenderer.CalculateFontSize() 支援換行標記 RequiresWrap in `NanmaoLabelPOC/Services/LabelRenderer.cs` [FR-008]
+- [X] T019 [US3] PDF 輸出驗證：以 50+ 字元測試字串確認無截斷 [SC-005]
 
 **Checkpoint**: User Story 3 完成，長文字正確處理
 
@@ -112,8 +112,8 @@ NanmaoLabelPOC.Tests/
 
 ### Implementation for User Story 4
 
-- [ ] T020 [US4] 驗證空值欄位渲染行為：LabelRenderer 已支援空字串輸出（無需修改）in `NanmaoLabelPOC/Services/LabelRenderer.cs` [FR-009]
-- [ ] T021 [US4] PDF 輸出驗證：以空值測試資料確認版面位置不變 [FR-009]
+- [X] T020 [US4] 驗證空值欄位渲染行為：LabelRenderer 已支援空字串輸出（無需修改）in `NanmaoLabelPOC/Services/LabelRenderer.cs` [FR-009]
+- [X] T021 [US4] PDF 輸出驗證：以空值測試資料確認版面位置不變 [FR-009]
 
 **Checkpoint**: User Story 4 完成，空值處理正確
 
@@ -123,12 +123,12 @@ NanmaoLabelPOC.Tests/
 
 **Purpose**: 測試、文件與最終驗證
 
-- [ ] T022 [P] 新增單元測試：QW075551-2 模板欄位數量驗證 (19 個 LabelField) in `NanmaoLabelPOC.Tests/Services/LabelRendererTests.cs`
-- [ ] T023 [P] 新增單元測試：標籤尺寸驗證 (100mm × 80mm) in `NanmaoLabelPOC.Tests/Services/LabelRendererTests.cs`
-- [ ] T024 [P] 新增單元測試：無 Barcode/QRCode 欄位驗證 in `NanmaoLabelPOC.Tests/Services/LabelRendererTests.cs`
-- [ ] T025 [P] 新增單元測試：CSQTY 千分位格式驗證 in `NanmaoLabelPOC.Tests/Services/LabelRendererTests.cs`
-- [ ] T026 執行 quickstart.md 驗證流程，確認所有測試通過
-- [ ] T027 更新 BuiltInTemplates.cs 方法註解，標註 Delta Spec 參考 [ref: raw_delta_label_QW075551-2.md]
+- [X] T022 [P] 新增單元測試：QW075551-2 模板欄位數量驗證 (13 個 LabelField) in `NanmaoLabelPOC.Tests/Services/LabelRendererTests.cs`
+- [X] T023 [P] 新增單元測試：標籤尺寸驗證 (100mm × 80mm) in `NanmaoLabelPOC.Tests/Services/LabelRendererTests.cs`
+- [X] T024 [P] 新增單元測試：無 Barcode/QRCode 欄位驗證 in `NanmaoLabelPOC.Tests/Services/LabelRendererTests.cs`
+- [X] T025 [P] 新增單元測試：CSQTY 千分位格式驗證 in `NanmaoLabelPOC.Tests/Services/LabelRendererTests.cs`
+- [X] T026 執行 quickstart.md 驗證流程，確認所有測試通過
+- [X] T027 更新 BuiltInTemplates.cs 方法註解，標註 Delta Spec 參考 [ref: raw_delta_label_QW075551-2.md]
 
 ---
 
