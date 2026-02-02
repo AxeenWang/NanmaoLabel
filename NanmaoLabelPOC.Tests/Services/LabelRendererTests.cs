@@ -512,6 +512,85 @@ public class LabelRendererTests
         Assert.Empty(barcodeCommands);
     }
 
+    /// <summary>
+    /// T017: 驗證 QR Code 位置為左下角 (X=5, Y=55)
+    /// [ref: FR-012, SC-004]
+    ///
+    /// 驗收條件：QR Code 尺寸為 20mm × 20mm，位於左下角 Remarks 區段
+    /// </summary>
+    [Fact]
+    public void Render_QW075551_1_QRCode_Position()
+    {
+        // Arrange
+        var template = BuiltInTemplates.GetByCode("QW075551-1");
+        Assert.NotNull(template);
+
+        var record = new DataRecord
+        {
+            NvrCust = "TestCustomer",
+            Obe25 = "2025-11-14",
+            Ogd09 = "1000",
+            NvrCustItemNo = "ITEM001",
+            NvrCustPn = "PN001",
+            Pono = "511-251020041",
+            Ima902 = "FC7800280H-00000-00005",
+            NvrRemark10 = "00U35NVVR"
+        };
+
+        // Act
+        var commands = _sut.Render(template, record);
+
+        // Assert - QRCODE 位置應在左下角 (X=5, Y=55), 尺寸 20x20
+        var qrCodeCommand = commands.FirstOrDefault(c => c.FieldName == "QRCODE");
+        Assert.NotNull(qrCodeCommand);
+        Assert.Equal(RenderCommandType.QRCode, qrCodeCommand.CommandType);
+        Assert.Equal(5, qrCodeCommand.X);   // [FR-012] 左下角 X=5
+        Assert.Equal(55, qrCodeCommand.Y);  // [FR-012] 左下角 Y=55
+        Assert.Equal(20, qrCodeCommand.Width);   // 尺寸 20mm
+        Assert.Equal(20, qrCodeCommand.Height);  // 尺寸 20mm
+    }
+
+    /// <summary>
+    /// T018: 驗證 QR Code 內容格式為 {CSMO};{OUTDEVICENO};{CSQTY};{CSREMARK}
+    /// [ref: FR-009, FR-010, SC-005, SC-006]
+    ///
+    /// 驗收條件：
+    /// 1. QR Code 編碼內容為 `511-251020041;FC7800280H-00000-00005;6733;00U35NVVR`
+    /// 2. CSQTY 在 QR Code 中使用原始值 (6733，無千分位)
+    /// </summary>
+    [Fact]
+    public void Render_QW075551_1_QRCode_Content()
+    {
+        // Arrange
+        var template = BuiltInTemplates.GetByCode("QW075551-1");
+        Assert.NotNull(template);
+
+        // 使用 spec.md User Story 2 的測試資料
+        var record = new DataRecord
+        {
+            NvrCust = "TestCustomer",
+            Obe25 = "2025-11-14",
+            Ogd09 = "6733",  // 原始值，QR Code 應為 6733（無千分位）
+            NvrCustItemNo = "ITEM001",
+            NvrCustPn = "PN001",
+            Pono = "511-251020041",           // CSMO
+            Ima902 = "FC7800280H-00000-00005", // OUTDEVICENO
+            NvrRemark10 = "00U35NVVR"         // CSREMARK
+        };
+
+        // Act
+        var commands = _sut.Render(template, record);
+
+        // Assert - QR Code 內容格式應為 CSMO;OUTDEVICENO;CSQTY;CSREMARK
+        var qrCodeCommand = commands.FirstOrDefault(c => c.FieldName == "QRCODE");
+        Assert.NotNull(qrCodeCommand);
+        Assert.Equal(RenderCommandType.QRCode, qrCodeCommand.CommandType);
+
+        // [FR-009] 內容格式: {CSMO};{OUTDEVICENO};{CSQTY};{CSREMARK}
+        // [FR-010] CSQTY 使用原始值（無千分位）
+        Assert.Equal("511-251020041;FC7800280H-00000-00005;6733;00U35NVVR", qrCodeCommand.Content);
+    }
+
     #endregion
 
     #region Full Template Tests

@@ -78,8 +78,8 @@
 
 ### Tests for User Story 2
 
-- [ ] T017 [P] [US2] 新增測試 Render_QW075551_1_QRCode_Position 於 NanmaoLabelPOC.Tests/Services/LabelRendererTests.cs [FR-012]
-- [ ] T018 [P] [US2] 新增測試 Render_QW075551_1_QRCode_Content 於 NanmaoLabelPOC.Tests/Services/LabelRendererTests.cs [FR-009, FR-010]
+- [x] T017 [P] [US2] 新增測試 Render_QW075551_1_QRCode_Position 於 NanmaoLabelPOC.Tests/Services/LabelRendererTests.cs [FR-012]
+- [x] T018 [P] [US2] 新增測試 Render_QW075551_1_QRCode_Content 於 NanmaoLabelPOC.Tests/Services/LabelRendererTests.cs [FR-009, FR-010]
 
 ### Implementation for User Story 2
 
