@@ -268,6 +268,9 @@ public static class BuiltInTemplates
                 },
 
                 // Item 17: QRCODE (組合欄位) <- {pono};{ima902};{ogd09};{nvr_remark10}
+                // [FR-009] 內容格式: CSMO;OUTDEVICENO;CSQTY;CSREMARK
+                // [FR-010] 使用 Raw Value（無千分位）
+                // [FR-012] 位置移至左下角 (X=5, Y=55)
                 // [ref: raw_spec 13.4, 13.15] - 空值保留位置 (A;;C)
                 new()
                 {
@@ -275,9 +278,9 @@ public static class BuiltInTemplates
                     FieldType = FieldType.QRCode,
                     DataSource = string.Empty,  // QR Code 使用 CombinePattern
                     IsConstant = false,
-                    UseDisplayValue = false,  // QR Code 必須使用 Raw Value [ref: raw_spec 13.13]
-                    CombinePattern = "{pono};{ima902};{ogd09};{nvr_remark10}",
-                    X = 75, Y = 40, Width = 20, Height = 20,
+                    UseDisplayValue = false,  // [FR-010] QR Code 必須使用 Raw Value（無千分位）
+                    CombinePattern = "{pono};{ima902};{ogd09};{nvr_remark10}",  // [FR-009] 使用 data source 欄位
+                    X = 5, Y = 55, Width = 20, Height = 20,  // [FR-012] 左下角位置
                     Alignment = TextAlignment.Left
                 }
             }

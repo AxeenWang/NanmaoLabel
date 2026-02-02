@@ -83,8 +83,8 @@
 
 ### Implementation for User Story 2
 
-- [ ] T019 [US2] 更新 QRCODE 欄位座標 (X=5, Y=55) 移至左下角於 NanmaoLabelPOC/Templates/BuiltInTemplates.cs [FR-012]
-- [ ] T020 [US2] 確認 QRCODE CombinePattern 使用 Raw Value (無千分位) 於 NanmaoLabelPOC/Templates/BuiltInTemplates.cs [FR-009, FR-010]
+- [x] T019 [US2] 更新 QRCODE 欄位座標 (X=5, Y=55) 移至左下角於 NanmaoLabelPOC/Templates/BuiltInTemplates.cs [FR-012]
+- [x] T020 [US2] 確認 QRCODE CombinePattern 使用 Raw Value (無千分位) 於 NanmaoLabelPOC/Templates/BuiltInTemplates.cs [FR-009, FR-010]
 
 **Checkpoint**: User Story 2 完成 - QR Code 位置與編碼內容正確
 
