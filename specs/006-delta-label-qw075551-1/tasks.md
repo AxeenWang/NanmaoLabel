@@ -152,10 +152,10 @@
 
 **Purpose**: 最終驗證與整合
 
-- [ ] T034 執行 quickstart.md 驗證流程
-- [ ] T035 執行所有測試確認通過 (powershell.exe -Command "cd '$(wslpath -w .)'; dotnet test NanmaoLabelPOC.Tests")
-- [ ] T036 視覺驗收：輸出 PDF 並與參考圖片對比
-- [ ] T037 QR Code 驗收：掃描驗證編碼內容正確
+- [x] T034 執行 quickstart.md 驗證流程
+- [x] T035 執行所有測試確認通過 (powershell.exe -Command "cd '$(wslpath -w .)'; dotnet test NanmaoLabelPOC.Tests")
+- [x] T036 視覺驗收：輸出 PDF 並與參考圖片對比
+- [x] T037 QR Code 驗收：掃描驗證編碼內容正確
 
 ---
 
