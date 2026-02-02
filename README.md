@@ -111,18 +111,22 @@ NanmaoLabel/
 │       ├── ButtonStyles.xaml          # 按鈕樣式
 │       └── ListViewStyles.xaml        # ListView 樣式
 ├── NanmaoLabelPOC.Tests/              # 單元測試專案
-│   └── Services/                      # 服務層測試
-│       ├── BarcodeGeneratorTests.cs
-│       ├── DataStoreTests.cs
-│       ├── ExcelImporterTests.cs
-│       ├── LabelRendererTests.cs
-│       └── PerformanceMonitorTests.cs
+│   ├── Services/                      # 服務層測試
+│   │   ├── BarcodeGeneratorTests.cs
+│   │   ├── DataStoreTests.cs
+│   │   ├── ExcelImporterTests.cs
+│   │   ├── LabelRendererTests.cs
+│   │   ├── PdfExporterIntegrationTests.cs
+│   │   └── PerformanceMonitorTests.cs
+│   └── ViewModels/                    # ViewModel 測試
+│       └── ButtonStateTests.cs
 ├── specs/                             # 功能規格文件
 │   ├── 001-label-print-poc/           # 標籤列印核心功能
 │   ├── 002-import-warning/            # 匯入警告分級
 │   ├── 003-button-style/              # 按鈕樣式規範
 │   ├── 004-listview-style/            # ListView 樣式規範
-│   └── 005-label-display/             # 標籤預覽渲染
+│   ├── 005-label-display/             # 標籤預覽渲染
+│   └── 006-delta-label-qw075551-1/    # QW075551-1 版面調整
 └── samples/                           # 範例檔案
     └── MockData.xlsx                  # 示例資料
 ```
@@ -154,6 +158,11 @@ NanmaoLabel/
 
 ## 變更紀錄
 
+### v0.4.0 (2026-02-02)
+- 重構 PDF 絕對定位與 QW075551-1 版面調整（006-delta-label-qw075551-1）
+- 長文字自動縮小字體（最小 6pt）與截斷省略號處理
+- 新增 PdfExporter 整合測試與 ViewModel 按鈕狀態測試
+
 ### v0.3.0 (2026-02-01)
 - 版本號統一升級
 
@@ -175,4 +184,4 @@ NanmaoLabel/
 
 ## 版本
 
-v0.3.0
+v0.4.0
